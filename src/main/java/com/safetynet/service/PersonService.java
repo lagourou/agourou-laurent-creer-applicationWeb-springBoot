@@ -50,4 +50,25 @@ public class PersonService {
 
         return persons;
     }
+
+    public List<Person> update(List<Person> persons) throws IOException {
+        logger.info("Mise à jour des personnes.");
+
+        List<Person> existingPersons = readJsonFile();
+        for (Person person : persons) {
+            for (Person existing : existingPersons) {
+                if (existing.getFirstName().equals(person.getFirstName())
+                        && existing.getLastName().equals(person.getLastName())) {
+                    existing.setAddress(person.getAddress());
+                    existing.setCity(person.getCity());
+                    existing.setPhone(person.getPhone());
+                    existing.setZip(person.getZip());
+                    existing.setEmail(person.getEmail());
+
+                    logger.info("Personne mise à jour : {}", existing);
+                }
+            }
+        }
+        return persons;
+    }
 }
