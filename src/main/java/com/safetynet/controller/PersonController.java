@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -40,5 +41,17 @@ public class PersonController {
         }
         logger.info("Personnes ajoutées avec succès.");
         return personService.add(persons);
+    }
+
+    @ResponseStatus(value = HttpStatus.OK)
+    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public List<Person> mettreAJour(@Valid @RequestBody List<Person> persons) throws IOException {
+
+        if (persons == null || persons.isEmpty()) {
+            logger.warn("La liste des personnes est vides ou null !");
+            throw new IllegalArgumentException("La liste des personnes ne peut pas être vide.");
+        }
+        logger.info("Personne mise à jour avec succès.");
+        return personService.update(persons);
     }
 }
