@@ -41,4 +41,13 @@ public class PersonService {
             return data.getOrDefault("persons", List.of());
         }
     }
+
+    public List<Person> add(List<Person> persons) throws IOException {
+        logger.info("Ajout de personnes au fichier.");
+
+        List<Person> existingPersons = readJsonFile();
+        existingPersons.addAll(persons);
+
+        return persons;
+    }
 }
