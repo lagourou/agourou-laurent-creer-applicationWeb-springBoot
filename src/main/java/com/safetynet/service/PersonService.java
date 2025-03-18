@@ -71,4 +71,16 @@ public class PersonService {
         }
         return persons;
     }
+
+    public List<Person> delete(List<Person> persons) throws IOException {
+        logger.info("Suppression de personnes.");
+
+        List<Person> existingPersons = readJsonFile();
+
+        existingPersons.removeIf(p -> persons.stream().anyMatch(person -> p.getFirstName().equals(person.getFirstName())
+                && p.getLastName().equals(person.getLastName())));
+
+        logger.info("Personne supprimeé: {}", existingPersons);
+        return persons;
+    }
 }

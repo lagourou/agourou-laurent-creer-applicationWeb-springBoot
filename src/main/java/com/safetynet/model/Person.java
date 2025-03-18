@@ -2,7 +2,6 @@ package com.safetynet.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
@@ -19,12 +18,7 @@ public class Person {
     private String address;
     private String city;
     private String zip;
-
-    @NotBlank(message = "Le numéro de téléphone est obligatoire")
     private String phone;
-
-    @Email(message = "L'email doit être valide")
-    @NotBlank(message = "L'email est obligatoire")
     private String email;
 
     public Person() {
