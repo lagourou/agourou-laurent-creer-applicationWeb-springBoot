@@ -2,19 +2,21 @@ package com.safetynet.service;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.safetynet.model.Person;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Service
 public class PersonService {
@@ -42,12 +44,42 @@ public class PersonService {
         }
     }
 
+    public void writeJsonFile(List<Person> persons) throws IOException {
+        File file = new File(filePath);
+        Map<String, Object> fullData;
+
+        if (file.exists()) {
+            try (InputStream inputStream = new FileInputStream(file)) {
+                fullData = objectMapper.readValue(inputStream, new TypeReference<>() {
+                });
+            }
+        } else {
+            fullData = Map.of();
+        }
+
+        fullData.put("persons", persons);
+
+        try (OutputStream outputStream = new FileOutputStream(file)) {
+            objectMapper.writeValue(outputStream, fullData);
+        }
+
+        logger.info("Fichier JSON mis à jour avec succès : {}", filePath);
+    }
+
     public List<Person> add(List<Person> persons) throws IOException {
-        logger.info("Ajout de personnes au fichier.");
-
+        logger.info("Ajout de personnes au fichier Json.");
         List<Person> existingPersons = readJsonFile();
-        existingPersons.addAll(persons);
 
+        for (Person newPerson : persons) {
+            if (existingPersons.stream().anyMatch(existing -> existing.getFirstName().equals(newPerson.getFirstName())
+                    && existing.getLastName().equals(newPerson.getLastName()))) {
+                logger.warn("La personne existe déjà: {}", newPerson.getFirstName(), newPerson.getLastName());
+            }
+            existingPersons.add(newPerson);
+
+        }
+        writeJsonFile(existingPersons);
+        logger.info("Ajout de personnes fait");
         return persons;
     }
 
@@ -69,6 +101,7 @@ public class PersonService {
                 }
             }
         }
+        writeJsonFile(existingPersons);
         return persons;
     }
 
@@ -79,6 +112,8 @@ public class PersonService {
 
         existingPersons.removeIf(p -> persons.stream().anyMatch(person -> p.getFirstName().equals(person.getFirstName())
                 && p.getLastName().equals(person.getLastName())));
+
+        writeJsonFile(existingPersons);
 
         logger.info("Personne supprimeé: {}", existingPersons);
         return persons;

@@ -37,7 +37,7 @@ public class PersonController {
     public List<Person> creer(@Valid @RequestBody List<Person> persons) throws IOException {
 
         if (persons == null || persons.isEmpty()) {
-            logger.warn("La liste des personnes est vide ou null !");
+            logger.warn("La liste des personnes est vide ou nulle !");
             throw new IllegalArgumentException("La liste des personnes ne peut pas être vide.");
         }
         logger.info("Personnes ajoutées avec succès.");
