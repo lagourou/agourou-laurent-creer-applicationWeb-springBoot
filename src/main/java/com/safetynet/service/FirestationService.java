@@ -20,6 +20,7 @@ import com.safetynet.model.Firestation;
 
 @Service
 public class FirestationService {
+
     private final ObjectMapper objectMapper = new ObjectMapper();
     private static final Logger logger = LoggerFactory.getLogger(FirestationService.class);
 
@@ -72,7 +73,9 @@ public class FirestationService {
         for (Firestation newFirestation : firestations) {
             if (existingFirestations.stream()
                     .anyMatch(existing -> existing.getAddress().equals(newFirestation.getAddress()))) {
+
                 logger.warn("La caserne existe déjà : {}", newFirestation.getAddress());
+                continue;
             }
             existingFirestations.add(newFirestation);
         }
@@ -80,6 +83,24 @@ public class FirestationService {
         writeJsonFile(existingFirestations);
         logger.info("Ajout de casernes fait");
         return firestations;
+    }
+
+    public List<Firestation> update(List<Firestation> firestations) throws IOException {
+        logger.info("Mise à jour des casernes");
+
+        List<Firestation> existingFirestations = readJsonFile();
+
+        for (Firestation firestation : firestations) {
+            for (Firestation existing : existingFirestations) {
+                if (existing.getAddress().equals(firestation.getAddress())) {
+                    existing.setStation(firestation.getStation());
+
+                    logger.info("Numéro de la station mise à jour: {}", existing);
+                }
+            }
+        }
+        writeJsonFile(existingFirestations);
+        return existingFirestations;
     }
 
 }

@@ -73,7 +73,9 @@ public class PersonService {
         for (Person newPerson : persons) {
             if (existingPersons.stream().anyMatch(existing -> existing.getFirstName().equals(newPerson.getFirstName())
                     && existing.getLastName().equals(newPerson.getLastName()))) {
+
                 logger.warn("La personne existe déjà: {}", newPerson.getFirstName(), newPerson.getLastName());
+                continue;
             }
             existingPersons.add(newPerson);
 
@@ -102,7 +104,7 @@ public class PersonService {
             }
         }
         writeJsonFile(existingPersons);
-        return persons;
+        return existingPersons;
     }
 
     public List<Person> delete(List<Person> persons) throws IOException {

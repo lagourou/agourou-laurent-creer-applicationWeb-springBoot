@@ -17,6 +17,7 @@ import com.safetynet.model.Firestation;
 import com.safetynet.service.FirestationService;
 
 import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
 @RequestMapping("/firestation")
@@ -39,6 +40,17 @@ public class FirestationController {
         }
         logger.info("Casernes ajoutées avec succès");
         return firestationService.add(firestations);
+    }
+
+    @ResponseStatus(value = HttpStatus.OK)
+    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public List<Firestation> mettreAJour(@Valid @RequestBody List<Firestation> firestations) throws IOException {
+        if (firestations == null || firestations.isEmpty()) {
+            logger.warn("La liste des casernes des vide ou nulle !");
+            throw new IllegalArgumentException("La liste des casernes ne peut pas être vide.");
+        }
+        logger.info("Casernes mis à jour avec succès");
+        return firestationService.update(firestations);
     }
 
 }
