@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +18,7 @@ import com.safetynet.model.Firestation;
 import com.safetynet.service.FirestationService;
 
 import jakarta.validation.Valid;
+
 import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
@@ -51,6 +53,17 @@ public class FirestationController {
         }
         logger.info("Casernes mis à jour avec succès");
         return firestationService.update(firestations);
+    }
+
+    @ResponseStatus(value = HttpStatus.OK)
+    @DeleteMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public List<Firestation> supprimer(@Valid @RequestBody List<Firestation> firestations) throws IOException {
+        if (firestations == null || firestations.isEmpty()) {
+            logger.warn("La liste des casernes des vide ou nulle !");
+            throw new IllegalArgumentException("La liste des casernes ne peut pas être vide.");
+        }
+        logger.info("Casernes mis à jour avec succès");
+        return firestationService.delete(firestations);
     }
 
 }

@@ -103,4 +103,19 @@ public class FirestationService {
         return existingFirestations;
     }
 
+    public List<Firestation> delete(List<Firestation> firestations) throws IOException {
+        logger.info("Suppression des casernes");
+
+        List<Firestation> existingFirestations = readJsonFile();
+
+        existingFirestations.removeIf(
+                f -> firestations.stream().anyMatch(firestation -> f.getAddress().equals(firestation.getAddress()) &&
+                        f.getStation() == firestation.getStation()));
+
+        writeJsonFile(existingFirestations);
+
+        logger.info("Caserne supprimée: {}", existingFirestations);
+        return firestations;
+    }
+
 }

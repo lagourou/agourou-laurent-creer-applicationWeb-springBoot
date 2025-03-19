@@ -39,7 +39,7 @@ public class PersonService {
             Map<String, List<Person>> data = objectMapper.readValue(inputStream, new TypeReference<>() {
             });
 
-            logger.info("Fichier Json lue avec succès: {}", filePath);
+            logger.info("Fichier Json lu avec succès: {}", filePath);
             return data.getOrDefault("persons", List.of());
         }
     }
