@@ -14,6 +14,9 @@ import com.safetynet.model.MedicalRecord;
 import com.safetynet.model.Person;
 import com.safetynet.service.dataService.DataLoad;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class StationNumberService {
         private final AgeCalculationService ageCalculationService;
@@ -29,6 +32,7 @@ public class StationNumberService {
         }
 
         public FirestationByPerson getPersonByStation(int stationNumber) throws IOException {
+                log.info("Requête reçue pour getPersonByStation avec le numéro de la caserne: {}", stationNumber);
 
                 List<Person> persons = dataLoad.readJsonFile("persons", new TypeReference<Map<String, List<Person>>>() {
                 });
@@ -61,6 +65,8 @@ public class StationNumberService {
 
                 int numberOfChildren = filterPersonByStations.size() - numberOfAdults;
 
+                log.info("Réponse retournée pour le numéro de caserne {} : {} adultes et {} enfants",
+                                stationNumber, numberOfAdults, numberOfChildren);
                 return new FirestationByPerson(filterPersonByStations, numberOfAdults, numberOfChildren);
 
         }

@@ -16,6 +16,9 @@ import com.safetynet.service.MedicalRecordService;
 import com.safetynet.service.PersonService;
 import com.safetynet.service.StationNumberService;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @RestController
 @RequestMapping("/firestation")
 public class StationNumberController {
@@ -32,7 +35,15 @@ public class StationNumberController {
     public ResponseEntity<FirestationByPerson> getPersonsByStation(@RequestParam("stationNumber") int stationNumber)
             throws IOException {
 
+        log.info("Requête reçue avec le numéro de la station: {}", stationNumber);
+
         FirestationByPerson result = stationNumberService.getPersonByStation(stationNumber);
+
+        log.info("Données récupérées pour la station {} : {} personnes, {} adultes, {} enfants",
+                stationNumber,
+                result.persons().size(),
+                result.numberOfAdults(),
+                result.numberOfChildren());
 
         return ResponseEntity.ok(result);
 

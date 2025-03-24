@@ -17,6 +17,9 @@ import com.safetynet.service.FirestationService;
 import com.safetynet.service.PersonService;
 import com.safetynet.service.PhoneAlertService;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @RestController
 @RequestMapping("phoneAlert")
 public class PhoneAlertController {
@@ -32,10 +35,15 @@ public class PhoneAlertController {
     public ResponseEntity<List<PhoneAlert>> getPhoneAlert(@RequestParam("firestation") int firestationNumber)
             throws IOException {
 
+        log.info("Requête reçue avec le numéro de la caserne: {}", firestationNumber);
+
         List<PhoneAlert> result = phoneAlertService.getPhoneAlert(firestationNumber);
         if (result.isEmpty()) {
+            log.info("Aucun numéro de téléphone trouvé pour la caserne {}", firestationNumber);
             return ResponseEntity.noContent().build();
         }
+
+        log.info("{} numéro(s) de téléphone trouvé(s) pour la caserne {}", result.size(), firestationNumber);
         return ResponseEntity.ok(result);
     }
 }

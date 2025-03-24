@@ -17,6 +17,9 @@ import com.safetynet.service.ChildAlertService;
 import com.safetynet.service.MedicalRecordService;
 import com.safetynet.service.PersonService;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @RestController
 @RequestMapping("childAlert")
 public class ChildAlertController {
@@ -33,10 +36,14 @@ public class ChildAlertController {
     public ResponseEntity<List<ChildrenByAddress>> getChildrenByAddress(@RequestParam("address") String address)
             throws IOException {
 
+        log.info("Requête reçue avec l'adresse : {}", address);
+
         List<ChildrenByAddress> childrenByAddresses = childAlertService.getChildrenByAddress(address);
         if (childrenByAddresses.isEmpty()) {
+            log.info("Aucune donnée trouvée pour l'adresse: {}", address);
             return ResponseEntity.noContent().build();
         }
+        log.info("{} enfant(s) trouvé(s) pour l'adresse {}", childrenByAddresses.size(), address);
         return ResponseEntity.ok(childrenByAddresses);
     }
 
