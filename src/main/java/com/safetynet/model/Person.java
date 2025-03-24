@@ -2,19 +2,14 @@ package com.safetynet.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true) // Ignore les champs inconnus
 public class Person {
 
-    @NotBlank(message = "Le prénom est obligatoire")
     private String firstName;
-
-    @NotBlank(message = "Le nom est obligatoire")
     private String lastName;
-
     private String address;
     private String city;
     private String zip;

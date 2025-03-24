@@ -1,86 +1,86 @@
 package com.safetynet.service;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.safetynet.model.MedicalRecord;
+import com.safetynet.service.dataService.DataLoad;
 
-import org.springframework.beans.factory.annotation.Value;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 public class MedicalRecordService {
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
-    private static final Logger logger = LoggerFactory.getLogger(PersonService.class);
+    private final DataLoad dataLoad;
 
-    @Value("${data.file.path}")
-    private String filepath;
-
-    public List<MedicalRecord> readJsonFile() throws IOException {
-        File file = new File(filepath);
-        if (!file.exists()) {
-            logger.error("Fichier Json n'existe pas: {}", filepath);
-            throw new IOException("Fichier Json introuvable");
-        }
-        try (InputStream inputStream = new FileInputStream(file)) {
-
-            Map<String, List<MedicalRecord>> data = objectMapper.readValue(inputStream, new TypeReference<>() {
-            });
-
-            logger.info("Fichier Json lu avec succès: {}", filepath);
-            return data.getOrDefault("medicalrecords", List.of());
-        }
-    }
-
-    public void writeJsonFile(List<MedicalRecord> medicalRecords) throws IOException {
-        File file = new File(filepath);
-        Map<String, Object> fullData;
-
-        if (file.exists()) {
-            try (InputStream inputStream = new FileInputStream(file)) {
-                fullData = objectMapper.readValue(inputStream, new TypeReference<>() {
-                });
-            }
-        } else {
-            fullData = Map.of();
-        }
-        fullData.put("medicalrecords", medicalRecords);
-        try (OutputStream outputStream = new FileOutputStream(file)) {
-            objectMapper.writeValue(outputStream, fullData);
-        }
-        logger.info("Fichier JSON mis à jour avec succès: {}", filepath);
+    public MedicalRecordService(DataLoad dataLoad) {
+        this.dataLoad = dataLoad;
     }
 
     public List<MedicalRecord> add(List<MedicalRecord> medicalRecords) throws IOException {
-        logger.info("Ajout d'un dossier médical");
-        List<MedicalRecord> existingMedicalRecords = readJsonFile();
+        log.info("Ajout d'un dossier médical");
+        List<MedicalRecord> existingMedicalRecords = dataLoad.readJsonFile("medicalrecords",
+                new TypeReference<Map<String, List<MedicalRecord>>>() {
+                });
 
         for (MedicalRecord newMedicalRecord : medicalRecords) {
             if (existingMedicalRecords.stream()
-                    .anyMatch(existing -> existing.getFirstName().equals(newMedicalRecord.getFirstName())
-                            && existing.getLastName().equals(newMedicalRecord.getLastName())
-                            && existing.getBirthdate().equals(newMedicalRecord.getBirthdate()))) {
+                    .anyMatch(existing -> existing.getFirstName().equalsIgnoreCase(newMedicalRecord.getFirstName())
+                            && existing.getLastName().equalsIgnoreCase(newMedicalRecord.getLastName())
+                            && existing.getBirthdate().equalsIgnoreCase(newMedicalRecord.getBirthdate()))) {
 
-                logger.warn("Le dossier médical existe déjà: {}", newMedicalRecord.getFirstName(),
+                log.warn("Le dossier médical existe déjà: {}", newMedicalRecord.getFirstName(),
                         newMedicalRecord.getLastName(), newMedicalRecord.getBirthdate());
                 continue;
             }
             existingMedicalRecords.add(newMedicalRecord);
         }
-        writeJsonFile(existingMedicalRecords);
-        logger.info("Ajout du dossier médical fait");
+        dataLoad.writeJsonFile("medicalrecords", existingMedicalRecords);
+        log.info("Ajout du dossier médical fait");
         return medicalRecords;
+    }
+
+    public List<MedicalRecord> update(List<MedicalRecord> medicalRecords) throws IOException {
+        log.info("Mise à jour du dossier médical");
+
+        List<MedicalRecord> existingMedicalRecords = dataLoad.readJsonFile("medicalrecords",
+                new TypeReference<Map<String, List<MedicalRecord>>>() {
+                });
+
+        for (MedicalRecord medicalRecord : medicalRecords) {
+            for (MedicalRecord existing : existingMedicalRecords) {
+                if (existing.getFirstName().equalsIgnoreCase(medicalRecord.getFirstName())
+                        && existing.getLastName().equalsIgnoreCase(medicalRecord.getLastName())) {
+
+                    existing.setMedications(medicalRecord.getMedications());
+                    existing.setAllergies(medicalRecord.getAllergies());
+                }
+            }
+        }
+        dataLoad.writeJsonFile("medicalrecords", existingMedicalRecords);
+        return existingMedicalRecords;
+    }
+
+    public List<MedicalRecord> delete(List<MedicalRecord> medicalRecords) throws IOException {
+        log.info("Suppression du dossier médical");
+
+        List<MedicalRecord> existingMedicalRecords = dataLoad.readJsonFile("medicalrecords",
+                new TypeReference<Map<String, List<MedicalRecord>>>() {
+                });
+
+        existingMedicalRecords.removeIf(m -> medicalRecords.stream()
+                .anyMatch((medicalRecord -> m.getFirstName().equalsIgnoreCase(medicalRecord.getFirstName()) &&
+                        m.getLastName().equalsIgnoreCase(medicalRecord.getLastName()))));
+
+        dataLoad.writeJsonFile("medicalrecords", existingMedicalRecords);
+
+        log.info("Personne supprimeé: {}", existingMedicalRecords);
+        return medicalRecords;
+
     }
 }

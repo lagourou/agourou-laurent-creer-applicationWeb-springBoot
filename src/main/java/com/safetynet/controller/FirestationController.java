@@ -3,12 +3,11 @@ package com.safetynet.controller;
 import java.io.IOException;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -18,51 +17,50 @@ import com.safetynet.model.Firestation;
 import com.safetynet.service.FirestationService;
 
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.web.bind.annotation.PutMapping;
-
+@Slf4j
 @RestController
 @RequestMapping("/firestation")
 public class FirestationController {
 
     private final FirestationService firestationService;
-    private static final Logger logger = LoggerFactory.getLogger(FirestationController.class);
 
     public FirestationController(FirestationService firestationService) {
         this.firestationService = firestationService;
+    }
+
+    private void validFirestations(List<Firestation> firestations) {
+        if (firestations.isEmpty()) {
+            log.warn("La liste des casernes est vide ou nulle !");
+            throw new IllegalArgumentException("La liste des casernes ne peut pas être vide.");
+        }
     }
 
     @ResponseStatus(value = HttpStatus.CREATED)
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public List<Firestation> creer(@Valid @RequestBody List<Firestation> firestations) throws IOException {
 
-        if (firestations == null || firestations.isEmpty()) {
-            logger.warn("La liste des casernes est vide ou nulle !");
-            throw new IllegalArgumentException("La liste des casernes ne peut pas être vide.");
-        }
-        logger.info("Casernes ajoutées avec succès");
+        validFirestations(firestations);
+        log.info("Casernes ajoutées avec succès");
         return firestationService.add(firestations);
     }
 
     @ResponseStatus(value = HttpStatus.OK)
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public List<Firestation> mettreAJour(@Valid @RequestBody List<Firestation> firestations) throws IOException {
-        if (firestations == null || firestations.isEmpty()) {
-            logger.warn("La liste des casernes des vide ou nulle !");
-            throw new IllegalArgumentException("La liste des casernes ne peut pas être vide.");
-        }
-        logger.info("Casernes mis à jour avec succès");
+
+        validFirestations(firestations);
+        log.info("Casernes mis à jour avec succès");
         return firestationService.update(firestations);
     }
 
     @ResponseStatus(value = HttpStatus.OK)
     @DeleteMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public List<Firestation> supprimer(@Valid @RequestBody List<Firestation> firestations) throws IOException {
-        if (firestations == null || firestations.isEmpty()) {
-            logger.warn("La liste des casernes des vide ou nulle !");
-            throw new IllegalArgumentException("La liste des casernes ne peut pas être vide.");
-        }
-        logger.info("Casernes mis à jour avec succès");
+
+        validFirestations(firestations);
+        log.info("Casernes mis à jour avec succès");
         return firestationService.delete(firestations);
     }
 

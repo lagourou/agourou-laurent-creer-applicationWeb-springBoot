@@ -1,121 +1,84 @@
 package com.safetynet.service;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.safetynet.model.Firestation;
+import com.safetynet.service.dataService.DataLoad;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class FirestationService {
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
-    private static final Logger logger = LoggerFactory.getLogger(FirestationService.class);
+    private final DataLoad dataLoad;
 
-    @Value("${data.file.path}")
-    private String filePath;
-
-    public List<Firestation> readJsonFile() throws IOException {
-        File file = new File(filePath);
-        if (!file.exists()) {
-
-            logger.error("Fichier Json n'existe pas: {}", filePath);
-            throw new IOException("Fichier Json introuvable");
-        }
-
-        try (InputStream inputStream = new FileInputStream(file)) {
-            Map<String, List<Firestation>> data = objectMapper.readValue(inputStream, new TypeReference<>() {
-            });
-
-            logger.info("Fichier Json lue avec succès: {}", filePath);
-            return data.getOrDefault("firestations", List.of());
-        }
-    }
-
-    public void writeJsonFile(List<Firestation> firestations) throws IOException {
-        File file = new File(filePath);
-        Map<String, Object> fullData;
-
-        if (file.exists()) {
-            try (InputStream inputStream = new FileInputStream(file)) {
-                fullData = objectMapper.readValue(inputStream, new TypeReference<>() {
-                });
-            }
-        } else {
-            fullData = Map.of();
-        }
-
-        fullData.put("firestations", firestations);
-
-        try (OutputStream outputStream = new FileOutputStream(file)) {
-            objectMapper.writeValue(outputStream, fullData);
-        }
-
-        logger.info("Fichier JSON mis à jour avec succès : {}", filePath);
+    public FirestationService(DataLoad dataLoad) {
+        this.dataLoad = dataLoad;
     }
 
     public List<Firestation> add(List<Firestation> firestations) throws IOException {
-        logger.info("Ajout de casernes au fichier Json.");
-        List<Firestation> existingFirestations = readJsonFile();
+        log.info("Ajout de casernes au fichier Json.");
+        List<Firestation> existingFirestations = dataLoad.readJsonFile("firestations",
+                new TypeReference<Map<String, List<Firestation>>>() {
+                });
 
         for (Firestation newFirestation : firestations) {
             if (existingFirestations.stream()
-                    .anyMatch(existing -> existing.getAddress().equals(newFirestation.getAddress()))) {
+                    .anyMatch(existing -> existing.getAddress().equalsIgnoreCase(newFirestation.getAddress()))) {
 
-                logger.warn("La caserne existe déjà : {}", newFirestation.getAddress());
+                log.warn("La caserne existe déjà : {}", newFirestation.getAddress());
                 continue;
             }
             existingFirestations.add(newFirestation);
         }
 
-        writeJsonFile(existingFirestations);
-        logger.info("Ajout de casernes fait");
+        dataLoad.writeJsonFile("firestations", existingFirestations);
+        log.info("Ajout de casernes fait");
         return firestations;
     }
 
     public List<Firestation> update(List<Firestation> firestations) throws IOException {
-        logger.info("Mise à jour des casernes");
+        log.info("Mise à jour des casernes");
 
-        List<Firestation> existingFirestations = readJsonFile();
+        List<Firestation> existingFirestations = dataLoad.readJsonFile("firestations",
+                new TypeReference<Map<String, List<Firestation>>>() {
+                });
 
         for (Firestation firestation : firestations) {
             for (Firestation existing : existingFirestations) {
-                if (existing.getAddress().equals(firestation.getAddress())) {
-                    existing.setStation(firestation.getStation());
+                if (existing.getAddress().equalsIgnoreCase(firestation.getAddress())) {
 
-                    logger.info("Numéro de la station mise à jour: {}", existing);
+                    existing.setStation(firestation.getStation());
+                    log.info("Numéro de la station mise à jour : {}", existing);
                 }
+
             }
         }
-        writeJsonFile(existingFirestations);
+        dataLoad.writeJsonFile("firestations", existingFirestations);
         return existingFirestations;
     }
 
     public List<Firestation> delete(List<Firestation> firestations) throws IOException {
-        logger.info("Suppression des casernes");
+        log.info("Suppression des casernes");
 
-        List<Firestation> existingFirestations = readJsonFile();
+        List<Firestation> existingFirestations = dataLoad.readJsonFile("firestations",
+                new TypeReference<Map<String, List<Firestation>>>() {
+                });
 
         existingFirestations.removeIf(
-                f -> firestations.stream().anyMatch(firestation -> f.getAddress().equals(firestation.getAddress()) &&
-                        f.getStation() == firestation.getStation()));
+                f -> firestations.stream()
+                        .anyMatch(firestation -> f.getAddress().equalsIgnoreCase(firestation.getAddress()) &&
+                                f.getStation() == firestation.getStation()));
 
-        writeJsonFile(existingFirestations);
+        dataLoad.writeJsonFile("firestations", existingFirestations);
 
-        logger.info("Caserne supprimée: {}", existingFirestations);
+        log.info("Caserne supprimée: {}", existingFirestations);
         return firestations;
     }
-
 }
