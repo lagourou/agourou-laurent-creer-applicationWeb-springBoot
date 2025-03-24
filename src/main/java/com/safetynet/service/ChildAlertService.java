@@ -12,6 +12,9 @@ import com.safetynet.model.MedicalRecord;
 import com.safetynet.model.Person;
 import com.safetynet.service.dataService.DataLoad;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class ChildAlertService {
     private final AgeCalculationService ageCalculationService;
@@ -26,7 +29,8 @@ public class ChildAlertService {
         return ageCalculationService.calculateAge(birthdate);
     }
 
-    public List<ChildrenByAddress> getchildrenByAddress(String address) throws IOException {
+    public List<ChildrenByAddress> getChildrenByAddress(String address) throws IOException {
+        log.info("Requête reçue pour getChildrenByAddress avec l'adresse: {}", address);
 
         String childAddress = address.trim();
         List<Person> persons = dataLoad.readJsonFile("persons", new TypeReference<Map<String, List<Person>>>() {
@@ -50,10 +54,11 @@ public class ChildAlertService {
                     return false;
                 })
                 .map(person -> {
-                    List<Person> otherMembers = persons.stream()
+                    List<Map<String, String>> otherMembers = persons.stream()
                             .filter(member -> childAddress.equalsIgnoreCase(member.getAddress()))
-                            .filter(member -> !member.getFirstName().equals(person.getFirstName())
-                                    && !member.getLastName().equals(person.getLastName()))
+                            .filter(member -> !(member.getFirstName().equals(person.getFirstName())
+                                    && member.getLastName().equals(person.getLastName())))
+                            .map(member -> Map.of("firstName", member.getFirstName(), "lastName", member.getLastName()))
                             .toList();
 
                     MedicalRecord record = medicalRecords.stream()
@@ -68,13 +73,15 @@ public class ChildAlertService {
                     }
 
                     return new ChildrenByAddress(person.getFirstName(), person.getLastName(), age, otherMembers);
-                })
-                .toList();
+                }).toList();
 
         if (filterChildrenByAddress.isEmpty()) {
+            log.info("Aucun enfant trouvé : Liste vide retournée");
             return List.of();
         }
+        log.info("Enfant(s) trouvé(s) avec l'adresse: {}", childAddress);
         return filterChildrenByAddress;
+
     }
 
 }

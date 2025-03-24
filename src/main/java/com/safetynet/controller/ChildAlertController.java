@@ -33,7 +33,7 @@ public class ChildAlertController {
     public ResponseEntity<List<ChildrenByAddress>> getChildrenByAddress(@RequestParam("address") String address)
             throws IOException {
 
-        List<ChildrenByAddress> childrenByAddresses = childAlertService.getchildrenByAddress(address);
+        List<ChildrenByAddress> childrenByAddresses = childAlertService.getChildrenByAddress(address);
         if (childrenByAddresses.isEmpty()) {
             return ResponseEntity.noContent().build();
         }

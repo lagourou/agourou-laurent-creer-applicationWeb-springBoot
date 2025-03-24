@@ -12,6 +12,9 @@ import com.safetynet.model.Firestation;
 import com.safetynet.model.Person;
 import com.safetynet.service.dataService.DataLoad;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class PhoneAlertService {
     private final DataLoad dataLoad;
@@ -21,6 +24,7 @@ public class PhoneAlertService {
     }
 
     public List<PhoneAlert> getPhoneAlert(int firestationNumber) throws IOException {
+        log.info("Requête reçue pour getPhoneAlert avec le numéro de la caserne: {}", firestationNumber);
 
         List<Person> persons = dataLoad.readJsonFile("persons", new TypeReference<Map<String, List<Person>>>() {
         });
@@ -35,6 +39,7 @@ public class PhoneAlertService {
                 .anyMatch(firestation -> firestation.getAddress().equals(person.getAddress())))
                 .map(person -> new PhoneAlert(person.getPhone())).toList();
 
+        log.info("Numéro(s) de téléphone retourné(s)");
         return filterPhoneAlert;
     }
 
