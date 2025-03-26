@@ -37,11 +37,12 @@ public class FloodStationController {
 
         Map<String, List<FloodStation>> result = floodStationService.getFloodStation(stationNumbers);
         if (result.isEmpty()) {
-            log.info("Aucune caserne trouvée: {}", stationNumbers);
+            log.info("Aucune caserne(s) trouvée(s): {}", stationNumbers);
             return ResponseEntity.noContent().build();
         }
 
-        log.info("{} Foyer(s) trouvé(s) pour la liste des numéros de casernes {}", result.size(), stationNumbers);
+        log.info("{} Foyer(s) trouvé(s) correspondant à la liste des numéros de casernes {}", result.size(),
+                stationNumbers);
         return ResponseEntity.ok(result);
     }
 
