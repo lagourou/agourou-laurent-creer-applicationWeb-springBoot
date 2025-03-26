@@ -1,14 +1,14 @@
 package com.safetynet.controller;
 
 import java.io.IOException;
+
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.safetynet.dto.FirestationByPerson;
 import com.safetynet.service.FirestationService;
@@ -31,13 +31,17 @@ public class StationNumberController {
     }
 
     @ResponseStatus(value = HttpStatus.OK)
-    @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping
     public ResponseEntity<FirestationByPerson> getPersonsByStation(@RequestParam("stationNumber") int stationNumber)
             throws IOException {
 
         log.info("Requête reçue avec le numéro de la station: {}", stationNumber);
 
         FirestationByPerson result = stationNumberService.getPersonByStation(stationNumber);
+        if (result.persons().isEmpty()) {
+            log.info("Aucune personne trouvée pour la caserne numéro: {}", stationNumber);
+            return ResponseEntity.noContent().build();
+        }
 
         log.info("Données récupérées pour la station {} : {} personnes, {} adultes, {} enfants",
                 stationNumber,
