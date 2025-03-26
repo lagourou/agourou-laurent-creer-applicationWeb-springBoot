@@ -18,16 +18,12 @@ public class AgeCalculationService {
             return 0;
         }
 
-        try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-            LocalDate birthDate = LocalDate.parse(birthdate, formatter);
-            int age = Period.between(birthDate, LocalDate.now()).getYears();
-            log.info("Date de naissance : {}, Âge calculé = {}", birthdate, age);
-            return age;
-        } catch (Exception e) {
-            log.error("Erreur lors du parsing de la date : {}", birthdate, e);
-            return 0; // Retourne 0 si le parsing échoue
-        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+        LocalDate birthDate = LocalDate.parse(birthdate, formatter);
+        int age = Period.between(birthDate, LocalDate.now()).getYears();
+
+        log.info("Date de naissance : {}, Âge calculé = {}", birthdate, age);
+        return age;
     }
 
 }
