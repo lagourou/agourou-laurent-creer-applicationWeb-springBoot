@@ -16,6 +16,8 @@ import com.safetynet.service.FirestationService;
 import com.safetynet.service.PersonService;
 import com.safetynet.service.PhoneAlertService;
 
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -30,11 +32,21 @@ public class PhoneAlertController {
     }
 
     @ResponseStatus(value = HttpStatus.OK)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Phone numbers retrieved successfully."),
+            @ApiResponse(responseCode = "400", description = "Invalid or missing firestation number."),
+            @ApiResponse(responseCode = "204", description = "No phone numbers found for the specified firestation.")
+    })
     @GetMapping
     public ResponseEntity<List<PhoneAlert>> getPhoneAlert(@RequestParam("firestation") int firestationNumber)
             throws IOException {
 
         log.info("Requête reçue avec le numéro de la caserne: {}", firestationNumber);
+
+        if (firestationNumber <= 0) {
+            log.error("Le paramètre 'firestation' est invalide.");
+            return ResponseEntity.badRequest().build();
+        }
 
         List<PhoneAlert> result = phoneAlertService.getPhoneAlert(firestationNumber);
         if (result.isEmpty()) {

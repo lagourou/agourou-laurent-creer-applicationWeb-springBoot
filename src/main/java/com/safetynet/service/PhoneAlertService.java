@@ -24,8 +24,6 @@ public class PhoneAlertService {
     }
 
     public List<PhoneAlert> getPhoneAlert(int firestationNumber) throws IOException {
-        log.info("Requête reçue pour getPhoneAlert avec le numéro de la caserne: {}", firestationNumber);
-
         List<Person> persons = dataLoad.readJsonFile("persons", new TypeReference<Map<String, List<Person>>>() {
         });
         List<Firestation> firestations = dataLoad.readJsonFile("firestations",

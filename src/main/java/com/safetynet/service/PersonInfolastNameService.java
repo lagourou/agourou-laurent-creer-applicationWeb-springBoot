@@ -30,9 +30,6 @@ public class PersonInfolastNameService {
     }
 
     public List<PersonInfolastName> getPersonInfolastName(String lastNames) throws IOException {
-
-        log.info("Requête reçue pour getFloodStation avec le nom de famille des personnes: {}", lastNames);
-
         List<Person> persons = dataLoad.readJsonFile("persons", new TypeReference<Map<String, List<Person>>>() {
         });
         List<MedicalRecord> medicalRecords = dataLoad.readJsonFile("medicalrecords",
@@ -48,18 +45,21 @@ public class PersonInfolastNameService {
                                     && medical.getLastName().trim().equalsIgnoreCase(person.getLastName().trim()))
                             .findFirst().orElse(null);
 
+                    log.debug("Traitement en cours pour la personne : {} {}", person.getFirstName(),
+                            person.getLastName());
+
                     int age = 0;
                     String email = person.getEmail();
                     List<String> medications = List.of();
                     List<String> allergies = List.of();
                     if (record != null) {
-
-                        log.warn("Dossier médical introuvable pour: {} {}", person.getFirstName(),
-                                person.getLastName());
-
+                        log.info("Dossier médical trouvé pour : {} {}", person.getFirstName(), person.getLastName());
                         age = getAge(record.getBirthdate());
                         medications = record.getMedications();
                         allergies = record.getAllergies();
+                    } else {
+                        log.warn("Dossier médical introuvable pour : {} {}", person.getFirstName(),
+                                person.getLastName());
                     }
 
                     return new PersonInfolastName(person.getLastName(), person.getAddress(), age, email,

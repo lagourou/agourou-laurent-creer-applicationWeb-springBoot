@@ -19,70 +19,69 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 public class FloodStationService {
-    private final DataLoad dataLoad;
-    private final AgeCalculationService ageCalculationService;
+        private final DataLoad dataLoad;
+        private final AgeCalculationService ageCalculationService;
 
-    public int getAge(String birthdate) {
-        return ageCalculationService.calculateAge(birthdate);
-    }
+        public int getAge(String birthdate) {
+                return ageCalculationService.calculateAge(birthdate);
+        }
 
-    public FloodStationService(DataLoad dataLoad, AgeCalculationService ageCalculationService) {
-        this.dataLoad = dataLoad;
-        this.ageCalculationService = ageCalculationService;
-    }
+        public FloodStationService(DataLoad dataLoad, AgeCalculationService ageCalculationService) {
+                this.dataLoad = dataLoad;
+                this.ageCalculationService = ageCalculationService;
+        }
 
-    public Map<String, List<FloodStation>> getFloodStation(List<Integer> stationNumbers) throws IOException {
-
-        log.info("Requête reçue pour getFloodStation avec une liste des numéros de casernes: {}", stationNumbers);
-
-        List<Person> persons = dataLoad.readJsonFile("persons", new TypeReference<Map<String, List<Person>>>() {
-        });
-        List<Firestation> firestations = dataLoad.readJsonFile("firestations",
-                new TypeReference<Map<String, List<Firestation>>>() {
+        public Map<String, List<FloodStation>> getFloodStation(List<Integer> stationNumbers) throws IOException {
+                List<Person> persons = dataLoad.readJsonFile("persons", new TypeReference<Map<String, List<Person>>>() {
                 });
-        List<MedicalRecord> medicalRecords = dataLoad.readJsonFile("medicalrecords",
-                new TypeReference<Map<String, List<MedicalRecord>>>() {
-                });
+                List<Firestation> firestations = dataLoad.readJsonFile("firestations",
+                                new TypeReference<Map<String, List<Firestation>>>() {
+                                });
+                List<MedicalRecord> medicalRecords = dataLoad.readJsonFile("medicalrecords",
+                                new TypeReference<Map<String, List<MedicalRecord>>>() {
+                                });
 
-        List<FloodStation> floodStations = persons.stream()
-                .filter(person -> {
-                    List<Integer> stationNumber = firestations.stream()
-                            .filter(firestation -> firestation.getAddress().trim()
-                                    .equalsIgnoreCase(person.getAddress().trim()))
-                            .map(Firestation::getStation).collect(Collectors.toList());
+                List<FloodStation> floodStations = persons.stream()
+                                .filter(person -> {
+                                        List<Integer> stationNumber = firestations.stream()
+                                                        .filter(firestation -> firestation.getAddress().trim()
+                                                                        .equalsIgnoreCase(person.getAddress().trim()))
+                                                        .map(Firestation::getStation).collect(Collectors.toList());
 
-                    return stationNumber.stream().anyMatch(stationNumbers::contains);
-                })
-                .map(person -> {
+                                        return stationNumber.stream().anyMatch(stationNumbers::contains);
+                                })
+                                .map(person -> {
+                                        String name = person.getFirstName() + " " + person.getLastName();
+                                        MedicalRecord record = medicalRecords.stream()
+                                                        .filter(medical -> medical.getFirstName().trim()
+                                                                        .equalsIgnoreCase(person.getFirstName().trim())
+                                                                        && medical.getLastName().trim()
+                                                                                        .equalsIgnoreCase(person
+                                                                                                        .getLastName()
+                                                                                                        .trim()))
+                                                        .findFirst().orElse(null);
 
-                    log.debug("Personne : {}, Adresse : {}", person.getFirstName() + " " + person.getLastName(),
-                            person.getAddress());
+                                        int age = 0;
+                                        List<String> medications = List.of();
+                                        List<String> allergies = List.of();
 
-                    String name = person.getFirstName() + " " + person.getLastName();
-                    MedicalRecord record = medicalRecords.stream()
-                            .filter(medical -> medical.getFirstName().trim()
-                                    .equalsIgnoreCase(person.getFirstName().trim())
-                                    && medical.getLastName().trim().equalsIgnoreCase(person.getLastName().trim()))
-                            .findFirst().orElse(null);
+                                        if (record != null) {
+                                                log.info("Dossier médical trouvé pour : {} {}", person.getFirstName(),
+                                                                person.getLastName());
 
-                    int age = 0;
-                    List<String> medications = List.of();
-                    List<String> allergies = List.of();
+                                                age = getAge(record.getBirthdate());
+                                                medications = record.getMedications();
+                                                allergies = record.getAllergies();
+                                        } else {
+                                                log.warn("Dossier médical introuvable pour : {} {}",
+                                                                person.getFirstName(), person.getLastName());
+                                        }
+                                        return new FloodStation(name, person.getPhone(), age, medications, allergies,
+                                                        person.getAddress());
 
-                    if (record != null) {
+                                }).collect(Collectors.toList());
 
-                        log.warn("Dossier médical introuvable pour: {} {}", person.getFirstName(),
-                                person.getLastName());
-
-                        age = getAge(record.getBirthdate());
-                        medications = record.getMedications();
-                        allergies = record.getAllergies();
-                    }
-                    return new FloodStation(name, person.getPhone(), age, medications, allergies, person.getAddress());
-
-                }).collect(Collectors.toList());
-
-        return floodStations.stream().collect(Collectors.groupingBy(FloodStation::address));
-    }
+                return floodStations.stream().collect(Collectors.groupingBy(FloodStation::address));
+        }
 
 }

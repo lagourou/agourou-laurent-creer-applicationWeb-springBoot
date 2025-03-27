@@ -22,7 +22,6 @@ public class AgeCalculationService {
         LocalDate birthDate = LocalDate.parse(birthdate, formatter);
         int age = Period.between(birthDate, LocalDate.now()).getYears();
 
-        log.info("Date de naissance : {}, Âge calculé = {}", birthdate, age);
         return age;
     }
 

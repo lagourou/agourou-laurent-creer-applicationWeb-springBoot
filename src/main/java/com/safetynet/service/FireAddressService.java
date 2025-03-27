@@ -33,9 +33,6 @@ public class FireAddressService {
     public List<FireAddress> getFireAddress(String fireAddress) throws IOException {
 
         String fireAddresse = fireAddress.trim();
-
-        log.info("Requête reçue pour getFireAddress avec l'adresse des personnes: {}", fireAddress);
-
         List<Person> persons = dataLoad.readJsonFile("persons", new TypeReference<Map<String, List<Person>>>() {
         });
         List<MedicalRecord> medicalRecords = dataLoad.readJsonFile("medicalrecords",
@@ -56,10 +53,16 @@ public class FireAddressService {
                     int age = 0;
                     List<String> medications = List.of();
                     List<String> allergies = List.of();
+
                     if (record != null) {
+                        log.info("Dossier médical trouvé pour : {} {}", person.getFirstName(), person.getLastName());
+
                         age = getAge(record.getBirthdate());
                         medications = record.getMedications();
                         allergies = record.getAllergies();
+                    } else {
+                        log.warn("Dossier médical introuvable pour : {} {}", person.getFirstName(),
+                                person.getLastName());
                     }
 
                     Firestation station = firestations.stream()
@@ -68,7 +71,12 @@ public class FireAddressService {
 
                     int stationNumber = 0;
                     if (station != null) {
+                        log.info("Caserne trouvée pour l'adresse : {} (Numéro : {})", fireAddresse,
+                                station.getStation());
+
                         stationNumber = station.getStation();
+                    } else {
+                        log.warn("Caserne introuvable pour l'adresse : {}", fireAddresse);
                     }
 
                     return new FireAddress(name, person.getPhone(), age,

@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.safetynet.model.Person;
 import com.safetynet.service.PersonService;
 
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
@@ -38,6 +40,10 @@ public class PersonController {
     }
 
     @ResponseStatus(value = HttpStatus.CREATED)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "The person has been added successfully."),
+            @ApiResponse(responseCode = "400", description = "Invalid query: missing or incorrect elements")
+    })
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public List<Person> creer(@Valid @RequestBody List<Person> persons) throws IOException {
 
@@ -47,6 +53,10 @@ public class PersonController {
     }
 
     @ResponseStatus(value = HttpStatus.OK)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "The person has been successfully updated."),
+            @ApiResponse(responseCode = "400", description = "Invalid query: missing or incorrect elements.")
+    })
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public List<Person> mettreAJour(@Valid @RequestBody List<Person> persons) throws IOException {
 
@@ -56,6 +66,10 @@ public class PersonController {
     }
 
     @ResponseStatus(value = HttpStatus.OK)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "The persons have been successfully deleted."),
+            @ApiResponse(responseCode = "400", description = "Invalid query: missing or incorrect elements."),
+    })
     @DeleteMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public List<Person> supprimer(@Valid @RequestBody List<Person> persons) throws IOException {
 

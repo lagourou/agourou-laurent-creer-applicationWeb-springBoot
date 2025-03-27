@@ -16,6 +16,8 @@ import com.safetynet.service.MedicalRecordService;
 import com.safetynet.service.PersonService;
 import com.safetynet.service.StationNumberService;
 
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -31,11 +33,21 @@ public class StationNumberController {
     }
 
     @ResponseStatus(value = HttpStatus.OK)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Firestation data retrieved successfully."),
+            @ApiResponse(responseCode = "400", description = "Invalid or missing station number parameter."),
+            @ApiResponse(responseCode = "204", description = "No data found for the specified station number.")
+    })
     @GetMapping
     public ResponseEntity<FirestationByPerson> getPersonsByStation(@RequestParam("stationNumber") int stationNumber)
             throws IOException {
 
-        log.info("Requête reçue avec le numéro de la station: {}", stationNumber);
+        log.info("Requête reçue avec le numéro de la caserne: {}", stationNumber);
+
+        if (stationNumber <= 0) {
+            log.error("Le paramètre 'stationNumber' est invalide.");
+            return ResponseEntity.badRequest().build();
+        }
 
         FirestationByPerson result = stationNumberService.getPersonByStation(stationNumber);
         if (result.persons().isEmpty()) {

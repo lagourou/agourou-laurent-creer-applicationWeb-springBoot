@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.safetynet.service.CommunityEmailService;
 
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,11 +31,21 @@ public class CommunityEmailController {
     }
 
     @ResponseStatus(value = HttpStatus.OK)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Emails retrieved successfully."),
+            @ApiResponse(responseCode = "400", description = "Invalid or missing city parameter."),
+            @ApiResponse(responseCode = "204", description = "No emails found for the specified city.")
+    })
     @GetMapping
     public ResponseEntity<List<CommunityEmail>> getCommunityEmail(@RequestParam("city") String city)
             throws IOException {
 
         log.info("Requête reçue pour la ville: {}", city);
+
+        if (city == null || city.isBlank()) {
+            log.error("Le paramètre 'city' est manquant ou invalide.");
+            return ResponseEntity.badRequest().build();
+        }
 
         List<CommunityEmail> result = communityEmailService.getCommunityEmail(city);
         if (result.isEmpty()) {

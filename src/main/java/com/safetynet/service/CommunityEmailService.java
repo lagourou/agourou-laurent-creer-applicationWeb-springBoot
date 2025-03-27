@@ -23,9 +23,6 @@ public class CommunityEmailService {
     }
 
     public List<CommunityEmail> getCommunityEmail(String city) throws IOException {
-
-        log.info("Requête reçue pour getCommunityEmail avec la ville des personnes: {}", city);
-
         List<Person> persons = dataLoad.readJsonFile("persons", new TypeReference<Map<String, List<Person>>>() {
         });
 

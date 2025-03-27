@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.safetynet.dto.PersonInfolastName;
 import com.safetynet.service.PersonInfolastNameService;
 
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -27,11 +29,21 @@ public class PersonInfolastNameController {
     }
 
     @ResponseStatus(value = HttpStatus.OK)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Person information retrieved successfully."),
+            @ApiResponse(responseCode = "400", description = "Invalid or missing lastName parameter."),
+            @ApiResponse(responseCode = "204", description = "No persons found with the specified last name.")
+    })
     @GetMapping
     public ResponseEntity<List<PersonInfolastName>> getPersonInfolastName(@RequestParam("lastName") String lastNames)
             throws IOException {
 
         log.info("Requête reçue pour le nom de famille: {}", lastNames);
+
+        if (lastNames == null || lastNames.isBlank()) {
+            log.error("Le paramètre 'lastName' est manquant ou invalide.");
+            return ResponseEntity.badRequest().build();
+        }
 
         List<PersonInfolastName> result = personInfolastNameService.getPersonInfolastName(lastNames);
         if (result.isEmpty()) {

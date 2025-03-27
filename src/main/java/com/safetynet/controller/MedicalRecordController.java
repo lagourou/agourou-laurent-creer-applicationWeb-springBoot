@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.safetynet.model.MedicalRecord;
 import com.safetynet.service.MedicalRecordService;
 
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
@@ -38,6 +40,10 @@ public class MedicalRecordController {
     }
 
     @ResponseStatus(value = HttpStatus.CREATED)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "The medical records have been successfully added."),
+            @ApiResponse(responseCode = "400", description = "Invalid query: missing or incorrect medical record details.")
+    })
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public List<MedicalRecord> creer(@Valid @RequestBody List<MedicalRecord> medicalRecords) throws IOException {
 
@@ -47,6 +53,10 @@ public class MedicalRecordController {
     }
 
     @ResponseStatus(value = HttpStatus.OK)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "The medical records have been successfully updated."),
+            @ApiResponse(responseCode = "400", description = "Invalid query: missing or incorrect medical record details.")
+    })
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public List<MedicalRecord> mettreAJour(@Valid @RequestBody List<MedicalRecord> medicalRecords) throws IOException {
 
@@ -56,6 +66,10 @@ public class MedicalRecordController {
     }
 
     @ResponseStatus(value = HttpStatus.OK)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "The medical records have been successfully deleted."),
+            @ApiResponse(responseCode = "400", description = "Invalid query: missing or incorrect medical record details.")
+    })
     @DeleteMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public List<MedicalRecord> supprimer(@Valid @RequestBody List<MedicalRecord> medicalRecords) throws IOException {
 

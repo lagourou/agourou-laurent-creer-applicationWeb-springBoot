@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.safetynet.model.Firestation;
 import com.safetynet.service.FirestationService;
 
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
@@ -38,6 +40,10 @@ public class FirestationController {
     }
 
     @ResponseStatus(value = HttpStatus.CREATED)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "The firestations have been successfully added."),
+            @ApiResponse(responseCode = "400", description = "Invalid query: missing or incorrect firestation details.")
+    })
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public List<Firestation> creer(@Valid @RequestBody List<Firestation> firestations) throws IOException {
 
@@ -47,6 +53,10 @@ public class FirestationController {
     }
 
     @ResponseStatus(value = HttpStatus.OK)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "The firestations have been successfully updated."),
+            @ApiResponse(responseCode = "400", description = "Invalid query: missing or incorrect firestation details.")
+    })
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public List<Firestation> mettreAJour(@Valid @RequestBody List<Firestation> firestations) throws IOException {
 
@@ -56,6 +66,10 @@ public class FirestationController {
     }
 
     @ResponseStatus(value = HttpStatus.OK)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "The firestations have been successfully deleted."),
+            @ApiResponse(responseCode = "400", description = "Invalid query: missing or incorrect firestation details.")
+    })
     @DeleteMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public List<Firestation> supprimer(@Valid @RequestBody List<Firestation> firestations) throws IOException {
 
