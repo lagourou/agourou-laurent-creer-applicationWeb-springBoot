@@ -33,6 +33,7 @@ class PersonServiceTest {
         private List<Person> existingPersons;
 
         @BeforeEach
+        @SuppressWarnings(value = { "unused" })
         void setUp() throws IOException {
                 MockitoAnnotations.openMocks(this);
                 existingPersons = new ArrayList<>();
@@ -120,6 +121,7 @@ class PersonServiceTest {
                 List<Person> personsToUpdate = List.of(
                                 new Person("John", "Boyd", "Updated Address", "Updated City", "Updated Zip",
                                                 "Updated Phone", "updated.email@email.com"));
+                @SuppressWarnings("unused")
                 List<Person> updatedResult = personService.update(personsToUpdate);
                 ArgumentCaptor<List<Person>> argumentCaptor = ArgumentCaptor.forClass(List.class);
                 verify(dataLoad).writeJsonFile(eq("persons"), argumentCaptor.capture());
