@@ -25,7 +25,8 @@ public class DataLoad {
     @Value("${data.file.path}")
     private String filePath;
 
-    public <T> List<T> readJsonFile(String key, TypeReference<Map<String, List<T>>> typeReference) throws IOException {
+    public <T> List<T> readJsonFile(String key, TypeReference<Map<String, List<T>>> typeReference)
+            throws IOException {
         File file = new File(filePath);
         if (!file.exists()) {
 

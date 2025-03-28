@@ -4791,3 +4791,341 @@ Caused by: java.lang.Error: Unresolved compilation problems:
 2025-03-28 00:17:27 [http-nio-8080-exec-1] DEBUG org.springframework.web.servlet.DispatcherServlet - Completed 200 OK
 2025-03-28 00:17:55 [SpringApplicationShutdownHook] INFO  org.springframework.boot.web.embedded.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
 2025-03-28 00:17:55 [tomcat-shutdown] INFO  org.springframework.boot.web.embedded.tomcat.GracefulShutdown - Graceful shutdown complete
+2025-03-28 02:23:14 [main] INFO  com.safetynet.service.PersonService - Ajout de personnes au fichier Json.
+2025-03-28 02:23:14 [main] INFO  com.safetynet.service.PersonService - Ajout de personnes fait
+2025-03-28 02:23:16 [main] INFO  org.springframework.test.context.support.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.safetynet.SafetynetApplicationTests]: SafetynetApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2025-03-28 02:23:17 [main] INFO  org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.safetynet.SafetynetApplication for test class com.safetynet.SafetynetApplicationTests
+2025-03-28 02:23:18 [main] INFO  org.springframework.boot.devtools.restart.RestartApplicationListener - Restart disabled due to context in which it is running
+2025-03-28 02:23:19 [background-preinit] INFO  org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.2.Final
+2025-03-28 02:23:20 [main] INFO  com.safetynet.SafetynetApplicationTests - Starting SafetynetApplicationTests using Java 21.0.6 with PID 10648 (started by AGOUROU GUSTAVE in C:\Users\AGOUROU GUSTAVE\Downloads\Open Classroom\P5\safetynet-alerts)
+2025-03-28 02:23:20 [main] INFO  com.safetynet.SafetynetApplicationTests - No active profile set, falling back to 1 default profile: "default"
+2025-03-28 02:23:20 [main] DEBUG org.springframework.web.context.support.GenericWebApplicationContext - Refreshing org.springframework.web.context.support.GenericWebApplicationContext@5dabe7c8
+2025-03-28 02:23:31 [main] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping - 22 mappings in 'requestMappingHandlerMapping'
+2025-03-28 02:23:32 [main] DEBUG org.springframework.web.servlet.handler.SimpleUrlHandlerMapping - Patterns [/webjars/**, /**, /swagger-ui*/*swagger-initializer.js, /swagger-ui*/**] in 'resourceHandlerMapping'
+2025-03-28 02:23:32 [main] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter - ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2025-03-28 02:23:32 [main] DEBUG org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver - ControllerAdvice beans: 1 @ExceptionHandler, 1 ResponseBodyAdvice
+2025-03-28 02:23:33 [main] INFO  org.springframework.boot.actuate.endpoint.web.EndpointLinksResolver - Exposing 1 endpoint beneath base path '/actuator'
+2025-03-28 02:23:33 [main] INFO  com.safetynet.SafetynetApplicationTests - Started SafetynetApplicationTests in 15.58 seconds (process running for 33.367)
+2025-03-28 02:23:34 [SpringApplicationShutdownHook] DEBUG org.springframework.web.context.support.GenericWebApplicationContext - Closing org.springframework.web.context.support.GenericWebApplicationContext@5dabe7c8, started on Fri Mar 28 02:23:20 NCT 2025
+2025-03-28 02:29:32 [main] INFO  com.safetynet.service.PersonService - Ajout de personnes au fichier Json.
+2025-03-28 02:29:32 [main] INFO  com.safetynet.service.PersonService - Ajout de personnes fait
+2025-03-28 02:29:33 [main] INFO  org.springframework.test.context.support.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.safetynet.SafetynetApplicationTests]: SafetynetApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2025-03-28 02:29:35 [main] INFO  org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.safetynet.SafetynetApplication for test class com.safetynet.SafetynetApplicationTests
+2025-03-28 02:29:37 [main] INFO  org.springframework.boot.devtools.restart.RestartApplicationListener - Restart disabled due to context in which it is running
+2025-03-28 02:29:39 [background-preinit] INFO  org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.2.Final
+2025-03-28 02:29:40 [main] INFO  com.safetynet.SafetynetApplicationTests - Starting SafetynetApplicationTests using Java 21.0.6 with PID 17300 (started by AGOUROU GUSTAVE in C:\Users\AGOUROU GUSTAVE\Downloads\Open Classroom\P5\safetynet-alerts)
+2025-03-28 02:29:40 [main] INFO  com.safetynet.SafetynetApplicationTests - No active profile set, falling back to 1 default profile: "default"
+2025-03-28 02:29:40 [main] DEBUG org.springframework.web.context.support.GenericWebApplicationContext - Refreshing org.springframework.web.context.support.GenericWebApplicationContext@5dabe7c8
+2025-03-28 02:29:50 [main] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping - 22 mappings in 'requestMappingHandlerMapping'
+2025-03-28 02:29:50 [main] DEBUG org.springframework.web.servlet.handler.SimpleUrlHandlerMapping - Patterns [/webjars/**, /**, /swagger-ui*/*swagger-initializer.js, /swagger-ui*/**] in 'resourceHandlerMapping'
+2025-03-28 02:29:50 [main] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter - ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2025-03-28 02:29:51 [main] DEBUG org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver - ControllerAdvice beans: 1 @ExceptionHandler, 1 ResponseBodyAdvice
+2025-03-28 02:29:52 [main] INFO  org.springframework.boot.actuate.endpoint.web.EndpointLinksResolver - Exposing 1 endpoint beneath base path '/actuator'
+2025-03-28 02:29:52 [main] INFO  com.safetynet.SafetynetApplicationTests - Started SafetynetApplicationTests in 15.367 seconds (process running for 32.727)
+2025-03-28 02:29:53 [SpringApplicationShutdownHook] DEBUG org.springframework.web.context.support.GenericWebApplicationContext - Closing org.springframework.web.context.support.GenericWebApplicationContext@5dabe7c8, started on Fri Mar 28 02:29:40 NCT 2025
+2025-03-28 07:38:12 [main] INFO  com.safetynet.service.PersonService - Ajout de personnes au fichier Json.
+2025-03-28 07:38:12 [main] INFO  com.safetynet.service.PersonService - Ajout de personnes fait
+2025-03-28 07:38:13 [main] INFO  org.springframework.test.context.support.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.safetynet.SafetynetApplicationTests]: SafetynetApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2025-03-28 07:38:14 [main] INFO  org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.safetynet.SafetynetApplication for test class com.safetynet.SafetynetApplicationTests
+2025-03-28 07:38:15 [main] INFO  org.springframework.boot.devtools.restart.RestartApplicationListener - Restart disabled due to context in which it is running
+2025-03-28 07:38:17 [background-preinit] INFO  org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.2.Final
+2025-03-28 07:38:17 [main] INFO  com.safetynet.SafetynetApplicationTests - Starting SafetynetApplicationTests using Java 21.0.6 with PID 6080 (started by AGOUROU GUSTAVE in C:\Users\AGOUROU GUSTAVE\Downloads\Open Classroom\P5\safetynet-alerts)
+2025-03-28 07:38:17 [main] INFO  com.safetynet.SafetynetApplicationTests - No active profile set, falling back to 1 default profile: "default"
+2025-03-28 07:38:17 [main] DEBUG org.springframework.web.context.support.GenericWebApplicationContext - Refreshing org.springframework.web.context.support.GenericWebApplicationContext@439054a7
+2025-03-28 07:38:25 [main] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping - 22 mappings in 'requestMappingHandlerMapping'
+2025-03-28 07:38:25 [main] DEBUG org.springframework.web.servlet.handler.SimpleUrlHandlerMapping - Patterns [/webjars/**, /**, /swagger-ui*/*swagger-initializer.js, /swagger-ui*/**] in 'resourceHandlerMapping'
+2025-03-28 07:38:25 [main] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter - ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2025-03-28 07:38:26 [main] DEBUG org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver - ControllerAdvice beans: 1 @ExceptionHandler, 1 ResponseBodyAdvice
+2025-03-28 07:38:26 [main] INFO  org.springframework.boot.actuate.endpoint.web.EndpointLinksResolver - Exposing 1 endpoint beneath base path '/actuator'
+2025-03-28 07:38:27 [main] INFO  com.safetynet.SafetynetApplicationTests - Started SafetynetApplicationTests in 11.263 seconds (process running for 24.287)
+2025-03-28 07:38:27 [SpringApplicationShutdownHook] DEBUG org.springframework.web.context.support.GenericWebApplicationContext - Closing org.springframework.web.context.support.GenericWebApplicationContext@439054a7, started on Fri Mar 28 07:38:17 NCT 2025
+2025-03-28 08:13:03 [main] INFO  com.safetynet.service.PersonService - Ajout de personnes au fichier Json.
+2025-03-28 08:13:03 [main] INFO  com.safetynet.service.PersonService - Ajout de personnes fait
+2025-03-28 08:13:05 [main] INFO  org.springframework.test.context.support.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.safetynet.SafetynetApplicationTests]: SafetynetApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2025-03-28 08:13:06 [main] INFO  org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.safetynet.SafetynetApplication for test class com.safetynet.SafetynetApplicationTests
+2025-03-28 08:13:07 [main] INFO  org.springframework.boot.devtools.restart.RestartApplicationListener - Restart disabled due to context in which it is running
+2025-03-28 08:13:08 [background-preinit] INFO  org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.2.Final
+2025-03-28 08:13:08 [main] INFO  com.safetynet.SafetynetApplicationTests - Starting SafetynetApplicationTests using Java 21.0.6 with PID 2752 (started by AGOUROU GUSTAVE in C:\Users\AGOUROU GUSTAVE\Downloads\Open Classroom\P5\safetynet-alerts)
+2025-03-28 08:13:08 [main] INFO  com.safetynet.SafetynetApplicationTests - No active profile set, falling back to 1 default profile: "default"
+2025-03-28 08:13:09 [main] DEBUG org.springframework.web.context.support.GenericWebApplicationContext - Refreshing org.springframework.web.context.support.GenericWebApplicationContext@3763aafd
+2025-03-28 08:13:17 [main] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping - 22 mappings in 'requestMappingHandlerMapping'
+2025-03-28 08:13:17 [main] DEBUG org.springframework.web.servlet.handler.SimpleUrlHandlerMapping - Patterns [/webjars/**, /**, /swagger-ui*/*swagger-initializer.js, /swagger-ui*/**] in 'resourceHandlerMapping'
+2025-03-28 08:13:17 [main] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter - ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2025-03-28 08:13:17 [main] DEBUG org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver - ControllerAdvice beans: 1 @ExceptionHandler, 1 ResponseBodyAdvice
+2025-03-28 08:13:19 [main] INFO  org.springframework.boot.actuate.endpoint.web.EndpointLinksResolver - Exposing 1 endpoint beneath base path '/actuator'
+2025-03-28 08:13:19 [main] INFO  com.safetynet.SafetynetApplicationTests - Started SafetynetApplicationTests in 12.304 seconds (process running for 26.5)
+2025-03-28 08:13:20 [SpringApplicationShutdownHook] DEBUG org.springframework.web.context.support.GenericWebApplicationContext - Closing org.springframework.web.context.support.GenericWebApplicationContext@3763aafd, started on Fri Mar 28 08:13:09 NCT 2025
+2025-03-28 08:29:59 [main] INFO  com.safetynet.service.PersonService - Ajout de personnes au fichier Json.
+2025-03-28 08:29:59 [main] INFO  com.safetynet.service.PersonService - Ajout de personnes fait
+2025-03-28 08:30:01 [main] INFO  org.springframework.test.context.support.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.safetynet.SafetynetApplicationTests]: SafetynetApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2025-03-28 08:30:03 [main] INFO  org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.safetynet.SafetynetApplication for test class com.safetynet.SafetynetApplicationTests
+2025-03-28 08:30:04 [main] INFO  org.springframework.boot.devtools.restart.RestartApplicationListener - Restart disabled due to context in which it is running
+2025-03-28 08:30:06 [background-preinit] INFO  org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.2.Final
+2025-03-28 08:30:06 [main] INFO  com.safetynet.SafetynetApplicationTests - Starting SafetynetApplicationTests using Java 21.0.6 with PID 6852 (started by AGOUROU GUSTAVE in C:\Users\AGOUROU GUSTAVE\Downloads\Open Classroom\P5\safetynet-alerts)
+2025-03-28 08:30:06 [main] INFO  com.safetynet.SafetynetApplicationTests - No active profile set, falling back to 1 default profile: "default"
+2025-03-28 08:30:07 [main] DEBUG org.springframework.web.context.support.GenericWebApplicationContext - Refreshing org.springframework.web.context.support.GenericWebApplicationContext@4fc1eee5
+2025-03-28 08:30:16 [main] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping - 22 mappings in 'requestMappingHandlerMapping'
+2025-03-28 08:30:16 [main] DEBUG org.springframework.web.servlet.handler.SimpleUrlHandlerMapping - Patterns [/webjars/**, /**, /swagger-ui*/*swagger-initializer.js, /swagger-ui*/**] in 'resourceHandlerMapping'
+2025-03-28 08:30:16 [main] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter - ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2025-03-28 08:30:17 [main] DEBUG org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver - ControllerAdvice beans: 1 @ExceptionHandler, 1 ResponseBodyAdvice
+2025-03-28 08:30:18 [main] INFO  org.springframework.boot.actuate.endpoint.web.EndpointLinksResolver - Exposing 1 endpoint beneath base path '/actuator'
+2025-03-28 08:30:18 [main] INFO  com.safetynet.SafetynetApplicationTests - Started SafetynetApplicationTests in 14.196 seconds (process running for 29.574)
+2025-03-28 08:30:19 [SpringApplicationShutdownHook] DEBUG org.springframework.web.context.support.GenericWebApplicationContext - Closing org.springframework.web.context.support.GenericWebApplicationContext@4fc1eee5, started on Fri Mar 28 08:30:07 NCT 2025
+2025-03-28 08:34:19 [main] INFO  com.safetynet.service.PersonService - Ajout de personnes au fichier Json.
+2025-03-28 08:34:19 [main] INFO  com.safetynet.service.PersonService - Ajout de personnes fait
+2025-03-28 08:34:20 [main] INFO  org.springframework.test.context.support.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.safetynet.SafetynetApplicationTests]: SafetynetApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2025-03-28 08:34:21 [main] INFO  org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.safetynet.SafetynetApplication for test class com.safetynet.SafetynetApplicationTests
+2025-03-28 08:34:22 [main] INFO  org.springframework.boot.devtools.restart.RestartApplicationListener - Restart disabled due to context in which it is running
+2025-03-28 08:34:23 [background-preinit] INFO  org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.2.Final
+2025-03-28 08:34:24 [main] INFO  com.safetynet.SafetynetApplicationTests - Starting SafetynetApplicationTests using Java 21.0.6 with PID 8964 (started by AGOUROU GUSTAVE in C:\Users\AGOUROU GUSTAVE\Downloads\Open Classroom\P5\safetynet-alerts)
+2025-03-28 08:34:24 [main] INFO  com.safetynet.SafetynetApplicationTests - No active profile set, falling back to 1 default profile: "default"
+2025-03-28 08:34:24 [main] DEBUG org.springframework.web.context.support.GenericWebApplicationContext - Refreshing org.springframework.web.context.support.GenericWebApplicationContext@1b9cfc19
+2025-03-28 08:34:32 [main] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping - 22 mappings in 'requestMappingHandlerMapping'
+2025-03-28 08:34:33 [main] DEBUG org.springframework.web.servlet.handler.SimpleUrlHandlerMapping - Patterns [/webjars/**, /**, /swagger-ui*/*swagger-initializer.js, /swagger-ui*/**] in 'resourceHandlerMapping'
+2025-03-28 08:34:33 [main] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter - ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2025-03-28 08:34:33 [main] DEBUG org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver - ControllerAdvice beans: 1 @ExceptionHandler, 1 ResponseBodyAdvice
+2025-03-28 08:34:35 [main] INFO  org.springframework.boot.actuate.endpoint.web.EndpointLinksResolver - Exposing 1 endpoint beneath base path '/actuator'
+2025-03-28 08:34:35 [main] INFO  com.safetynet.SafetynetApplicationTests - Started SafetynetApplicationTests in 12.737 seconds (process running for 27.152)
+2025-03-28 08:34:38 [SpringApplicationShutdownHook] DEBUG org.springframework.web.context.support.GenericWebApplicationContext - Closing org.springframework.web.context.support.GenericWebApplicationContext@1b9cfc19, started on Fri Mar 28 08:34:24 NCT 2025
+2025-03-28 08:36:24 [main] INFO  com.safetynet.service.PersonService - Ajout de personnes au fichier Json.
+2025-03-28 08:36:24 [main] INFO  com.safetynet.service.PersonService - Ajout de personnes fait
+2025-03-28 08:36:25 [main] INFO  org.springframework.test.context.support.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.safetynet.SafetynetApplicationTests]: SafetynetApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2025-03-28 08:36:26 [main] INFO  org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.safetynet.SafetynetApplication for test class com.safetynet.SafetynetApplicationTests
+2025-03-28 08:36:28 [main] INFO  org.springframework.boot.devtools.restart.RestartApplicationListener - Restart disabled due to context in which it is running
+2025-03-28 08:36:29 [background-preinit] INFO  org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.2.Final
+2025-03-28 08:36:29 [main] INFO  com.safetynet.SafetynetApplicationTests - Starting SafetynetApplicationTests using Java 21.0.6 with PID 14184 (started by AGOUROU GUSTAVE in C:\Users\AGOUROU GUSTAVE\Downloads\Open Classroom\P5\safetynet-alerts)
+2025-03-28 08:36:29 [main] INFO  com.safetynet.SafetynetApplicationTests - No active profile set, falling back to 1 default profile: "default"
+2025-03-28 08:36:29 [main] DEBUG org.springframework.web.context.support.GenericWebApplicationContext - Refreshing org.springframework.web.context.support.GenericWebApplicationContext@6e6ec71f
+2025-03-28 08:36:37 [main] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping - 22 mappings in 'requestMappingHandlerMapping'
+2025-03-28 08:36:37 [main] DEBUG org.springframework.web.servlet.handler.SimpleUrlHandlerMapping - Patterns [/webjars/**, /**, /swagger-ui*/*swagger-initializer.js, /swagger-ui*/**] in 'resourceHandlerMapping'
+2025-03-28 08:36:37 [main] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter - ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2025-03-28 08:36:37 [main] DEBUG org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver - ControllerAdvice beans: 1 @ExceptionHandler, 1 ResponseBodyAdvice
+2025-03-28 08:36:38 [main] INFO  org.springframework.boot.actuate.endpoint.web.EndpointLinksResolver - Exposing 1 endpoint beneath base path '/actuator'
+2025-03-28 08:36:39 [main] INFO  com.safetynet.SafetynetApplicationTests - Started SafetynetApplicationTests in 10.991 seconds (process running for 23.831)
+2025-03-28 08:36:39 [SpringApplicationShutdownHook] DEBUG org.springframework.web.context.support.GenericWebApplicationContext - Closing org.springframework.web.context.support.GenericWebApplicationContext@6e6ec71f, started on Fri Mar 28 08:36:29 NCT 2025
+2025-03-28 08:42:38 [main] INFO  com.safetynet.service.PersonService - Ajout de personnes au fichier Json.
+2025-03-28 08:42:38 [main] INFO  com.safetynet.service.PersonService - Ajout de personnes fait
+2025-03-28 08:42:38 [main] INFO  com.safetynet.service.PersonService - Ajout de personnes au fichier Json.
+2025-03-28 08:42:38 [main] INFO  com.safetynet.service.PersonService - Ajout de personnes fait
+2025-03-28 08:42:41 [main] INFO  org.springframework.test.context.support.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.safetynet.SafetynetApplicationTests]: SafetynetApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2025-03-28 08:42:43 [main] INFO  org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.safetynet.SafetynetApplication for test class com.safetynet.SafetynetApplicationTests
+2025-03-28 08:42:45 [main] INFO  org.springframework.boot.devtools.restart.RestartApplicationListener - Restart disabled due to context in which it is running
+2025-03-28 08:42:46 [background-preinit] INFO  org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.2.Final
+2025-03-28 08:42:46 [main] INFO  com.safetynet.SafetynetApplicationTests - Starting SafetynetApplicationTests using Java 21.0.6 with PID 4160 (started by AGOUROU GUSTAVE in C:\Users\AGOUROU GUSTAVE\Downloads\Open Classroom\P5\safetynet-alerts)
+2025-03-28 08:42:46 [main] INFO  com.safetynet.SafetynetApplicationTests - No active profile set, falling back to 1 default profile: "default"
+2025-03-28 08:42:47 [main] DEBUG org.springframework.web.context.support.GenericWebApplicationContext - Refreshing org.springframework.web.context.support.GenericWebApplicationContext@4ea4290f
+2025-03-28 08:43:00 [main] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping - 22 mappings in 'requestMappingHandlerMapping'
+2025-03-28 08:43:01 [main] DEBUG org.springframework.web.servlet.handler.SimpleUrlHandlerMapping - Patterns [/webjars/**, /**, /swagger-ui*/*swagger-initializer.js, /swagger-ui*/**] in 'resourceHandlerMapping'
+2025-03-28 08:43:01 [main] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter - ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2025-03-28 08:43:01 [main] DEBUG org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver - ControllerAdvice beans: 1 @ExceptionHandler, 1 ResponseBodyAdvice
+2025-03-28 08:43:04 [main] INFO  org.springframework.boot.actuate.endpoint.web.EndpointLinksResolver - Exposing 1 endpoint beneath base path '/actuator'
+2025-03-28 08:43:05 [main] INFO  com.safetynet.SafetynetApplicationTests - Started SafetynetApplicationTests in 20.737 seconds (process running for 51.249)
+2025-03-28 08:43:10 [SpringApplicationShutdownHook] DEBUG org.springframework.web.context.support.GenericWebApplicationContext - Closing org.springframework.web.context.support.GenericWebApplicationContext@4ea4290f, started on Fri Mar 28 08:42:47 NCT 2025
+2025-03-28 18:41:04 [main] INFO  com.safetynet.service.PersonService - Ajout de personnes au fichier Json.
+2025-03-28 18:41:04 [main] INFO  com.safetynet.service.PersonService - Ajout de personnes fait
+2025-03-28 18:41:04 [main] INFO  com.safetynet.service.PersonService - Ajout de personnes au fichier Json.
+2025-03-28 18:41:04 [main] INFO  com.safetynet.service.PersonService - Ajout de personnes fait
+2025-03-28 18:41:06 [main] INFO  org.springframework.test.context.support.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.safetynet.SafetynetApplicationTests]: SafetynetApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2025-03-28 18:41:07 [main] INFO  org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.safetynet.SafetynetApplication for test class com.safetynet.SafetynetApplicationTests
+2025-03-28 18:41:08 [main] INFO  org.springframework.boot.devtools.restart.RestartApplicationListener - Restart disabled due to context in which it is running
+2025-03-28 18:41:09 [background-preinit] INFO  org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.2.Final
+2025-03-28 18:41:10 [main] INFO  com.safetynet.SafetynetApplicationTests - Starting SafetynetApplicationTests using Java 21.0.6 with PID 18916 (started by AGOUROU GUSTAVE in C:\Users\AGOUROU GUSTAVE\Downloads\Open Classroom\P5\safetynet-alerts)
+2025-03-28 18:41:10 [main] INFO  com.safetynet.SafetynetApplicationTests - No active profile set, falling back to 1 default profile: "default"
+2025-03-28 18:41:10 [main] DEBUG org.springframework.web.context.support.GenericWebApplicationContext - Refreshing org.springframework.web.context.support.GenericWebApplicationContext@4ea4290f
+2025-03-28 18:41:21 [main] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping - 22 mappings in 'requestMappingHandlerMapping'
+2025-03-28 18:41:22 [main] DEBUG org.springframework.web.servlet.handler.SimpleUrlHandlerMapping - Patterns [/webjars/**, /**, /swagger-ui*/*swagger-initializer.js, /swagger-ui*/**] in 'resourceHandlerMapping'
+2025-03-28 18:41:22 [main] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter - ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2025-03-28 18:41:22 [main] DEBUG org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver - ControllerAdvice beans: 1 @ExceptionHandler, 1 ResponseBodyAdvice
+2025-03-28 18:41:23 [main] INFO  org.springframework.boot.actuate.endpoint.web.EndpointLinksResolver - Exposing 1 endpoint beneath base path '/actuator'
+2025-03-28 18:41:23 [main] INFO  com.safetynet.SafetynetApplicationTests - Started SafetynetApplicationTests in 15.082 seconds (process running for 29.452)
+2025-03-28 18:41:24 [SpringApplicationShutdownHook] DEBUG org.springframework.web.context.support.GenericWebApplicationContext - Closing org.springframework.web.context.support.GenericWebApplicationContext@4ea4290f, started on Fri Mar 28 18:41:10 NCT 2025
+2025-03-28 18:46:18 [main] INFO  com.safetynet.service.PersonService - Ajout de personnes au fichier Json.
+2025-03-28 18:46:18 [main] INFO  com.safetynet.service.PersonService - Ajout de personnes fait
+2025-03-28 18:46:18 [main] INFO  com.safetynet.service.PersonService - Ajout de personnes au fichier Json.
+2025-03-28 18:46:18 [main] INFO  com.safetynet.service.PersonService - Ajout de personnes fait
+2025-03-28 18:46:19 [main] INFO  org.springframework.test.context.support.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.safetynet.SafetynetApplicationTests]: SafetynetApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2025-03-28 18:46:19 [main] INFO  org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.safetynet.SafetynetApplication for test class com.safetynet.SafetynetApplicationTests
+2025-03-28 18:46:21 [main] INFO  org.springframework.boot.devtools.restart.RestartApplicationListener - Restart disabled due to context in which it is running
+2025-03-28 18:46:22 [background-preinit] INFO  org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.2.Final
+2025-03-28 18:46:23 [main] INFO  com.safetynet.SafetynetApplicationTests - Starting SafetynetApplicationTests using Java 21.0.6 with PID 14256 (started by AGOUROU GUSTAVE in C:\Users\AGOUROU GUSTAVE\Downloads\Open Classroom\P5\safetynet-alerts)
+2025-03-28 18:46:23 [main] INFO  com.safetynet.SafetynetApplicationTests - No active profile set, falling back to 1 default profile: "default"
+2025-03-28 18:46:23 [main] DEBUG org.springframework.web.context.support.GenericWebApplicationContext - Refreshing org.springframework.web.context.support.GenericWebApplicationContext@757ad227
+2025-03-28 18:46:33 [main] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping - 22 mappings in 'requestMappingHandlerMapping'
+2025-03-28 18:46:33 [main] DEBUG org.springframework.web.servlet.handler.SimpleUrlHandlerMapping - Patterns [/webjars/**, /**, /swagger-ui*/*swagger-initializer.js, /swagger-ui*/**] in 'resourceHandlerMapping'
+2025-03-28 18:46:34 [main] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter - ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2025-03-28 18:46:34 [main] DEBUG org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver - ControllerAdvice beans: 1 @ExceptionHandler, 1 ResponseBodyAdvice
+2025-03-28 18:46:35 [main] INFO  org.springframework.boot.actuate.endpoint.web.EndpointLinksResolver - Exposing 1 endpoint beneath base path '/actuator'
+2025-03-28 18:46:36 [main] INFO  com.safetynet.SafetynetApplicationTests - Started SafetynetApplicationTests in 14.323 seconds (process running for 27.728)
+2025-03-28 18:46:36 [SpringApplicationShutdownHook] DEBUG org.springframework.web.context.support.GenericWebApplicationContext - Closing org.springframework.web.context.support.GenericWebApplicationContext@757ad227, started on Fri Mar 28 18:46:23 NCT 2025
+2025-03-28 18:51:51 [main] INFO  com.safetynet.service.PersonService - Mise à jour des personnes.
+2025-03-28 18:51:52 [main] INFO  com.safetynet.service.PersonService - Ajout de personnes au fichier Json.
+2025-03-28 18:51:52 [main] INFO  com.safetynet.service.PersonService - Ajout de personnes fait
+2025-03-28 18:51:52 [main] INFO  com.safetynet.service.PersonService - Mise à jour des personnes.
+2025-03-28 18:51:52 [main] INFO  com.safetynet.service.PersonService - Ajout de personnes au fichier Json.
+2025-03-28 18:51:52 [main] INFO  com.safetynet.service.PersonService - Ajout de personnes fait
+2025-03-28 18:51:53 [main] INFO  org.springframework.test.context.support.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.safetynet.SafetynetApplicationTests]: SafetynetApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2025-03-28 18:51:54 [main] INFO  org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.safetynet.SafetynetApplication for test class com.safetynet.SafetynetApplicationTests
+2025-03-28 18:51:55 [main] INFO  org.springframework.boot.devtools.restart.RestartApplicationListener - Restart disabled due to context in which it is running
+2025-03-28 18:51:56 [background-preinit] INFO  org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.2.Final
+2025-03-28 18:51:56 [main] INFO  com.safetynet.SafetynetApplicationTests - Starting SafetynetApplicationTests using Java 21.0.6 with PID 15184 (started by AGOUROU GUSTAVE in C:\Users\AGOUROU GUSTAVE\Downloads\Open Classroom\P5\safetynet-alerts)
+2025-03-28 18:51:56 [main] INFO  com.safetynet.SafetynetApplicationTests - No active profile set, falling back to 1 default profile: "default"
+2025-03-28 18:51:57 [main] DEBUG org.springframework.web.context.support.GenericWebApplicationContext - Refreshing org.springframework.web.context.support.GenericWebApplicationContext@6aa85fcf
+2025-03-28 18:52:04 [main] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping - 22 mappings in 'requestMappingHandlerMapping'
+2025-03-28 18:52:04 [main] DEBUG org.springframework.web.servlet.handler.SimpleUrlHandlerMapping - Patterns [/webjars/**, /**, /swagger-ui*/*swagger-initializer.js, /swagger-ui*/**] in 'resourceHandlerMapping'
+2025-03-28 18:52:04 [main] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter - ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2025-03-28 18:52:04 [main] DEBUG org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver - ControllerAdvice beans: 1 @ExceptionHandler, 1 ResponseBodyAdvice
+2025-03-28 18:52:06 [main] INFO  org.springframework.boot.actuate.endpoint.web.EndpointLinksResolver - Exposing 1 endpoint beneath base path '/actuator'
+2025-03-28 18:52:06 [main] INFO  com.safetynet.SafetynetApplicationTests - Started SafetynetApplicationTests in 10.97 seconds (process running for 23.089)
+2025-03-28 18:52:06 [SpringApplicationShutdownHook] DEBUG org.springframework.web.context.support.GenericWebApplicationContext - Closing org.springframework.web.context.support.GenericWebApplicationContext@6aa85fcf, started on Fri Mar 28 18:51:57 NCT 2025
+2025-03-28 18:54:35 [main] INFO  com.safetynet.service.PersonService - Mise à jour des personnes.
+2025-03-28 18:54:36 [main] INFO  com.safetynet.service.PersonService - Ajout de personnes au fichier Json.
+2025-03-28 18:54:36 [main] INFO  com.safetynet.service.PersonService - Ajout de personnes fait
+2025-03-28 18:54:36 [main] INFO  com.safetynet.service.PersonService - Mise à jour des personnes.
+2025-03-28 18:54:36 [main] INFO  com.safetynet.service.PersonService - Ajout de personnes au fichier Json.
+2025-03-28 18:54:36 [main] INFO  com.safetynet.service.PersonService - Ajout de personnes fait
+2025-03-28 18:54:37 [main] INFO  org.springframework.test.context.support.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.safetynet.SafetynetApplicationTests]: SafetynetApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2025-03-28 18:54:38 [main] INFO  org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.safetynet.SafetynetApplication for test class com.safetynet.SafetynetApplicationTests
+2025-03-28 18:54:41 [main] INFO  org.springframework.boot.devtools.restart.RestartApplicationListener - Restart disabled due to context in which it is running
+2025-03-28 18:54:43 [background-preinit] INFO  org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.2.Final
+2025-03-28 18:54:43 [main] INFO  com.safetynet.SafetynetApplicationTests - Starting SafetynetApplicationTests using Java 21.0.6 with PID 17452 (started by AGOUROU GUSTAVE in C:\Users\AGOUROU GUSTAVE\Downloads\Open Classroom\P5\safetynet-alerts)
+2025-03-28 18:54:43 [main] INFO  com.safetynet.SafetynetApplicationTests - No active profile set, falling back to 1 default profile: "default"
+2025-03-28 18:54:43 [main] DEBUG org.springframework.web.context.support.GenericWebApplicationContext - Refreshing org.springframework.web.context.support.GenericWebApplicationContext@6aa85fcf
+2025-03-28 18:54:55 [main] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping - 22 mappings in 'requestMappingHandlerMapping'
+2025-03-28 18:54:56 [main] DEBUG org.springframework.web.servlet.handler.SimpleUrlHandlerMapping - Patterns [/webjars/**, /**, /swagger-ui*/*swagger-initializer.js, /swagger-ui*/**] in 'resourceHandlerMapping'
+2025-03-28 18:54:56 [main] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter - ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2025-03-28 18:54:57 [main] DEBUG org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver - ControllerAdvice beans: 1 @ExceptionHandler, 1 ResponseBodyAdvice
+2025-03-28 18:54:59 [main] INFO  org.springframework.boot.actuate.endpoint.web.EndpointLinksResolver - Exposing 1 endpoint beneath base path '/actuator'
+2025-03-28 18:54:59 [main] INFO  com.safetynet.SafetynetApplicationTests - Started SafetynetApplicationTests in 17.698 seconds (process running for 34.233)
+2025-03-28 18:55:00 [SpringApplicationShutdownHook] DEBUG org.springframework.web.context.support.GenericWebApplicationContext - Closing org.springframework.web.context.support.GenericWebApplicationContext@6aa85fcf, started on Fri Mar 28 18:54:43 NCT 2025
+2025-03-28 18:56:36 [main] INFO  com.safetynet.service.PersonService - Mise à jour des personnes.
+2025-03-28 18:56:36 [main] INFO  com.safetynet.service.PersonService - Ajout de personnes au fichier Json.
+2025-03-28 18:56:36 [main] INFO  com.safetynet.service.PersonService - Ajout de personnes fait
+2025-03-28 18:56:36 [main] INFO  com.safetynet.service.PersonService - Mise à jour des personnes.
+2025-03-28 18:56:36 [main] INFO  com.safetynet.service.PersonService - Ajout de personnes au fichier Json.
+2025-03-28 18:56:36 [main] INFO  com.safetynet.service.PersonService - Ajout de personnes fait
+2025-03-28 18:56:37 [main] INFO  org.springframework.test.context.support.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.safetynet.SafetynetApplicationTests]: SafetynetApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2025-03-28 18:56:39 [main] INFO  org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.safetynet.SafetynetApplication for test class com.safetynet.SafetynetApplicationTests
+2025-03-28 18:56:41 [main] INFO  org.springframework.boot.devtools.restart.RestartApplicationListener - Restart disabled due to context in which it is running
+2025-03-28 18:56:43 [background-preinit] INFO  org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.2.Final
+2025-03-28 18:56:45 [main] INFO  com.safetynet.SafetynetApplicationTests - Starting SafetynetApplicationTests using Java 21.0.6 with PID 14728 (started by AGOUROU GUSTAVE in C:\Users\AGOUROU GUSTAVE\Downloads\Open Classroom\P5\safetynet-alerts)
+2025-03-28 18:56:45 [main] INFO  com.safetynet.SafetynetApplicationTests - No active profile set, falling back to 1 default profile: "default"
+2025-03-28 18:56:48 [main] DEBUG org.springframework.web.context.support.GenericWebApplicationContext - Refreshing org.springframework.web.context.support.GenericWebApplicationContext@1e14ed59
+2025-03-28 18:56:59 [main] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping - 22 mappings in 'requestMappingHandlerMapping'
+2025-03-28 18:56:59 [main] DEBUG org.springframework.web.servlet.handler.SimpleUrlHandlerMapping - Patterns [/webjars/**, /**, /swagger-ui*/*swagger-initializer.js, /swagger-ui*/**] in 'resourceHandlerMapping'
+2025-03-28 18:56:59 [main] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter - ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2025-03-28 18:56:59 [main] DEBUG org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver - ControllerAdvice beans: 1 @ExceptionHandler, 1 ResponseBodyAdvice
+2025-03-28 18:57:00 [main] INFO  org.springframework.boot.actuate.endpoint.web.EndpointLinksResolver - Exposing 1 endpoint beneath base path '/actuator'
+2025-03-28 18:57:00 [main] INFO  com.safetynet.SafetynetApplicationTests - Started SafetynetApplicationTests in 18.96 seconds (process running for 33.429)
+2025-03-28 18:57:01 [SpringApplicationShutdownHook] DEBUG org.springframework.web.context.support.GenericWebApplicationContext - Closing org.springframework.web.context.support.GenericWebApplicationContext@1e14ed59, started on Fri Mar 28 18:56:48 NCT 2025
+2025-03-28 18:59:19 [main] INFO  com.safetynet.service.PersonService - Mise à jour des personnes.
+2025-03-28 18:59:19 [main] INFO  com.safetynet.service.PersonService - Personne mise à jour : Person(firstName=John, lastName=Boyd, address=Updated Address, city=Updated City, zip=Updated Zip, phone=Updated Phone, email=updated.email@email.com)
+2025-03-28 18:59:19 [main] INFO  com.safetynet.service.PersonService - Ajout de personnes au fichier Json.
+2025-03-28 18:59:19 [main] INFO  com.safetynet.service.PersonService - Ajout de personnes fait
+2025-03-28 18:59:19 [main] INFO  com.safetynet.service.PersonService - Mise à jour des personnes.
+2025-03-28 18:59:19 [main] INFO  com.safetynet.service.PersonService - Ajout de personnes au fichier Json.
+2025-03-28 18:59:19 [main] INFO  com.safetynet.service.PersonService - Ajout de personnes fait
+2025-03-28 18:59:20 [main] INFO  org.springframework.test.context.support.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.safetynet.SafetynetApplicationTests]: SafetynetApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2025-03-28 18:59:21 [main] INFO  org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.safetynet.SafetynetApplication for test class com.safetynet.SafetynetApplicationTests
+2025-03-28 18:59:22 [main] INFO  org.springframework.boot.devtools.restart.RestartApplicationListener - Restart disabled due to context in which it is running
+2025-03-28 18:59:23 [background-preinit] INFO  org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.2.Final
+2025-03-28 18:59:24 [main] INFO  com.safetynet.SafetynetApplicationTests - Starting SafetynetApplicationTests using Java 21.0.6 with PID 5620 (started by AGOUROU GUSTAVE in C:\Users\AGOUROU GUSTAVE\Downloads\Open Classroom\P5\safetynet-alerts)
+2025-03-28 18:59:24 [main] INFO  com.safetynet.SafetynetApplicationTests - No active profile set, falling back to 1 default profile: "default"
+2025-03-28 18:59:24 [main] DEBUG org.springframework.web.context.support.GenericWebApplicationContext - Refreshing org.springframework.web.context.support.GenericWebApplicationContext@2fda92e0
+2025-03-28 18:59:33 [main] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping - 22 mappings in 'requestMappingHandlerMapping'
+2025-03-28 18:59:33 [main] DEBUG org.springframework.web.servlet.handler.SimpleUrlHandlerMapping - Patterns [/webjars/**, /**, /swagger-ui*/*swagger-initializer.js, /swagger-ui*/**] in 'resourceHandlerMapping'
+2025-03-28 18:59:33 [main] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter - ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2025-03-28 18:59:33 [main] DEBUG org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver - ControllerAdvice beans: 1 @ExceptionHandler, 1 ResponseBodyAdvice
+2025-03-28 18:59:35 [main] INFO  org.springframework.boot.actuate.endpoint.web.EndpointLinksResolver - Exposing 1 endpoint beneath base path '/actuator'
+2025-03-28 18:59:37 [main] INFO  com.safetynet.SafetynetApplicationTests - Started SafetynetApplicationTests in 14.575 seconds (process running for 31.536)
+2025-03-28 18:59:37 [SpringApplicationShutdownHook] DEBUG org.springframework.web.context.support.GenericWebApplicationContext - Closing org.springframework.web.context.support.GenericWebApplicationContext@2fda92e0, started on Fri Mar 28 18:59:24 NCT 2025
+2025-03-28 19:05:38 [main] INFO  com.safetynet.service.PersonService - Mise à jour des personnes.
+2025-03-28 19:05:39 [main] INFO  com.safetynet.service.PersonService - Ajout de personnes au fichier Json.
+2025-03-28 19:05:39 [main] INFO  com.safetynet.service.PersonService - Ajout de personnes fait
+2025-03-28 19:05:39 [main] INFO  com.safetynet.service.PersonService - Mise à jour des personnes.
+2025-03-28 19:05:39 [main] INFO  com.safetynet.service.PersonService - Ajout de personnes au fichier Json.
+2025-03-28 19:05:39 [main] INFO  com.safetynet.service.PersonService - Ajout de personnes fait
+2025-03-28 19:05:40 [main] INFO  org.springframework.test.context.support.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.safetynet.SafetynetApplicationTests]: SafetynetApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2025-03-28 19:05:41 [main] INFO  org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.safetynet.SafetynetApplication for test class com.safetynet.SafetynetApplicationTests
+2025-03-28 19:05:43 [main] INFO  org.springframework.boot.devtools.restart.RestartApplicationListener - Restart disabled due to context in which it is running
+2025-03-28 19:05:45 [background-preinit] INFO  org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.2.Final
+2025-03-28 19:05:45 [main] INFO  com.safetynet.SafetynetApplicationTests - Starting SafetynetApplicationTests using Java 21.0.6 with PID 15844 (started by AGOUROU GUSTAVE in C:\Users\AGOUROU GUSTAVE\Downloads\Open Classroom\P5\safetynet-alerts)
+2025-03-28 19:05:45 [main] INFO  com.safetynet.SafetynetApplicationTests - No active profile set, falling back to 1 default profile: "default"
+2025-03-28 19:05:46 [main] DEBUG org.springframework.web.context.support.GenericWebApplicationContext - Refreshing org.springframework.web.context.support.GenericWebApplicationContext@1d6ed085
+2025-03-28 19:05:59 [main] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping - 22 mappings in 'requestMappingHandlerMapping'
+2025-03-28 19:06:00 [main] DEBUG org.springframework.web.servlet.handler.SimpleUrlHandlerMapping - Patterns [/webjars/**, /**, /swagger-ui*/*swagger-initializer.js, /swagger-ui*/**] in 'resourceHandlerMapping'
+2025-03-28 19:06:00 [main] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter - ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2025-03-28 19:06:01 [main] DEBUG org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver - ControllerAdvice beans: 1 @ExceptionHandler, 1 ResponseBodyAdvice
+2025-03-28 19:06:04 [main] INFO  org.springframework.boot.actuate.endpoint.web.EndpointLinksResolver - Exposing 1 endpoint beneath base path '/actuator'
+2025-03-28 19:06:05 [main] INFO  com.safetynet.SafetynetApplicationTests - Started SafetynetApplicationTests in 22.472 seconds (process running for 36.69)
+2025-03-28 19:06:06 [SpringApplicationShutdownHook] DEBUG org.springframework.web.context.support.GenericWebApplicationContext - Closing org.springframework.web.context.support.GenericWebApplicationContext@1d6ed085, started on Fri Mar 28 19:05:46 NCT 2025
+2025-03-28 19:07:38 [main] INFO  com.safetynet.service.PersonService - Mise à jour des personnes.
+2025-03-28 19:07:38 [main] INFO  com.safetynet.service.PersonService - Personne mise à jour : Person(firstName=John, lastName=Boyd, address=Updated Address, city=Updated City, zip=Updated Zip, phone=Updated Phone, email=updated.email@email.com)
+2025-03-28 19:07:39 [main] INFO  com.safetynet.service.PersonService - Ajout de personnes au fichier Json.
+2025-03-28 19:07:39 [main] INFO  com.safetynet.service.PersonService - Ajout de personnes fait
+2025-03-28 19:07:39 [main] INFO  com.safetynet.service.PersonService - Mise à jour des personnes.
+2025-03-28 19:07:39 [main] INFO  com.safetynet.service.PersonService - Ajout de personnes au fichier Json.
+2025-03-28 19:07:39 [main] INFO  com.safetynet.service.PersonService - Ajout de personnes fait
+2025-03-28 19:07:39 [main] INFO  org.springframework.test.context.support.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.safetynet.SafetynetApplicationTests]: SafetynetApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2025-03-28 19:07:40 [main] INFO  org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.safetynet.SafetynetApplication for test class com.safetynet.SafetynetApplicationTests
+2025-03-28 19:07:41 [main] INFO  org.springframework.boot.devtools.restart.RestartApplicationListener - Restart disabled due to context in which it is running
+2025-03-28 19:07:43 [background-preinit] INFO  org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.2.Final
+2025-03-28 19:07:43 [main] INFO  com.safetynet.SafetynetApplicationTests - Starting SafetynetApplicationTests using Java 21.0.6 with PID 17532 (started by AGOUROU GUSTAVE in C:\Users\AGOUROU GUSTAVE\Downloads\Open Classroom\P5\safetynet-alerts)
+2025-03-28 19:07:43 [main] INFO  com.safetynet.SafetynetApplicationTests - No active profile set, falling back to 1 default profile: "default"
+2025-03-28 19:07:43 [main] DEBUG org.springframework.web.context.support.GenericWebApplicationContext - Refreshing org.springframework.web.context.support.GenericWebApplicationContext@2fda92e0
+2025-03-28 19:07:49 [main] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping - 22 mappings in 'requestMappingHandlerMapping'
+2025-03-28 19:07:49 [main] DEBUG org.springframework.web.servlet.handler.SimpleUrlHandlerMapping - Patterns [/webjars/**, /**, /swagger-ui*/*swagger-initializer.js, /swagger-ui*/**] in 'resourceHandlerMapping'
+2025-03-28 19:07:49 [main] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter - ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2025-03-28 19:07:50 [main] DEBUG org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver - ControllerAdvice beans: 1 @ExceptionHandler, 1 ResponseBodyAdvice
+2025-03-28 19:07:51 [main] INFO  org.springframework.boot.actuate.endpoint.web.EndpointLinksResolver - Exposing 1 endpoint beneath base path '/actuator'
+2025-03-28 19:07:51 [main] INFO  com.safetynet.SafetynetApplicationTests - Started SafetynetApplicationTests in 9.575 seconds (process running for 21.839)
+2025-03-28 19:07:52 [SpringApplicationShutdownHook] DEBUG org.springframework.web.context.support.GenericWebApplicationContext - Closing org.springframework.web.context.support.GenericWebApplicationContext@2fda92e0, started on Fri Mar 28 19:07:43 NCT 2025
+2025-03-28 19:26:11 [main] INFO  com.safetynet.service.PersonService - Mise à jour des personnes.
+2025-03-28 19:26:11 [main] INFO  com.safetynet.service.PersonService - Personne mise à jour : Person(firstName=John, lastName=Boyd, address=Updated Address, city=Updated City, zip=Updated Zip, phone=Updated Phone, email=updated.email@email.com)
+2025-03-28 19:26:11 [main] INFO  com.safetynet.service.PersonService - Suppression de personnes.
+2025-03-28 19:26:11 [main] INFO  com.safetynet.service.PersonService - Personne supprimeé: [Person(firstName=Eric, lastName=Cadigan, address=951 LoneTree Rd, city=Culver, zip=97451, phone=841-874-7458, email=gramps@email.com)]
+2025-03-28 19:26:11 [main] INFO  com.safetynet.service.PersonService - Ajout de personnes au fichier Json.
+2025-03-28 19:26:11 [main] INFO  com.safetynet.service.PersonService - Ajout de personnes fait
+2025-03-28 19:26:11 [main] INFO  com.safetynet.service.PersonService - Mise à jour des personnes.
+2025-03-28 19:26:12 [main] INFO  com.safetynet.service.PersonService - Ajout de personnes au fichier Json.
+2025-03-28 19:26:12 [main] INFO  com.safetynet.service.PersonService - Ajout de personnes fait
+2025-03-28 19:26:12 [main] INFO  com.safetynet.service.PersonService - Suppression de personnes.
+2025-03-28 19:26:12 [main] INFO  com.safetynet.service.PersonService - Personne supprimeé: [Person(firstName=John, lastName=Boyd, address=1509 Culver St, city=Culver, zip=97451, phone=841-874-6512, email=jaboyd@email.com), Person(firstName=Eric, lastName=Cadigan, address=951 LoneTree Rd, city=Culver, zip=97451, phone=841-874-7458, email=gramps@email.com)]
+2025-03-28 19:26:12 [main] INFO  org.springframework.test.context.support.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.safetynet.SafetynetApplicationTests]: SafetynetApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2025-03-28 19:26:13 [main] INFO  org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.safetynet.SafetynetApplication for test class com.safetynet.SafetynetApplicationTests
+2025-03-28 19:26:14 [main] INFO  org.springframework.boot.devtools.restart.RestartApplicationListener - Restart disabled due to context in which it is running
+2025-03-28 19:26:16 [background-preinit] INFO  org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.2.Final
+2025-03-28 19:26:16 [main] INFO  com.safetynet.SafetynetApplicationTests - Starting SafetynetApplicationTests using Java 21.0.6 with PID 4756 (started by AGOUROU GUSTAVE in C:\Users\AGOUROU GUSTAVE\Downloads\Open Classroom\P5\safetynet-alerts)
+2025-03-28 19:26:16 [main] INFO  com.safetynet.SafetynetApplicationTests - No active profile set, falling back to 1 default profile: "default"
+2025-03-28 19:26:16 [main] DEBUG org.springframework.web.context.support.GenericWebApplicationContext - Refreshing org.springframework.web.context.support.GenericWebApplicationContext@4ad57db1
+2025-03-28 19:26:25 [main] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping - 22 mappings in 'requestMappingHandlerMapping'
+2025-03-28 19:26:26 [main] DEBUG org.springframework.web.servlet.handler.SimpleUrlHandlerMapping - Patterns [/webjars/**, /**, /swagger-ui*/*swagger-initializer.js, /swagger-ui*/**] in 'resourceHandlerMapping'
+2025-03-28 19:26:26 [main] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter - ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2025-03-28 19:26:26 [main] DEBUG org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver - ControllerAdvice beans: 1 @ExceptionHandler, 1 ResponseBodyAdvice
+2025-03-28 19:26:28 [main] INFO  org.springframework.boot.actuate.endpoint.web.EndpointLinksResolver - Exposing 1 endpoint beneath base path '/actuator'
+2025-03-28 19:26:28 [main] INFO  com.safetynet.SafetynetApplicationTests - Started SafetynetApplicationTests in 13.888 seconds (process running for 26.319)
+2025-03-28 19:26:30 [SpringApplicationShutdownHook] DEBUG org.springframework.web.context.support.GenericWebApplicationContext - Closing org.springframework.web.context.support.GenericWebApplicationContext@4ad57db1, started on Fri Mar 28 19:26:16 NCT 2025
+2025-03-28 19:31:26 [main] INFO  com.safetynet.service.PersonService - Mise à jour des personnes.
+2025-03-28 19:31:26 [main] INFO  com.safetynet.service.PersonService - Personne mise à jour : Person(firstName=John, lastName=Boyd, address=Updated Address, city=Updated City, zip=Updated Zip, phone=Updated Phone, email=updated.email@email.com)
+2025-03-28 19:31:26 [main] INFO  com.safetynet.service.PersonService - Suppression de personnes.
+2025-03-28 19:31:26 [main] INFO  com.safetynet.service.PersonService - Personne supprimeé: [Person(firstName=Eric, lastName=Cadigan, address=951 LoneTree Rd, city=Culver, zip=97451, phone=841-874-7458, email=gramps@email.com)]
+2025-03-28 19:31:26 [main] INFO  com.safetynet.service.PersonService - Ajout de personnes au fichier Json.
+2025-03-28 19:31:26 [main] INFO  com.safetynet.service.PersonService - Ajout de personnes fait
+2025-03-28 19:31:26 [main] INFO  com.safetynet.service.PersonService - Mise à jour des personnes.
+2025-03-28 19:31:26 [main] INFO  com.safetynet.service.PersonService - Ajout de personnes au fichier Json.
+2025-03-28 19:31:26 [main] INFO  com.safetynet.service.PersonService - Ajout de personnes fait
+2025-03-28 19:31:27 [main] INFO  com.safetynet.service.PersonService - Suppression de personnes.
+2025-03-28 19:31:27 [main] INFO  com.safetynet.service.PersonService - Personne supprimeé: [Person(firstName=John, lastName=Boyd, address=1509 Culver St, city=Culver, zip=97451, phone=841-874-6512, email=jaboyd@email.com), Person(firstName=Eric, lastName=Cadigan, address=951 LoneTree Rd, city=Culver, zip=97451, phone=841-874-7458, email=gramps@email.com)]
+2025-03-28 19:31:28 [main] INFO  org.springframework.test.context.support.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.safetynet.SafetynetApplicationTests]: SafetynetApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2025-03-28 19:31:28 [main] INFO  org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.safetynet.SafetynetApplication for test class com.safetynet.SafetynetApplicationTests
+2025-03-28 19:31:30 [main] INFO  org.springframework.boot.devtools.restart.RestartApplicationListener - Restart disabled due to context in which it is running
+2025-03-28 19:31:32 [background-preinit] INFO  org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.2.Final
+2025-03-28 19:31:32 [main] INFO  com.safetynet.SafetynetApplicationTests - Starting SafetynetApplicationTests using Java 21.0.6 with PID 9432 (started by AGOUROU GUSTAVE in C:\Users\AGOUROU GUSTAVE\Downloads\Open Classroom\P5\safetynet-alerts)
+2025-03-28 19:31:32 [main] INFO  com.safetynet.SafetynetApplicationTests - No active profile set, falling back to 1 default profile: "default"
+2025-03-28 19:31:32 [main] DEBUG org.springframework.web.context.support.GenericWebApplicationContext - Refreshing org.springframework.web.context.support.GenericWebApplicationContext@671c71e8
+2025-03-28 19:31:40 [main] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping - 22 mappings in 'requestMappingHandlerMapping'
+2025-03-28 19:31:41 [main] DEBUG org.springframework.web.servlet.handler.SimpleUrlHandlerMapping - Patterns [/webjars/**, /**, /swagger-ui*/*swagger-initializer.js, /swagger-ui*/**] in 'resourceHandlerMapping'
+2025-03-28 19:31:41 [main] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter - ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2025-03-28 19:31:41 [main] DEBUG org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver - ControllerAdvice beans: 1 @ExceptionHandler, 1 ResponseBodyAdvice
+2025-03-28 19:31:42 [main] INFO  org.springframework.boot.actuate.endpoint.web.EndpointLinksResolver - Exposing 1 endpoint beneath base path '/actuator'
+2025-03-28 19:31:42 [main] INFO  com.safetynet.SafetynetApplicationTests - Started SafetynetApplicationTests in 12.145 seconds (process running for 26.195)
+2025-03-28 19:31:43 [SpringApplicationShutdownHook] DEBUG org.springframework.web.context.support.GenericWebApplicationContext - Closing org.springframework.web.context.support.GenericWebApplicationContext@671c71e8, started on Fri Mar 28 19:31:32 NCT 2025
