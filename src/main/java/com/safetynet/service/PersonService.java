@@ -3,7 +3,6 @@ package com.safetynet.service;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -32,7 +31,7 @@ public class PersonService {
                     .anyMatch(existing -> existing.getFirstName().equalsIgnoreCase(newPerson.getFirstName())
                             && existing.getLastName().equalsIgnoreCase(newPerson.getLastName()))) {
 
-                log.warn("La personne existe déjà: {}", newPerson.getFirstName(), newPerson.getLastName());
+                log.info("La personne existe déjà: {}", newPerson.getFirstName(), newPerson.getLastName());
                 continue;
             }
             existingPersons.add(newPerson);
@@ -48,6 +47,7 @@ public class PersonService {
 
         List<Person> existingPersons = dataLoad.readJsonFile("persons", new TypeReference<Map<String, List<Person>>>() {
         });
+
         for (Person person : persons) {
             for (Person existing : existingPersons) {
                 if (existing.getFirstName().equalsIgnoreCase(person.getFirstName())

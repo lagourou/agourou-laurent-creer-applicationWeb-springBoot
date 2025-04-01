@@ -10,9 +10,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.safetynet.controller.MedicalRecordController;
-import com.safetynet.exceptions.GenericExceptionHandler;
-import com.safetynet.exceptions.IllegalArgumentExceptionHandler;
-import com.safetynet.exceptions.MethodArgumentTypeMismatchExceptionHandler;
+import com.safetynet.exceptions.GlobalExceptions;
 import com.safetynet.model.MedicalRecord;
 import com.safetynet.service.MedicalRecordService;
 import org.junit.jupiter.api.BeforeEach;
@@ -45,9 +43,7 @@ public class MedicalRecordControllerTest {
                 mockMvc = MockMvcBuilders
                                 .standaloneSetup(medicalRecordController)
                                 .setControllerAdvice(
-                                                new IllegalArgumentExceptionHandler(),
-                                                new GenericExceptionHandler(),
-                                                new MethodArgumentTypeMismatchExceptionHandler())
+                                                new GlobalExceptions())
                                 .build();
                 objectMapper = new ObjectMapper();
         }

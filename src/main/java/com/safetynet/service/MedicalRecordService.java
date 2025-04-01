@@ -34,7 +34,7 @@ public class MedicalRecordService {
                             && existing.getLastName().equalsIgnoreCase(newMedicalRecord.getLastName())
                             && existing.getBirthdate().equalsIgnoreCase(newMedicalRecord.getBirthdate()))) {
 
-                log.warn("Le dossier médical existe déjà: {}", newMedicalRecord.getFirstName(),
+                log.info("Le dossier médical existe déjà: {} {} {}", newMedicalRecord.getFirstName(),
                         newMedicalRecord.getLastName(), newMedicalRecord.getBirthdate());
                 continue;
             }
@@ -53,34 +53,67 @@ public class MedicalRecordService {
                 });
 
         for (MedicalRecord medicalRecord : medicalRecords) {
+            boolean update = false;
             for (MedicalRecord existing : existingMedicalRecords) {
                 if (existing.getFirstName().equalsIgnoreCase(medicalRecord.getFirstName())
                         && existing.getLastName().equalsIgnoreCase(medicalRecord.getLastName())) {
-
+                    log.info("Avant mise à jour: {} - Allergies: {}", existing.getFirstName(), existing.getAllergies());
                     existing.setMedications(medicalRecord.getMedications());
                     existing.setAllergies(medicalRecord.getAllergies());
+                    log.info("Allergies mises à jour : {}", existing.getAllergies());
+
+                    update = true;
+                    log.info("Dossier médical mis à jour pour : {} {}", existing.getFirstName(),
+                            existing.getLastName());
                 }
+            }
+            if (!update) {
+                log.warn("Aucune correspondance trouvée pour la mise à jour de : {} {}", medicalRecord.getFirstName(),
+                        medicalRecord.getLastName());
             }
         }
         dataLoad.writeJsonFile("medicalrecords", existingMedicalRecords);
+        log.info("Données médicales après mise à jour: {}", existingMedicalRecords);
+
         return existingMedicalRecords;
     }
 
     public List<MedicalRecord> delete(List<MedicalRecord> medicalRecords) throws IOException {
         log.info("Suppression du dossier médical");
 
-        List<MedicalRecord> existingMedicalRecords = dataLoad.readJsonFile("medicalrecords",
-                new TypeReference<Map<String, List<MedicalRecord>>>() {
-                });
+        try {
+            List<MedicalRecord> existingMedicalRecords = dataLoad.readJsonFile("medicalrecords",
+                    new TypeReference<Map<String, List<MedicalRecord>>>() {
+                    });
 
-        existingMedicalRecords.removeIf(m -> medicalRecords.stream()
-                .anyMatch((medicalRecord -> m.getFirstName().equalsIgnoreCase(medicalRecord.getFirstName()) &&
-                        m.getLastName().equalsIgnoreCase(medicalRecord.getLastName()))));
+            if (existingMedicalRecords == null) {
+                log.error("Erreur: Les dossiers médicaux n'ont pas pu être chargés !");
+                throw new IOException("Données médicales introuvables.");
+            }
 
-        dataLoad.writeJsonFile("medicalrecords", existingMedicalRecords);
+            List<MedicalRecord> deletedRecords = existingMedicalRecords.stream()
+                    .filter(m -> medicalRecords.stream()
+                            .anyMatch(
+                                    medicalRecord -> m.getFirstName().equalsIgnoreCase(medicalRecord.getFirstName()) &&
+                                            m.getLastName().equalsIgnoreCase(medicalRecord.getLastName())))
+                    .toList();
 
-        log.info("Personne supprimeé: {}", existingMedicalRecords);
-        return medicalRecords;
+            existingMedicalRecords.removeIf(m -> medicalRecords.stream()
+                    .anyMatch(medicalRecord -> m.getFirstName().equalsIgnoreCase(medicalRecord.getFirstName()) &&
+                            m.getLastName().equalsIgnoreCase(medicalRecord.getLastName())));
 
+            if (!deletedRecords.isEmpty()) {
+                log.info("Personnes supprimées: {}", deletedRecords);
+            } else {
+                log.warn("Aucune personne trouvée à supprimer.");
+            }
+
+            dataLoad.writeJsonFile("medicalrecords", existingMedicalRecords);
+            return medicalRecords;
+        } catch (IOException e) {
+            log.error("Erreur lors de la suppression du dossier médical: {}", e.getMessage(), e);
+            throw e;
+        }
     }
+
 }

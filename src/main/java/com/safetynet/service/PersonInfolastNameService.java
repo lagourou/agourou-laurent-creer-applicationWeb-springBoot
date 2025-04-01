@@ -44,10 +44,6 @@ public class PersonInfolastNameService {
                                     .equalsIgnoreCase(person.getFirstName().trim())
                                     && medical.getLastName().trim().equalsIgnoreCase(person.getLastName().trim()))
                             .findFirst().orElse(null);
-
-                    log.debug("Traitement en cours pour la personne : {} {}", person.getFirstName(),
-                            person.getLastName());
-
                     int age = 0;
                     String email = person.getEmail();
                     List<String> medications = List.of();
@@ -58,7 +54,7 @@ public class PersonInfolastNameService {
                         medications = record.getMedications();
                         allergies = record.getAllergies();
                     } else {
-                        log.warn("Dossier médical introuvable pour : {} {}", person.getFirstName(),
+                        log.info("Dossier médical introuvable pour : {} {}", person.getFirstName(),
                                 person.getLastName());
                     }
 

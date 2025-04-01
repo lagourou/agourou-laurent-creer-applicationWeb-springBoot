@@ -55,7 +55,7 @@ public class ChildAlertService {
                                                                 person.getLastName());
                                                 return age <= 18;
                                         } else {
-                                                log.warn("Dossier médical introuvable pour : {} {}",
+                                                log.info("Dossier médical introuvable pour : {} {}",
                                                                 person.getFirstName(), person.getLastName());
                                                 return false;
                                         }

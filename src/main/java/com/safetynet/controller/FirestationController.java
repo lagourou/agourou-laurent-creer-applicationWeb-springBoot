@@ -34,7 +34,7 @@ public class FirestationController {
 
     private void validFirestations(List<Firestation> firestations) {
         if (firestations.isEmpty()) {
-            log.warn("La liste des casernes est vide ou nulle !");
+            log.info("La liste des casernes est vide ou nulle !");
             throw new IllegalArgumentException("La liste des casernes ne peut pas être vide.");
         }
     }
@@ -74,7 +74,7 @@ public class FirestationController {
     public List<Firestation> supprimer(@Valid @RequestBody List<Firestation> firestations) throws IOException {
 
         validFirestations(firestations);
-        log.info("Casernes mis à jour avec succès");
+        log.info("Casernes suppprimées avec succès");
         return firestationService.delete(firestations);
     }
 

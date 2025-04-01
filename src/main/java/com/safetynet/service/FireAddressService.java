@@ -61,7 +61,7 @@ public class FireAddressService {
                         medications = record.getMedications();
                         allergies = record.getAllergies();
                     } else {
-                        log.warn("Dossier médical introuvable pour : {} {}", person.getFirstName(),
+                        log.info("Dossier médical introuvable pour : {} {}", person.getFirstName(),
                                 person.getLastName());
                     }
 
@@ -76,7 +76,7 @@ public class FireAddressService {
 
                         stationNumber = station.getStation();
                     } else {
-                        log.warn("Caserne introuvable pour l'adresse : {}", fireAddresse);
+                        log.info("Caserne introuvable pour l'adresse : {}", fireAddresse);
                     }
 
                     return new FireAddress(name, person.getPhone(), age,

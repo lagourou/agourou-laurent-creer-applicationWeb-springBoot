@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.safetynet.dto.FloodStation;
 import com.safetynet.service.FloodStationService;
 
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -28,12 +30,23 @@ public class FloodStationController {
     }
 
     @ResponseStatus(value = HttpStatus.OK)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved flood stations."),
+            @ApiResponse(responseCode = "400", description = "Invalid or missing station numbers parameter."),
+            @ApiResponse(responseCode = "204", description = "No flood stations found for the provided station numbers.")
+    })
     @GetMapping
     public ResponseEntity<Map<String, List<FloodStation>>> getFloodStation(
-            @RequestParam("stations") List<Integer> stationNumbers)
+            @RequestParam(value = "stations", required = false) List<Integer> stationNumbers)
             throws IOException {
 
         log.info("Requête reçue la liste des numéros de casernes: {}", stationNumbers);
+
+        // Vérification des paramètres invalides
+        if (stationNumbers == null || stationNumbers.isEmpty()) {
+            log.warn("Paramètre stations invalide: {}", stationNumbers);
+            return ResponseEntity.badRequest().build(); // Retourne 400 Bad Request
+        }
 
         Map<String, List<FloodStation>> result = floodStationService.getFloodStation(stationNumbers);
         if (result.isEmpty()) {
@@ -45,5 +58,4 @@ public class FloodStationController {
                 stationNumbers);
         return ResponseEntity.ok(result);
     }
-
 }

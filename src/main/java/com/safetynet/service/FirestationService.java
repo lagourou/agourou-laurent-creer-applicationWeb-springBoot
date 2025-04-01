@@ -32,7 +32,7 @@ public class FirestationService {
             if (existingFirestations.stream()
                     .anyMatch(existing -> existing.getAddress().equalsIgnoreCase(newFirestation.getAddress()))) {
 
-                log.warn("La caserne existe déjà : {}", newFirestation.getAddress());
+                log.info("La caserne existe déjà : {}", newFirestation.getAddress());
                 continue;
             }
             existingFirestations.add(newFirestation);

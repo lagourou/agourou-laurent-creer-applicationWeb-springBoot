@@ -34,7 +34,7 @@ public class MedicalRecordController {
 
     private void validMedicalRecords(List<MedicalRecord> medicalRecords) {
         if (medicalRecords.isEmpty()) {
-            log.warn("La liste des dossiers médicales est vide ou nulle !");
+            log.info("La liste des dossiers médicales est vide ou nulle !");
             throw new IllegalArgumentException("La liste des dossiers médicales ne peut pas être vide.");
         }
     }

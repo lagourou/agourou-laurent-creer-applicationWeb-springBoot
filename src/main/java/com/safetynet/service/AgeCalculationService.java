@@ -14,7 +14,7 @@ public class AgeCalculationService {
 
     public int calculateAge(String birthdate) {
         if (birthdate == null || birthdate.isEmpty()) {
-            log.warn("Date de naissance manquante ou vide !");
+            log.info("Date de naissance manquante ou vide !");
             return 0;
         }
 

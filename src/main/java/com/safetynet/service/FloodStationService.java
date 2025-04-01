@@ -73,7 +73,7 @@ public class FloodStationService {
                                                 medications = record.getMedications();
                                                 allergies = record.getAllergies();
                                         } else {
-                                                log.warn("Dossier médical introuvable pour : {} {}",
+                                                log.info("Dossier médical introuvable pour : {} {}",
                                                                 person.getFirstName(), person.getLastName());
                                         }
                                         return new FloodStation(name, person.getPhone(), age, medications, allergies,

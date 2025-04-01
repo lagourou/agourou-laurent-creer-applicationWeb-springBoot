@@ -34,7 +34,7 @@ public class PersonController {
 
     private void validPersons(List<Person> persons) {
         if (persons.isEmpty()) {
-            log.warn("La liste des personnes est vide !");
+            log.info("La liste des personnes est vide !");
             throw new IllegalArgumentException("La liste des personnes ne peut pas être vide.");
         }
     }
