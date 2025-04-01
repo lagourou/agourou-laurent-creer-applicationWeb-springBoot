@@ -13,15 +13,32 @@ import com.safetynet.service.dataService.DataLoad;
 
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Service permettant de récupérer les adresses email des résidents d'une ville
+ * donnée.
+ */
 @Slf4j
 @Service
 public class CommunityEmailService {
     private final DataLoad dataLoad;
 
+    /**
+     * Constructeur de la classe CommunityEmailService.
+     *
+     * @param dataLoad Service pour charger les données depuis un fichier JSON.
+     */
+
     public CommunityEmailService(DataLoad dataLoad) {
         this.dataLoad = dataLoad;
     }
 
+    /**
+     * Récupère les adresses email des résidents d'une ville donnée.
+     *
+     * @param city Ville regroupant ses habitants et ses adresses e-mails..
+     * @return Une liste d'adresses email des résidents.
+     * @throws IOException En cas d'erreur lors de la lecture des fichiers JSON.
+     */
     public List<CommunityEmail> getCommunityEmail(String city) throws IOException {
         List<Person> persons = dataLoad.readJsonFile("persons", new TypeReference<Map<String, List<Person>>>() {
         });

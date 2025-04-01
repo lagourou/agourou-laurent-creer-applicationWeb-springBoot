@@ -19,16 +19,33 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Contrôleur pour gérer les casernes en cas d'inondation.
+ * Endpoint pour récupérer les foyers associés à une ou plusieurs casernes
+ */
 @Slf4j
 @RestController
 @RequestMapping("flood/stations")
 public class FloodStationController {
     private final FloodStationService floodStationService;
 
+    /**
+     * Constructeur de la classe FloodStationController.
+     *
+     * @param floodStationService Service permettant de gérer les données des
+     *                            casernes en cas d'inondation.
+     */
     public FloodStationController(FloodStationService floodStationService) {
         this.floodStationService = floodStationService;
     }
 
+    /**
+     * Récupère les foyers associés aux casernes spécifiées.
+     *
+     * @param stationNumbers Liste des numéros de casernes.
+     * @return Les foyers associés aux casernes ou une réponse avec un code HTTP.
+     * @throws IOException En cas d'erreur lors de la récupération des données.
+     */
     @ResponseStatus(value = HttpStatus.OK)
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved flood stations."),

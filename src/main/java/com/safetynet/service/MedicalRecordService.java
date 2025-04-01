@@ -12,16 +12,33 @@ import com.safetynet.service.dataService.DataLoad;
 
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Service permettant de gérer informations liées aux dossiers médicaux.
+ */
 @Slf4j
 @Service
 public class MedicalRecordService {
 
     private final DataLoad dataLoad;
 
+    /**
+     * Constructeur de la classe MedicalRecordService.
+     *
+     * @param dataLoad Service pour charger et sauvegarder les données du fichier
+     *                 JSON.
+     */
     public MedicalRecordService(DataLoad dataLoad) {
         this.dataLoad = dataLoad;
     }
 
+    /**
+     * Ajoute des dossiers médicaux.
+     *
+     * @param medicalRecords Liste des dossiers médicaux à ajouter.
+     * @return Les dossiers médicaux ajoutés.
+     * @throws IOException En cas d'erreur lors de la lecture ou de la sauvegarde
+     *                     des données.
+     */
     public List<MedicalRecord> add(List<MedicalRecord> medicalRecords) throws IOException {
         log.info("Ajout d'un dossier médical");
         List<MedicalRecord> existingMedicalRecords = dataLoad.readJsonFile("medicalrecords",
@@ -45,6 +62,14 @@ public class MedicalRecordService {
         return medicalRecords;
     }
 
+    /**
+     * Met à jour les dossiers médicaux existants.
+     *
+     * @param medicalRecords Liste des dossiers médicaux à mettre à jour.
+     * @return Les dossiers médicaux mis à jour.
+     * @throws IOException En cas d'erreur lors de la lecture ou de la sauvegarde
+     *                     des données.
+     */
     public List<MedicalRecord> update(List<MedicalRecord> medicalRecords) throws IOException {
         log.info("Mise à jour du dossier médical");
 
@@ -78,6 +103,14 @@ public class MedicalRecordService {
         return existingMedicalRecords;
     }
 
+    /**
+     * Supprime des dossiers médicaux.
+     *
+     * @param medicalRecords Liste des dossiers médicaux à supprimer.
+     * @return Les dossiers médicaux supprimés.
+     * @throws IOException En cas d'erreur lors de la lecture ou de la sauvegarde
+     *                     des données.
+     */
     public List<MedicalRecord> delete(List<MedicalRecord> medicalRecords) throws IOException {
         log.info("Suppression du dossier médical");
 

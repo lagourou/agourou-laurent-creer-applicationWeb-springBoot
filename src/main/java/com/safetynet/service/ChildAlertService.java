@@ -14,6 +14,14 @@ import com.safetynet.service.dataService.DataLoad;
 
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Service permettant de gérer les alertes liées aux enfants vivant à une
+ * adresse donnée.
+ *
+ * Service traitant les données des personnes et des dossiers médicaux
+ * pour identifier les enfants vivant à une adresse spécifique,
+ * ainsi que les autres membres de leur foyer.
+ */
 @Slf4j
 @Service
 public class ChildAlertService {
@@ -21,15 +29,36 @@ public class ChildAlertService {
         private final AgeCalculationService ageCalculationService;
         private final DataLoad dataLoad;
 
+        /**
+         * Constructeur de la classe ChildAlertService.
+         *
+         * @param ageCalculationService Service pour calculer l'âge à partir de la date
+         *                              de naissance.
+         * @param dataLoad              Service pour charger les données depuis un
+         *                              fichier JSON.
+         */
         public ChildAlertService(AgeCalculationService ageCalculationService, DataLoad dataLoad) {
                 this.ageCalculationService = ageCalculationService;
                 this.dataLoad = dataLoad;
         }
 
+        /**
+         * Calcule l'âge à partir de la date de naissance.
+         *
+         * @param birthdate La date de naissance au format MM/dd/yyyy.
+         * @return L'âge en années.
+         */
         public int getAge(String birthdate) {
                 return ageCalculationService.calculateAge(birthdate);
         }
 
+        /**
+         * Récupère la liste des enfants vivant à une adresse donnée.
+         * 
+         * @param address L'adresse pour rechercher les enfants.
+         * @return Une liste des enfants et des autres membres du foyer.
+         * @throws IOException En cas d'erreur lors de la lecture des fichiers JSON.
+         */
         public List<ChildrenByAddress> getChildrenByAddress(String address) throws IOException {
                 String childAddress = address.trim();
                 List<Person> persons = dataLoad.readJsonFile("persons", new TypeReference<Map<String, List<Person>>>() {

@@ -21,42 +21,52 @@ import com.safetynet.model.MedicalRecord;
 @AutoConfigureMockMvc
 public class MedicalRecordIT {
 
-    @Autowired
-    private MockMvc mockMvc;
+        @Autowired
+        private MockMvc mockMvc;
 
-    @Autowired
-    private ObjectMapper objectMapper;
+        @Autowired
+        private ObjectMapper objectMapper;
 
-    @Test
-    public void testAjoutMedicalRecords() throws Exception {
-        MedicalRecord medicalRecord = new MedicalRecord("Jack", "Will", "01/01/1990",
-                Arrays.asList("aspirin", "ibuprofen"), Arrays.asList());
+        @Test
+        public void testAjoutMedicalRecords() throws Exception {
+                MedicalRecord medicalRecord = new MedicalRecord("Jack", "Will", "01/01/1990",
+                                Arrays.asList("aspirin", "ibuprofen"), Arrays.asList());
 
-        mockMvc.perform(post("/medicalRecord")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(Arrays.asList(medicalRecord))))
-                .andExpect(status().isCreated());
-    }
+                mockMvc.perform(post("/medicalRecord")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(Arrays.asList(medicalRecord))))
+                                .andExpect(status().isCreated());
+        }
 
-    @Test
-    public void testMiseAJourMedicalRecords() throws Exception {
-        MedicalRecord medicalRecord = new MedicalRecord("Jack", "Will", "01/01/1990",
-                Arrays.asList("paracetamol", "antihistamine"), Arrays.asList("peanut"));
+        @Test
+        public void testMiseAJourMedicalRecords() throws Exception {
+                MedicalRecord medicalRecordExisting = new MedicalRecord("Jack", "Will", "01/01/1990",
+                                Arrays.asList("aspirin", "ibuprofen"), Arrays.asList());
+                mockMvc.perform(post("/medicalRecord")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(Arrays.asList(medicalRecordExisting))))
+                                .andExpect(status().isCreated());
 
-        mockMvc.perform(put("/medicalRecord")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(Arrays.asList(medicalRecord))))
-                .andExpect(status().isOk());
-    }
+                MedicalRecord medicalRecordUpdated = new MedicalRecord("Jack", "Will", "01/01/1990",
+                                Arrays.asList("paracetamol", "antihistamine"), Arrays.asList("peanut"));
+                mockMvc.perform(put("/medicalRecord")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(Arrays.asList(medicalRecordUpdated))))
+                                .andExpect(status().isOk());
+        }
 
-    @Test
-    public void testSuppressionMedicalRecords() throws Exception {
-        MedicalRecord medicalRecord = new MedicalRecord("Jack", "Will", "01/01/1990",
-                Arrays.asList("aspirin", "ibuprofen"), Arrays.asList());
+        @Test
+        public void testSuppressionMedicalRecords() throws Exception {
+                MedicalRecord medicalRecord = new MedicalRecord("Jack", "Will", "01/01/1990",
+                                Arrays.asList("aspirin", "ibuprofen"), Arrays.asList());
+                mockMvc.perform(post("/medicalRecord")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(Arrays.asList(medicalRecord))))
+                                .andExpect(status().isCreated());
 
-        mockMvc.perform(delete("/medicalRecord")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(Arrays.asList(medicalRecord))))
-                .andExpect(status().isOk());
-    }
+                mockMvc.perform(delete("/medicalRecord")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(Arrays.asList(medicalRecord))))
+                                .andExpect(status().isOk());
+        }
 }

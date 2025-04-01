@@ -33,6 +33,7 @@ class FloodStationControllerTest {
                 MockitoAnnotations.openMocks(this);
         }
 
+        @SuppressWarnings("null")
         @Test
         void testGetFloodStation_ValidStations_WithResidents() throws IOException {
                 // Simule une réponse avec des foyers

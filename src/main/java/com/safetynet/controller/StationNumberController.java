@@ -20,6 +20,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Contrôleur pour gérer les données des personnes associées à une caserne de
+ * pompiers.
+ */
 @Slf4j
 @RestController
 @RequestMapping("/firestation")
@@ -27,11 +31,30 @@ public class StationNumberController {
 
     private final StationNumberService stationNumberService;
 
+    /**
+     * Constructeur de la classe StationNumberController.
+     *
+     * @param stationNumberService Service pour gérer les données des personnes par
+     *                             caserne.
+     * @param personService        Service pour gérer les informations des
+     *                             personnes.
+     * @param firestationService   Service pour gérer les casernes de pompiers.
+     * @param medicalRecordService Service pour gérer les dossiers médicaux.
+     */
+
     public StationNumberController(StationNumberService stationNumberService, PersonService personService,
             FirestationService firestationService, MedicalRecordService medicalRecordService) {
         this.stationNumberService = stationNumberService;
     }
 
+    /**
+     * Récupère les informations des personnes associées au numéro de caserne donné.
+     *
+     * @param stationNumber Numéro de la caserne.
+     * @return Les informations des personnes par caserne ou une réponse avec un
+     *         code HTTP spécifique.
+     * @throws IOException En cas d'erreur lors de la récupération des données.
+     */
     @ResponseStatus(value = HttpStatus.OK)
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Firestation data retrieved successfully."),

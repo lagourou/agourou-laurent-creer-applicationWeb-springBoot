@@ -21,6 +21,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Contrôleur gérer les personnes.
+ * Endpoint pour ajouter, mettre à jour et supprimer des personnes.
+ */
 @Slf4j
 @RestController
 @RequestMapping("/person")
@@ -28,10 +32,21 @@ public class PersonController {
 
     private final PersonService personService;
 
+    /**
+     * Constructeur de la classe PersonController
+     *
+     * @param personService Service permettant de gérer les personnes.
+     *
+     */
     public PersonController(PersonService personService) {
         this.personService = personService;
     }
 
+    /**
+     * Valide que la liste des personnes n'est pas vide.
+     *
+     * @param persons Liste des personnes à valider.
+     */
     private void validPersons(List<Person> persons) {
         if (persons.isEmpty()) {
             log.info("La liste des personnes est vide !");
@@ -39,6 +54,12 @@ public class PersonController {
         }
     }
 
+    /**
+     * Ajoute des personnes.
+     *
+     * @param persons Liste des personnes à ajouter.
+     * @return Les personnes ajoutées.
+     */
     @ResponseStatus(value = HttpStatus.CREATED)
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "The person has been added successfully."),
@@ -52,6 +73,12 @@ public class PersonController {
         return personService.add(persons);
     }
 
+    /**
+     * Met à jour des personnes qui existes.
+     *
+     * @param persons Liste des personnes à mettre à jour.
+     * @return Les personnes mises à jour.
+     */
     @ResponseStatus(value = HttpStatus.OK)
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "The person has been successfully updated."),
@@ -65,6 +92,12 @@ public class PersonController {
         return personService.update(persons);
     }
 
+    /**
+     * Supprime des personnes.
+     *
+     * @param persons Liste des personnes à supprimer.
+     * @return Les personnes supprimées.
+     */
     @ResponseStatus(value = HttpStatus.OK)
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "The persons have been successfully deleted."),

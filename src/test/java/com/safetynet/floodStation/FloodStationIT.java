@@ -21,7 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@DirtiesContext // Réinitialise le contexte entre chaque test
+@DirtiesContext
 public class FloodStationIT {
 
     @Autowired
@@ -34,16 +34,13 @@ public class FloodStationIT {
     private FloodStationService floodStationService;
 
     @Test
-    void testGetFloodStation_returnValidResponse() throws Exception {
-        // Exécution de la requête GET avec plusieurs valeurs
+    void testRetourFoyersValides() throws Exception {
         ResultActions response = mockMvc.perform(get("/flood/stations")
-                .param("stations", "1", "2") // Modification ici : 2 valeurs pour "stations"
+                .param("stations", "1", "2")
                 .contentType(MediaType.APPLICATION_JSON));
 
-        // Vérification du statut HTTP et du contenu de la réponse
         response.andExpect(status().isOk());
 
-        // Désérialisation et validation des résultats
         Map<String, List<FloodStation>> floodStations = objectMapper.readValue(
                 response.andReturn().getResponse().getContentAsString(),
                 objectMapper.getTypeFactory().constructMapType(Map.class, String.class, List.class));
@@ -53,45 +50,39 @@ public class FloodStationIT {
     }
 
     @Test
-    void testGetFloodStation_returnNoContent() throws Exception {
-        // Exécution de la requête GET avec un numéro de caserne inexistant
+    void testAucunFoyer() throws Exception {
         mockMvc.perform(get("/flood/stations")
-                .param("stations", "999") // Caserne inexistante
+                .param("stations", "999")
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNoContent()); // Vérifie que le statut est 204 (No Content)
+                .andExpect(status().isNoContent());
     }
 
     @Test
-    void testGetFloodStation_returnBadRequestForInvalidParams() throws Exception {
-        // Test avec des paramètres invalides (vide)
+    void testParametreInvalide() throws Exception {
         mockMvc.perform(get("/flood/stations")
-                .param("stations", "") // Paramètre vide
+                .param("stations", "")
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest()); // Vérifie que le statut est 400 (Bad Request)
+                .andExpect(status().isBadRequest());
 
-        // Test avec des paramètres null
         mockMvc.perform(get("/flood/stations")
-                .param("stations", (String) null) // Paramètre null
+                .param("stations", (String) null)
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest()); // Vérifie que le statut est 400 (Bad Request)
+                .andExpect(status().isBadRequest());
     }
 
     @Test
-    void testGetFloodStation_validateLogic() throws Exception {
-        // Liste des numéros de casernes valides
+    void testParametreValide() throws Exception {
         List<Integer> stationNumbers = List.of(1);
 
-        // Appel direct au service pour valider les résultats
         Map<String, List<FloodStation>> floodStations = floodStationService.getFloodStation(stationNumbers);
 
-        // Vérifications
         assertThat(floodStations).isNotEmpty();
         List<FloodStation> firstList = floodStations.values().stream().findFirst().orElse(List.of());
-        assertThat(firstList).isNotEmpty(); // Vérifie qu'il y a au moins un foyer
+        assertThat(firstList).isNotEmpty();
         if (!firstList.isEmpty()) {
             FloodStation firstEntry = firstList.get(0);
-            assertThat(firstEntry.name()).isNotEmpty(); // Vérifie que le nom est renseigné
-            assertThat(firstEntry.address()).isNotEmpty(); // Vérifie que l'adresse est renseignée
+            assertThat(firstEntry.name()).isNotEmpty();
+            assertThat(firstEntry.address()).isNotEmpty();
         }
     }
 }

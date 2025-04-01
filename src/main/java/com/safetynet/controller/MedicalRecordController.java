@@ -21,6 +21,11 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Contrôleur pour gérer les dossiers médicaux.
+ * Endpoint pour ajouter, mettre à jour et supprimer
+ * des dossiers médicaux.
+ */
 @Slf4j
 @RestController
 @RequestMapping("/medicalRecord")
@@ -28,10 +33,20 @@ public class MedicalRecordController {
 
     private final MedicalRecordService medicalRecordService;
 
+    /**
+     * Constructeur de la classe MedicalRecordController.
+     *
+     * @param medicalRecordService Service pour gérer les dossiers médicaux.
+     */
     public MedicalRecordController(MedicalRecordService medicalRecordService) {
         this.medicalRecordService = medicalRecordService;
     }
 
+    /**
+     * Vérifie que la liste des dossiers médicaux est valide.
+     *
+     * @param medicalRecords Liste des dossiers médicaux à valider.
+     */
     private void validMedicalRecords(List<MedicalRecord> medicalRecords) {
         if (medicalRecords.isEmpty()) {
             log.info("La liste des dossiers médicales est vide ou nulle !");
@@ -39,6 +54,12 @@ public class MedicalRecordController {
         }
     }
 
+    /**
+     * Ajoute des dossiers médicaux.
+     *
+     * @param medicalRecords Liste des dossiers à ajouter.
+     * @return Les dossiers médicaux ajoutés.
+     */
     @ResponseStatus(value = HttpStatus.CREATED)
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "The medical records have been successfully added."),
@@ -52,6 +73,12 @@ public class MedicalRecordController {
         return medicalRecordService.add(medicalRecords);
     }
 
+    /**
+     * Met à jour des dossiers médicaux.
+     *
+     * @param medicalRecords Liste des dossiers à mettre à jour.
+     * @return Les dossiers médicaux mis à jour.
+     */
     @ResponseStatus(value = HttpStatus.OK)
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "The medical records have been successfully updated."),
@@ -65,6 +92,12 @@ public class MedicalRecordController {
         return medicalRecordService.update(medicalRecords);
     }
 
+    /**
+     * Supprime des dossiers médicaux.
+     *
+     * @param medicalRecords Liste des dossiers à supprimer.
+     * @return Les dossiers médicaux supprimés.
+     */
     @ResponseStatus(value = HttpStatus.OK)
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "The medical records have been successfully deleted."),

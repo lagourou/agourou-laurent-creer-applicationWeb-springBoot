@@ -20,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@DirtiesContext // Réinitialise le contexte après chaque test
+@DirtiesContext
 public class ChildAlertIT {
 
     @Autowired
@@ -33,19 +33,15 @@ public class ChildAlertIT {
     private ChildAlertService childAlertService;
 
     @Test
-    void testGetChildrenByAddress_returnValidResponse() throws Exception {
-        // Adresse existante avec enfants dans le fichier JSON
+    void testRetourneEnfantsValide() throws Exception {
         String address = "1509 Culver St";
 
-        // Exécution de la requête GET
         ResultActions response = mockMvc.perform(get("/childAlert")
                 .param("address", address)
                 .contentType(MediaType.APPLICATION_JSON));
 
-        // Vérification du statut HTTP et du contenu de la réponse
         response.andExpect(status().isOk());
 
-        // Désérialisation et validation des résultats
         List<ChildrenByAddress> childrenByAddress = objectMapper.readValue(
                 response.andReturn().getResponse().getContentAsString(),
                 objectMapper.getTypeFactory().constructCollectionType(List.class, ChildrenByAddress.class));
@@ -57,40 +53,33 @@ public class ChildAlertIT {
     }
 
     @Test
-    void testGetChildrenByAddress_returnNoContent() throws Exception {
-        // Adresse existante mais sans enfants dans le fichier JSON
+    void testRetourneAucunEnfant() throws Exception {
         String address = "unknown address";
 
-        // Exécution de la requête GET
         mockMvc.perform(get("/childAlert")
                 .param("address", address)
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNoContent()); // Vérifie que le statut est 204
+                .andExpect(status().isNoContent());
     }
 
     @Test
-    void testGetChildrenByAddress_returnBadRequest() throws Exception {
-        // Adresse invalide (vide ou null)
+    void testAdresseInvalide() throws Exception {
         String invalidAddress = "";
 
-        // Exécution de la requête GET
         mockMvc.perform(get("/childAlert")
                 .param("address", invalidAddress)
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest()); // Vérifie que le statut est 400
+                .andExpect(status().isBadRequest());
     }
 
     @Test
-    void testGetChildrenByAddress_validateLogic() throws Exception {
-        // Adresse existante dans le fichier JSON
+    void testAdresseValide() throws Exception {
         String address = "1509 Culver St";
 
-        // Appel direct au service pour valider les résultats
         List<ChildrenByAddress> childrenByAddresses = childAlertService.getChildrenByAddress(address);
 
-        // Vérifications
         assertThat(childrenByAddresses).isNotEmpty();
-        assertThat(childrenByAddresses.get(0).firstName()).isNotEmpty(); // Vérifie que le prénom n'est pas vide
-        assertThat(childrenByAddresses.get(0).otherMembers()).isNotEmpty(); // Vérifie les autres membres
+        assertThat(childrenByAddresses.get(0).firstName()).isNotEmpty();
+        assertThat(childrenByAddresses.get(0).otherMembers()).isNotEmpty();
     }
 }

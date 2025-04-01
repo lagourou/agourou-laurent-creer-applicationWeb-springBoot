@@ -20,17 +20,36 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Contrôleur pour récupérer les numéros de téléphone des habitants
+ * en fonction du numéro de caserne de pompiers.
+ */
 @Slf4j
 @RestController
 @RequestMapping("phoneAlert")
 public class PhoneAlertController {
     private final PhoneAlertService phoneAlertService;
 
+    /**
+     * Constructeur de la classe PhoneAlertController.
+     *
+     * @param phoneAlertService  Service pour gérer les numéros de téléphone.
+     * @param personService      Service pour gérer les personnes.
+     * @param firestationService Service pour gérer les casernes de pompiers.
+     */
     public PhoneAlertController(PhoneAlertService phoneAlertService, PersonService personService,
             FirestationService firestationService) {
         this.phoneAlertService = phoneAlertService;
     }
 
+    /**
+     * Récupère les numéros de téléphone associés à une caserne de pompiers.
+     *
+     * @param firestationNumber Numéro de la caserne.
+     * @return Liste des numéros de téléphone ou une réponse avec un code HTTP
+     *         spécifique.
+     * @throws IOException En cas d'erreur lors de la récupération des données.
+     */
     @ResponseStatus(value = HttpStatus.OK)
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Phone numbers retrieved successfully."),

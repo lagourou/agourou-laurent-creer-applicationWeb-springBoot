@@ -20,15 +20,37 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.safetynet.dto.CommunityEmail;
 
+/**
+ * Contrôleur pour la gestion des emails.
+ * Endpoint pour récupérer les emails des habitants
+ * d'une ville donnée.
+ */
+
 @Slf4j
 @RestController
 @RequestMapping("communityEmail")
 public class CommunityEmailController {
     private final CommunityEmailService communityEmailService;
 
+    /**
+     * Constructeur de la classe CommunityEmailController.
+     *
+     * @param communityEmailService Service permettant de récupérer les emails
+     *
+     */
+
     public CommunityEmailController(CommunityEmailService communityEmailService) {
         this.communityEmailService = communityEmailService;
     }
+
+    /**
+     *
+     * @param city Ville regroupant ses habitants et ses adresses e-mails.
+     * @return Une ResponseEntity contenant la liste des emails ou un
+     *         statut HTTP spécifique.
+     * @throws IOException Si une erreur survient lors de la récupération des
+     *                     données.
+     */
 
     @ResponseStatus(value = HttpStatus.OK)
     @ApiResponses(value = {

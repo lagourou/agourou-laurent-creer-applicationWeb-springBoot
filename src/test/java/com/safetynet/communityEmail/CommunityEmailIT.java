@@ -20,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@DirtiesContext // Réinitialise le contexte après chaque test
+@DirtiesContext
 public class CommunityEmailIT {
 
     @Autowired
@@ -33,61 +33,50 @@ public class CommunityEmailIT {
     private CommunityEmailService communityEmailService;
 
     @Test
-    void testGetCommunityEmail_returnValidResponse() throws Exception {
-        // Ville existante avec des emails dans le fichier JSON
+    void testEmailsValides() throws Exception {
         String city = "Culver";
 
-        // Exécution de la requête GET
         ResultActions response = mockMvc.perform(get("/communityEmail")
                 .param("city", city)
                 .contentType(MediaType.APPLICATION_JSON));
 
-        // Vérification du statut HTTP et du contenu de la réponse
         response.andExpect(status().isOk());
 
-        // Désérialisation et validation des résultats
         List<CommunityEmail> communityEmails = objectMapper.readValue(
                 response.andReturn().getResponse().getContentAsString(),
                 objectMapper.getTypeFactory().constructCollectionType(List.class, CommunityEmail.class));
 
         assertThat(communityEmails).isNotEmpty();
-        assertThat(communityEmails.get(0).email()).isNotEmpty(); // Vérifie qu'un email est présent
+        assertThat(communityEmails.get(0).email()).isNotEmpty();
     }
 
     @Test
-    void testGetCommunityEmail_returnNoContent() throws Exception {
-        // Ville existante mais sans emails associés
+    void testAucunEmail() throws Exception {
         String city = "UnknownCity";
 
-        // Exécution de la requête GET
         mockMvc.perform(get("/communityEmail")
                 .param("city", city)
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNoContent()); // Vérifie que le statut est 204
+                .andExpect(status().isNoContent());
     }
 
     @Test
-    void testGetCommunityEmail_returnBadRequest() throws Exception {
-        // Paramètre "city" invalide (vide ou null)
+    void testParametreInvalide() throws Exception {
         String invalidCity = "";
 
-        // Exécution de la requête GET
         mockMvc.perform(get("/communityEmail")
                 .param("city", invalidCity)
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest()); // Vérifie que le statut est 400
+                .andExpect(status().isBadRequest());
     }
 
     @Test
-    void testGetCommunityEmail_validateLogic() throws Exception {
-        // Ville existante dans le fichier JSON
+    void testParametrevalide() throws Exception {
         String city = "Culver";
 
-        // Appel direct au service pour valider les résultats
         List<CommunityEmail> communityEmails = communityEmailService.getCommunityEmail(city);
 
-        // Vérifications
         assertThat(communityEmails).isNotEmpty();
-        assertThat(communityEmails.get(0).email()).isNotEmpty(); // Vérifie qu'un email est présent
+        assertThat(communityEmails.get(0).email()).isNotEmpty();
     }
 }

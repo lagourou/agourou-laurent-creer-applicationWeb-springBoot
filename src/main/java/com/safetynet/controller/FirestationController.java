@@ -21,6 +21,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Contrôleur pour gérer les alertes liées aux casernes de
+ * pompiers.
+ * Endpoint pour ajouter, mettre à jour et supprimer
+ * des casernes.
+ */
 @Slf4j
 @RestController
 @RequestMapping("/firestation")
@@ -28,9 +34,24 @@ public class FirestationController {
 
     private final FirestationService firestationService;
 
+    /**
+     * Constructeur de la classe FirestationController.
+     *
+     * @param firestationService Service permettant de gérer les alertes liées
+     *                           aux
+     *                           casernes de pompiers.
+     */
+
     public FirestationController(FirestationService firestationService) {
         this.firestationService = firestationService;
     }
+
+    /**
+     * Valide que la liste des casernes n'est ni vide, ni nulle.
+     *
+     * @param firestations Liste des casernes à valider.
+     * @throws IllegalArgumentException Si la liste est vide ou nulle.
+     */
 
     private void validFirestations(List<Firestation> firestations) {
         if (firestations.isEmpty()) {
@@ -38,6 +59,13 @@ public class FirestationController {
             throw new IllegalArgumentException("La liste des casernes ne peut pas être vide.");
         }
     }
+
+    /**
+     * Ajoute des casernes de pompiers.
+     *
+     * @param firestations Liste des casernes à ajouter.
+     * @return Les casernes ajoutées.
+     */
 
     @ResponseStatus(value = HttpStatus.CREATED)
     @ApiResponses(value = {
@@ -52,6 +80,12 @@ public class FirestationController {
         return firestationService.add(firestations);
     }
 
+    /**
+     * Met à jour des casernes qui existes.
+     *
+     * @param firestations Liste des casernes à mettre à jour.
+     * @return Les casernes mises à jour.
+     */
     @ResponseStatus(value = HttpStatus.OK)
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "The firestations have been successfully updated."),
@@ -65,6 +99,12 @@ public class FirestationController {
         return firestationService.update(firestations);
     }
 
+    /**
+     * Supprime des casernes de pompiers.
+     *
+     * @param firestations Liste des casernes à supprimer.
+     * @return Les casernes supprimées.
+     */
     @ResponseStatus(value = HttpStatus.OK)
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "The firestations have been successfully deleted."),

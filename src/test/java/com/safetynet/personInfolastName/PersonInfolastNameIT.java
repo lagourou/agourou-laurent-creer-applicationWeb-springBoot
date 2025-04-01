@@ -20,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@DirtiesContext // Réinitialise le contexte entre chaque test
+@DirtiesContext
 public class PersonInfolastNameIT {
 
     @Autowired
@@ -33,64 +33,53 @@ public class PersonInfolastNameIT {
     private PersonInfolastNameService personInfolastNameService;
 
     @Test
-    void testGetPersonInfolastName_returnValidResponse() throws Exception {
-        // Nom de famille existant dans le fichier JSON
+    void testRetourPersonnesValides() throws Exception {
         String lastName = "Boyd";
 
-        // Exécution de la requête GET
         ResultActions response = mockMvc.perform(get("/personInfolastName")
                 .param("lastName", lastName)
                 .contentType(MediaType.APPLICATION_JSON));
 
-        // Vérification du statut HTTP et du contenu de la réponse
         response.andExpect(status().isOk());
 
-        // Désérialisation et validation des résultats
         List<PersonInfolastName> personInfolastNames = objectMapper.readValue(
                 response.andReturn().getResponse().getContentAsString(),
                 objectMapper.getTypeFactory().constructCollectionType(List.class, PersonInfolastName.class));
 
         assertThat(personInfolastNames).isNotEmpty();
-        assertThat(personInfolastNames.get(0).lastName()).isEqualTo(lastName); // Vérifie que le nom est correct
+        assertThat(personInfolastNames.get(0).lastName()).isEqualTo(lastName);
     }
 
     @Test
-    void testGetPersonInfolastName_returnNoContent() throws Exception {
-        // Nom de famille inexistant dans le fichier JSON
+    void testAucunePersonne() throws Exception {
         String lastName = "UnknownLastName";
 
-        // Exécution de la requête GET
         mockMvc.perform(get("/personInfolastName")
                 .param("lastName", lastName)
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNoContent()); // Vérifie que le statut est 204
+                .andExpect(status().isNoContent());
     }
 
     @Test
-    void testGetPersonInfolastName_returnBadRequest() throws Exception {
-        // Paramètre "lastName" invalide (vide ou null)
+    void testNomInvalide() throws Exception {
         String invalidLastName = "";
 
-        // Exécution de la requête GET
         mockMvc.perform(get("/personInfolastName")
                 .param("lastName", invalidLastName)
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest()); // Vérifie que le statut est 400
+                .andExpect(status().isBadRequest());
     }
 
     @Test
-    void testGetPersonInfolastName_validateLogic() throws Exception {
-        // Nom de famille existant dans le fichier JSON
+    void testNomValide() throws Exception {
         String lastName = "Boyd";
 
-        // Appel direct au service pour valider les résultats
         List<PersonInfolastName> personInfolastNames = personInfolastNameService.getPersonInfolastName(lastName);
 
-        // Vérifications
         assertThat(personInfolastNames).isNotEmpty();
-        assertThat(personInfolastNames.get(0).lastName()).isEqualTo(lastName); // Vérifie que le nom est correct
-        assertThat(personInfolastNames.get(0).medications()).isNotNull(); // Vérifie les médicaments
-        assertThat(personInfolastNames.get(0).allergies()).isNotNull(); // Vérifie les allergies
-        assertThat(personInfolastNames.get(0).email()).isNotEmpty(); // Vérifie que l'email est renseigné
+        assertThat(personInfolastNames.get(0).lastName()).isEqualTo(lastName);
+        assertThat(personInfolastNames.get(0).medications()).isNotNull();
+        assertThat(personInfolastNames.get(0).allergies()).isNotNull();
+        assertThat(personInfolastNames.get(0).email()).isNotEmpty();
     }
 }

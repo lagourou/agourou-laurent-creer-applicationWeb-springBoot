@@ -8,10 +8,22 @@ import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Service permettant de calculer l'âge d'une personne à partir de sa date de
+ * naissance.
+ */
 @Slf4j
 @Service
 public class AgeCalculationService {
 
+    /**
+     * Calcule l'âge en années à partir de la date de naissance.
+     *
+     * @param birthdate La date de naissance au format MM/dd/yyyy. Peut être null ou
+     *                  vide.
+     * @return L'âge, retourne 0 si la date de naissance est manquante ou
+     *         invalide.
+     */
     public int calculateAge(String birthdate) {
         if (birthdate == null || birthdate.isEmpty()) {
             log.info("Date de naissance manquante ou vide !");

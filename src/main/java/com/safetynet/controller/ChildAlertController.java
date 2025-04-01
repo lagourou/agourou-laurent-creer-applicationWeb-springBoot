@@ -20,6 +20,11 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Contrôleur pour gérer les alertes concernant les enfants.
+ * Endpoint pour récupérer les enfants et les autres membres du foyer
+ * à partir de l'adresse
+ */
 @Slf4j
 @RestController
 @RequestMapping("childAlert")
@@ -27,10 +32,28 @@ public class ChildAlertController {
 
     private final ChildAlertService childAlertService;
 
+    /**
+     * Constructeur de la classe ChildAlertController.
+     * 
+     * @param childAlertService    Service permettant de gérer les alertes pour les
+     *                             enfants.
+     * @param personService        Service pour gérer les personnes.
+     * @param medicalRecordService Service pour gérer les dossiers médicaux.
+     */
+
     public ChildAlertController(ChildAlertService childAlertService, PersonService personService,
             MedicalRecordService medicalRecordService) {
         this.childAlertService = childAlertService;
     }
+
+    /**
+     * @param address L'adresse utilisée pour rechercher les enfants et les autres
+     *                membres du foyer
+     * @return Une ResponseEntity contenant la liste des enfants par adresse, ou un
+     *         statut HTTP spécifique
+     * @throws IOException Si une erreur survient lors de la récupération des
+     *                     données
+     */
 
     @ResponseStatus(value = HttpStatus.OK)
     @ApiResponses(value = {

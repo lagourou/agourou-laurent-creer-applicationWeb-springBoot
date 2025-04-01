@@ -18,7 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@DirtiesContext // Réinitialise le contexte entre chaque test
+@DirtiesContext
 public class StationNumberIT {
 
     @Autowired
@@ -31,65 +31,54 @@ public class StationNumberIT {
     private StationNumberService stationNumberService;
 
     @Test
-    void testGetPersonsByStation_returnValidResponse() throws Exception {
-        // Numéro de caserne existant dans le fichier JSON
+    void testRetourPersonnesValides() throws Exception {
         int stationNumber = 1;
 
-        // Exécution de la requête GET
         ResultActions response = mockMvc.perform(get("/firestation")
                 .param("stationNumber", String.valueOf(stationNumber))
                 .contentType(MediaType.APPLICATION_JSON));
 
-        // Vérification du statut HTTP et du contenu de la réponse
         response.andExpect(status().isOk());
 
-        // Désérialisation et validation des résultats
         FirestationByPerson firestationByPerson = objectMapper.readValue(
                 response.andReturn().getResponse().getContentAsString(),
                 FirestationByPerson.class);
 
         assertThat(firestationByPerson).isNotNull();
-        assertThat(firestationByPerson.persons()).isNotEmpty(); // Vérifie que des personnes sont présentes
-        assertThat(firestationByPerson.numberOfAdults()).isGreaterThanOrEqualTo(0); // Vérifie le nombre d'adultes
-        assertThat(firestationByPerson.numberOfChildren()).isGreaterThanOrEqualTo(0); // Vérifie le nombre d'enfants
+        assertThat(firestationByPerson.persons()).isNotEmpty();
+        assertThat(firestationByPerson.numberOfAdults()).isGreaterThanOrEqualTo(0);
+        assertThat(firestationByPerson.numberOfChildren()).isGreaterThanOrEqualTo(0);
     }
 
     @Test
-    void testGetPersonsByStation_returnNoContent() throws Exception {
-        // Numéro de caserne inexistant dans le fichier JSON
+    void testAucunePersonne() throws Exception {
         int stationNumber = 999;
 
-        // Exécution de la requête GET
         mockMvc.perform(get("/firestation")
                 .param("stationNumber", String.valueOf(stationNumber))
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNoContent()); // Vérifie que le statut est 204
+                .andExpect(status().isNoContent());
     }
 
     @Test
-    void testGetPersonsByStation_returnBadRequest() throws Exception {
-        // Paramètre "stationNumber" invalide (zéro ou négatif)
+    void testNumeroInvalide() throws Exception {
         int invalidStationNumber = -1;
 
-        // Exécution de la requête GET
         mockMvc.perform(get("/firestation")
                 .param("stationNumber", String.valueOf(invalidStationNumber))
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest()); // Vérifie que le statut est 400
+                .andExpect(status().isBadRequest());
     }
 
     @Test
-    void testGetPersonsByStation_validateLogic() throws Exception {
-        // Numéro de caserne existant dans le fichier JSON
+    void testNumeroValide() throws Exception {
         int stationNumber = 1;
 
-        // Appel direct au service pour valider les résultats
         FirestationByPerson firestationByPerson = stationNumberService.getPersonByStation(stationNumber);
 
-        // Vérifications
         assertThat(firestationByPerson).isNotNull();
-        assertThat(firestationByPerson.persons()).isNotEmpty(); // Vérifie que des personnes sont présentes
-        assertThat(firestationByPerson.numberOfAdults()).isGreaterThanOrEqualTo(0); // Vérifie le nombre d'adultes
-        assertThat(firestationByPerson.numberOfChildren()).isGreaterThanOrEqualTo(0); // Vérifie le nombre d'enfants
+        assertThat(firestationByPerson.persons()).isNotEmpty();
+        assertThat(firestationByPerson.numberOfAdults()).isGreaterThanOrEqualTo(0);
+        assertThat(firestationByPerson.numberOfChildren()).isGreaterThanOrEqualTo(0);
     }
 }

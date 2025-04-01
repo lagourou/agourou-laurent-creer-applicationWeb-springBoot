@@ -13,24 +13,49 @@ import com.safetynet.model.Firestation;
 import com.safetynet.model.MedicalRecord;
 import com.safetynet.model.Person;
 import com.safetynet.service.dataService.DataLoad;
-
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Service permettant de récupérer les informations des foyers associés aux
+ * casernes de pompiers en cas d'inondation.
+ */
 @Slf4j
 @Service
 public class FloodStationService {
         private final DataLoad dataLoad;
         private final AgeCalculationService ageCalculationService;
 
+        /**
+         * Constructeur de la classe FloodStationService.
+         *
+         * @param dataLoad              Service pour charger les données depuis un
+         *                              fichier JSON.
+         * @param ageCalculationService Service pour calculer l'âge des habitants à
+         *                              partir de leur date de naissance.
+         */
         public int getAge(String birthdate) {
                 return ageCalculationService.calculateAge(birthdate);
         }
 
+        /**
+         * Calcule l'âge à partir de la date de naissance.
+         *
+         * @param birthdate La date de naissance au format MM/dd/yyyy.
+         * @return L'âge.
+         */
         public FloodStationService(DataLoad dataLoad, AgeCalculationService ageCalculationService) {
                 this.dataLoad = dataLoad;
                 this.ageCalculationService = ageCalculationService;
         }
 
+        /**
+         * Récupère les informations des foyers associés aux casernes spécifiées.
+         *
+         * @param stationNumbers Liste des numéros de casernes.
+         * @return Une map regroupant les foyers par adresse, contenant les informations
+         *         des habitants.
+         * @throws IOException En cas d'erreur lors de la lecture des fichiers JSON.
+         */
         public Map<String, List<FloodStation>> getFloodStation(List<Integer> stationNumbers) throws IOException {
                 List<Person> persons = dataLoad.readJsonFile("persons", new TypeReference<Map<String, List<Person>>>() {
                 });

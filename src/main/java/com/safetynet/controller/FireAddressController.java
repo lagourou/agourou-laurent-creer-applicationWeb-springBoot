@@ -18,15 +18,39 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Contrôleur pour gérer les alertes liées aux adresses des casernes de pompier
+ * Endpoint pour récupérer les habitants vivant l'adresse
+ * donnée.
+ */
 @Slf4j
 @RestController
 @RequestMapping("fire")
 public class FireAddressController {
     private final FireAddressService fireAddressService;
 
+    /**
+     * Constructeur de la classe FireAddressController.
+     * 
+     * @param fireAddressService Service permettant de récupérer les informations
+     *                           des
+     *                           habitants par adresse des casernes de pompier.
+     */
+
     public FireAddressController(FireAddressService fireAddressService) {
         this.fireAddressService = fireAddressService;
     }
+
+    /**
+     * 
+     * @param fireAddress L'adresse utilisée pour rechercher les informations des
+     *                    habitants.
+     * @return Une ResponseEntity contenant la liste des habitants pour l'adresse
+     *         donnée ou un statut HTTP spécifique.
+     * @throws IOException Si une erreur survient lors de la récupération
+     *                     des
+     *                     données.
+     */
 
     @ResponseStatus(value = HttpStatus.OK)
     @ApiResponses(value = {

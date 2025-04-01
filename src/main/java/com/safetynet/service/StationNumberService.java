@@ -13,24 +13,50 @@ import com.safetynet.model.Firestation;
 import com.safetynet.model.MedicalRecord;
 import com.safetynet.model.Person;
 import com.safetynet.service.dataService.DataLoad;
-
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Service pour récupérer les informations des personnes associées à une caserne
+ * donnée.
+ */
 @Slf4j
 @Service
 public class StationNumberService {
         private final AgeCalculationService ageCalculationService;
         private final DataLoad dataLoad;
 
+        /**
+         * Constructeur de la classe StationNumberService.
+         *
+         * @param ageCalculationService Service pour calculer l'âge à partir de la date
+         *                              de naissance.
+         * @param dataLoad              Service pour charger les données depuis un
+         *                              fichier JSON.
+         */
         public StationNumberService(AgeCalculationService ageCalculationService, DataLoad dataLoad) {
                 this.ageCalculationService = ageCalculationService;
                 this.dataLoad = dataLoad;
         }
 
+        /**
+         * Calcule l'âge à partir de la date de naissance.
+         *
+         * @param birthdate La date de naissance au format MM/dd/yyyy.
+         * @return L'âge.
+         */
         public int getAge(String birthdate) {
                 return ageCalculationService.calculateAge(birthdate);
         }
 
+        /**
+         * Récupère les informations des personnes associées à une caserne donnée.
+         *
+         * @param stationNumber Le numéro de la caserne.
+         * @return Une liste des personnes couvertes par la caserne de pompiers
+         *         correspondante
+         *         et le nombre d'adultes et d'enfants.
+         * @throws IOException En cas d'erreur lors de la lecture des fichiers JSON.
+         */
         public FirestationByPerson getPersonByStation(int stationNumber) throws IOException {
                 log.info("Requête reçue pour getPersonByStation avec le numéro de la caserne: {}", stationNumber);
 

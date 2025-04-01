@@ -15,21 +15,47 @@ import com.safetynet.service.dataService.DataLoad;
 
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Service permettant de récupérer la liste des habitants vivant à l’adresse
+ * donnée.
+ *
+ */
 @Slf4j
 @Service
 public class FireAddressService {
     private final DataLoad dataLoad;
     private final AgeCalculationService ageCalculationService;
 
+    /**
+     * Calcul de l'âge à partir de la date de naissance.
+     *
+     * @param birthdate La date de naissance au format MM/dd/yyyy.
+     * @return L'âge.
+     */
     public int getAge(String birthdate) {
         return ageCalculationService.calculateAge(birthdate);
     }
 
+    /**
+     * Constructeur de la classe FireAddressService.
+     *
+     * @param dataLoad              Service pour charger les données depuis un
+     *                              fichier JSON.
+     * @param ageCalculationService Service pour calculer l'âge des habitants.
+     */
     public FireAddressService(DataLoad dataLoad, AgeCalculationService ageCalculationService) {
         this.dataLoad = dataLoad;
         this.ageCalculationService = ageCalculationService;
     }
 
+    /**
+     * Récupère les informations des habitants associés à une adresse donnée.
+     * 
+     * @param fireAddress Adresse utilisée pour récupérer les données des habitants.
+     * @return Une liste contenant les informations des habitants et le numéro de la
+     *         caserne.
+     * @throws IOException En cas d'erreur lors de la lecture des fichiers JSON.
+     */
     public List<FireAddress> getFireAddress(String fireAddress) throws IOException {
 
         String fireAddresse = fireAddress.trim();

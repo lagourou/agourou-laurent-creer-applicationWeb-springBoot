@@ -13,21 +13,39 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.safetynet.dto.PersonInfolastName;
 import com.safetynet.service.PersonInfolastNameService;
-
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Contrôleur pour gérer les informations des personnes par nom de famille.
+ * Endpoint pour récupérer les informations des habitants avec
+ * un nom de famille donné.
+ */
 @Slf4j
 @RestController
 @RequestMapping("/personInfolastName")
 public class PersonInfolastNameController {
     private final PersonInfolastNameService personInfolastNameService;
 
+    /**
+     * Constructeur de la classe PersonInfolastNameController
+     *
+     * @param personInfolastNameService Service pour gérer les informations des
+     *                                  habitants par nom de famille.
+     */
     public PersonInfolastNameController(PersonInfolastNameService personInfolastNameService) {
         this.personInfolastNameService = personInfolastNameService;
     }
 
+    /**
+     * Récupère les informations des personnes avec un nom de famille donné.
+     *
+     * @param lastNames Nom de famille pour rechercher les personnes.
+     * @return Les informations des personnes correspondantes ou un code HTTP
+     *         spécifique.
+     * @throws IOException En cas d'erreur lors de la récupération des données.
+     */
     @ResponseStatus(value = HttpStatus.OK)
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Person information retrieved successfully."),

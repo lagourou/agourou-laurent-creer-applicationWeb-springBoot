@@ -2,8 +2,8 @@ package com.safetynet.firestation;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.Arrays;
 
@@ -35,21 +35,31 @@ public class FirestationIT {
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(objectMapper.writeValueAsString(Arrays.asList(firestation))))
                                 .andExpect(status().isCreated());
+
         }
 
         @Test
         public void testMiseAJourFirestation() throws Exception {
-                Firestation updatedFirestation = new Firestation("1252 Roses St", 3);
+                Firestation firestationExisting = new Firestation("1252 Roses St", 5);
+                mockMvc.perform(post("/firestation")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(Arrays.asList(firestationExisting))))
+                                .andExpect(status().isCreated());
 
+                Firestation updateFirestation = new Firestation("1252 Roses St", 3);
                 mockMvc.perform(put("/firestation")
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .content(objectMapper.writeValueAsString(Arrays.asList(updatedFirestation))))
+                                .content(objectMapper.writeValueAsString(Arrays.asList(updateFirestation))))
                                 .andExpect(status().isOk());
         }
 
         @Test
         public void testSuppressionFirestation() throws Exception {
                 Firestation firestation = new Firestation("1252 Roses St", 3);
+                mockMvc.perform(post("/firestation")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(Arrays.asList(firestation))))
+                                .andExpect(status().isCreated());
 
                 mockMvc.perform(delete("/firestation")
                                 .contentType(MediaType.APPLICATION_JSON)

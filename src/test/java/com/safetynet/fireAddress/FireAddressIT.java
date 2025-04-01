@@ -20,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@DirtiesContext // Réinitialise le contexte entre chaque test
+@DirtiesContext
 public class FireAddressIT {
 
     @Autowired
@@ -33,65 +33,54 @@ public class FireAddressIT {
     private FireAddressService fireAddressService;
 
     @Test
-    void testGetFireAddress_returnValidResponse() throws Exception {
-        // Adresse existante avec habitants dans le fichier JSON
+    void testRetourHabitantsValides() throws Exception {
         String address = "1509 Culver St";
 
-        // Exécution de la requête GET
         ResultActions response = mockMvc.perform(get("/fire")
                 .param("address", address)
                 .contentType(MediaType.APPLICATION_JSON));
 
-        // Vérification du statut HTTP et du contenu de la réponse
         response.andExpect(status().isOk());
 
-        // Désérialisation et validation des résultats
         List<FireAddress> fireAddresses = objectMapper.readValue(
                 response.andReturn().getResponse().getContentAsString(),
                 objectMapper.getTypeFactory().constructCollectionType(List.class, FireAddress.class));
 
         assertThat(fireAddresses).isNotEmpty();
-        assertThat(fireAddresses.get(0).name()).isNotEmpty(); // Vérifie que le nom est présent
-        assertThat(fireAddresses.get(0).phone()).isNotEmpty(); // Vérifie que le téléphone est présent
+        assertThat(fireAddresses.get(0).name()).isNotEmpty();
+        assertThat(fireAddresses.get(0).phone()).isNotEmpty();
     }
 
     @Test
-    void testGetFireAddress_returnNoContent() throws Exception {
-        // Adresse valide mais sans habitants dans le fichier JSON
+    void testAucunHabitant() throws Exception {
         String address = "unknown address";
 
-        // Exécution de la requête GET
         mockMvc.perform(get("/fire")
                 .param("address", address)
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNoContent()); // Vérifie que le statut est 204
+                .andExpect(status().isNoContent());
     }
 
     @Test
-    void testGetFireAddress_returnBadRequest() throws Exception {
-        // Adresse invalide (vide ou null)
+    void testAdresseInvalide() throws Exception {
         String invalidAddress = "";
 
-        // Exécution de la requête GET
         mockMvc.perform(get("/fire")
                 .param("address", invalidAddress)
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest()); // Vérifie que le statut est 400
+                .andExpect(status().isBadRequest());
     }
 
     @Test
-    void testGetFireAddress_validateLogic() throws Exception {
-        // Adresse existante dans le fichier JSON
+    void testAdresseValide() throws Exception {
         String address = "1509 Culver St";
 
-        // Appel direct au service pour valider les résultats
         List<FireAddress> fireAddresses = fireAddressService.getFireAddress(address);
 
-        // Vérifications
         assertThat(fireAddresses).isNotEmpty();
-        assertThat(fireAddresses.get(0).name()).isNotEmpty(); // Vérifie que le nom est présent
-        assertThat(fireAddresses.get(0).medications()).isNotNull(); // Vérifie les médicaments
-        assertThat(fireAddresses.get(0).allergies()).isNotNull(); // Vérifie les allergies
-        assertThat(fireAddresses.get(0).stationNumber()).isGreaterThan(0); // Vérifie le numéro de caserne
+        assertThat(fireAddresses.get(0).name()).isNotEmpty();
+        assertThat(fireAddresses.get(0).medications()).isNotNull();
+        assertThat(fireAddresses.get(0).allergies()).isNotNull();
+        assertThat(fireAddresses.get(0).stationNumber()).isGreaterThan(0);
     }
 }

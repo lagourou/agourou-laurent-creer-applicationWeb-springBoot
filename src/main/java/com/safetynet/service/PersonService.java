@@ -8,19 +8,35 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.safetynet.model.Person;
 import com.safetynet.service.dataService.DataLoad;
-
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Service permettant de gérer les informations des personnes.
+ */
 @Slf4j
 @Service
 public class PersonService {
 
     private final DataLoad dataLoad;
 
+    /**
+     * Constructeur de la classe PersonService.
+     *
+     * @param dataLoad Service pour charger et sauvegarder les données du fichier
+     *                 JSON.
+     */
     public PersonService(DataLoad dataLoad) {
         this.dataLoad = dataLoad;
     }
 
+    /**
+     * Ajoute des personnes au fichier JSON.
+     *
+     * @param persons Liste des personnes à ajouter.
+     * @return Les personnes ajoutées.
+     * @throws IOException En cas d'erreur lors de la lecture ou de la sauvegarde
+     *                     des données.
+     */
     public List<Person> add(List<Person> persons) throws IOException {
         log.info("Ajout de personnes au fichier Json.");
         List<Person> existingPersons = dataLoad.readJsonFile("persons", new TypeReference<Map<String, List<Person>>>() {
@@ -42,6 +58,14 @@ public class PersonService {
         return persons;
     }
 
+    /**
+     * Met à jour les informations des personnes existantes.
+     *
+     * @param persons Liste des personnes à mettre à jour.
+     * @return Les personnes mises à jour.
+     * @throws IOException En cas d'erreur lors de la lecture ou de la sauvegarde
+     *                     des données.
+     */
     public List<Person> update(List<Person> persons) throws IOException {
         log.info("Mise à jour des personnes.");
 
@@ -66,6 +90,14 @@ public class PersonService {
         return existingPersons;
     }
 
+    /**
+     * Supprime des personnes.
+     *
+     * @param persons Liste des personnes à supprimer.
+     * @return Les personnes supprimées.
+     * @throws IOException En cas d'erreur lors de la lecture ou de la sauvegarde
+     *                     des données.
+     */
     public List<Person> delete(List<Person> persons) throws IOException {
         log.info("Suppression de personnes.");
 
