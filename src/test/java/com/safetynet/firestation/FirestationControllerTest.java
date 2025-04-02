@@ -3,11 +3,11 @@ package com.safetynet.firestation;
 import com.safetynet.controller.FirestationController;
 import com.safetynet.model.Firestation;
 import com.safetynet.service.FirestationService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.IOException;
 import java.util.List;
@@ -15,6 +15,10 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+/**
+ * Tests pour le contrôleur Firestation.
+ */
+@ExtendWith(MockitoExtension.class)
 class FirestationControllerTest {
 
     @Mock
@@ -23,19 +27,17 @@ class FirestationControllerTest {
     @InjectMocks
     private FirestationController firestationController;
 
-    private List<Firestation> firestations;
+    private final List<Firestation> firestations = List.of(
+            new Firestation("Address 1", 1),
+            new Firestation("Station 2", 2));
 
-    @BeforeEach
-    @SuppressWarnings(value = { "unused" })
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-        firestations = List.of(
-                new Firestation("Address 1", 1),
-                new Firestation("Station 2", 2));
-    }
-
+    /**
+     * Teste la méthode de création de casernes avec une liste valide.
+     *
+     * @throws IOException gère l'erreur lors de l'exécution du test.
+     */
     @Test
-    void testCreer() throws IOException {
+    void testCreate() throws IOException {
         when(firestationService.add(firestations)).thenReturn(firestations);
 
         List<Firestation> result = firestationController.creer(firestations);
@@ -47,62 +49,75 @@ class FirestationControllerTest {
         assertEquals(1, result.get(0).getStation());
     }
 
+    /**
+     * Teste la méthode de création de casernes avec une liste vide.
+     *
+     * @throws IOException gère l'erreur lors de l'exécution du test.
+     */
     @Test
-    void testCreerWithEmptyList() {
-        // Configuration des données invalides
+    void testCreateWithEmptyList() {
         List<Firestation> emptyFirestations = List.of();
 
-        // Vérifie qu'une exception est levée
         Exception exception = assertThrows(IllegalArgumentException.class,
                 () -> firestationController.creer(emptyFirestations));
         assertEquals("La liste des casernes ne peut pas être vide.", exception.getMessage());
     }
 
+    /**
+     * Teste la méthode de mise à jour des casernes avec une liste valide.
+     *
+     * @throws IOException gère l'erreur lors de l'exécution du test.
+     */
     @Test
-    void testMettreAJour() throws IOException {
-        // Configure le mock pour renvoyer les casernes mises à jour
+    void testUpdate() throws IOException {
         when(firestationService.update(firestations)).thenReturn(firestations);
 
-        // Appel de la méthode
         List<Firestation> result = firestationController.mettreAJour(firestations);
 
-        // Vérifications
         verify(firestationService).update(firestations);
         assertNotNull(result, "Le résultat ne doit pas être null");
         assertEquals(2, result.size(), "Le résultat doit contenir exactement 2 casernes");
     }
 
+    /**
+     * Teste la méthode de mise à jour des casernes avec une liste vide.
+     *
+     * @throws IOException gère l'erreur lors de l'exécution du test.
+     */
     @Test
-    void testMettreAJourWithEmptyList() {
-        // Configuration des données invalides
+    void testUpdateWithEmptyList() {
         List<Firestation> emptyFirestations = List.of();
 
-        // Vérifie qu'une exception est levée
         Exception exception = assertThrows(IllegalArgumentException.class,
                 () -> firestationController.mettreAJour(emptyFirestations));
         assertEquals("La liste des casernes ne peut pas être vide.", exception.getMessage());
     }
 
+    /**
+     * Teste la méthode de suppression des casernes avec une liste valide.
+     *
+     * @throws IOException gère l'erreur lors de l'exécution du test.
+     */
     @Test
-    void testSupprimer() throws IOException {
-        // Configure le mock pour renvoyer les casernes supprimées
+    void testDelete() throws IOException {
         when(firestationService.delete(firestations)).thenReturn(firestations);
 
-        // Appel de la méthode
         List<Firestation> result = firestationController.supprimer(firestations);
 
-        // Vérifications
         verify(firestationService).delete(firestations);
         assertNotNull(result, "Le résultat ne doit pas être null");
         assertEquals(2, result.size(), "Le résultat doit contenir exactement 2 casernes");
     }
 
+    /**
+     * Teste la méthode de suppression des casernes avec une liste vide.
+     *
+     * @throws IOException gère l'erreur lors de l'exécution du test.
+     */
     @Test
-    void testSupprimerWithEmptyList() {
-        // Configuration des données invalides
+    void testDeleteWithEmptyList() {
         List<Firestation> emptyFirestations = List.of();
 
-        // Vérifie qu'une exception est levée
         Exception exception = assertThrows(IllegalArgumentException.class,
                 () -> firestationController.supprimer(emptyFirestations));
         assertEquals("La liste des casernes ne peut pas être vide.", exception.getMessage());

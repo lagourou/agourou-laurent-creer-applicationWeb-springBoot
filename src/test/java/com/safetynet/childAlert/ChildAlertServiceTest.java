@@ -1,5 +1,20 @@
 package com.safetynet.childAlert;
 
+import java.io.IOException;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.*;
+
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.safetynet.dto.ChildrenByAddress;
 import com.safetynet.model.MedicalRecord;
@@ -7,19 +22,11 @@ import com.safetynet.model.Person;
 import com.safetynet.service.AgeCalculationService;
 import com.safetynet.service.ChildAlertService;
 import com.safetynet.service.dataService.DataLoad;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
-import java.io.IOException;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
-
+/**
+ * Test du service ChildAlert.
+ */
+@ExtendWith(MockitoExtension.class)
 class ChildAlertServiceTest {
 
     @Mock
@@ -31,28 +38,21 @@ class ChildAlertServiceTest {
     @InjectMocks
     private ChildAlertService childAlertService;
 
-    private List<Person> persons;
-    private List<MedicalRecord> medicalRecords;
+    private final List<Person> persons = List.of(
+            new Person("John", "Doe", "123 Main St", "City", "12345", "123-456-7890", "john.doe@email.com"),
+            new Person("Jane", "Doe", "123 Main St", "City", "12345", "123-456-7891", "jane.doe@email.com"),
+            new Person("Adult", "Smith", "123 Main St", "City", "12345", "123-456-7892", "adult.smith@email.com"));
 
-    @BeforeEach
-    @SuppressWarnings(value = { "unused" })
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
+    private final List<MedicalRecord> medicalRecords = List.of(
+            new MedicalRecord("John", "Doe", "01/01/2015", List.of("med1"), List.of("allergy1")),
+            new MedicalRecord("Jane", "Doe", "02/02/2010", List.of("med2"), List.of("allergy2")),
+            new MedicalRecord("Adult", "Smith", "03/03/1980", List.of("med3"), List.of("allergy3")));
 
-        persons = List.of(
-                new Person("John", "Doe", "123 Main St", "City", "12345", "123-456-7890", "john.doe@email.com"),
-                new Person("Jane", "Doe", "123 Main St", "City", "12345", "123-456-7891", "jane.doe@email.com"),
-                new Person("Adult", "Smith", "123 Main St", "City", "12345", "123-456-7892", "adult.smith@email.com"));
-
-        medicalRecords = List.of(
-                new MedicalRecord("John", "Doe", "01/01/2015", List.of("med1"), List.of("allergy1")),
-                new MedicalRecord("Jane", "Doe", "02/02/2010", List.of("med2"), List.of("allergy2")),
-                new MedicalRecord("Adult", "Smith", "03/03/1980", List.of("med3"), List.of("allergy3")));
-    }
-
+    /**
+     * Teste le calcul de l'âge en le simulant à partir d'une date valide.
+     */
     @Test
     void testGetAge_ValidDate() {
-        // Simule le calcul de l'âge
         when(ageCalculationService.calculateAge("01/01/2015")).thenReturn(8);
 
         int age = childAlertService.getAge("01/01/2015");
@@ -60,9 +60,11 @@ class ChildAlertServiceTest {
         assertEquals(8, age, "L'âge calculé devrait être correct");
     }
 
+    /**
+     * Teste le calcul de l'âge avec une date nulle.
+     */
     @Test
     void testGetAge_NullDate() {
-        // Test avec une date nulle
         when(ageCalculationService.calculateAge(null)).thenReturn(0);
 
         int age = childAlertService.getAge(null);
@@ -70,9 +72,11 @@ class ChildAlertServiceTest {
         assertEquals(0, age, "L'âge devrait être 0 pour une date de naissance nulle");
     }
 
+    /**
+     * Vérifie que les enfants d'une adresse donnée sont bien récupérés.
+     */
     @Test
     void testGetChildrenByAddress_WithChildren() throws IOException {
-        // Configure les données simulées
         when(dataLoad.readJsonFile(eq("persons"), any(TypeReference.class))).thenReturn(persons);
         when(dataLoad.readJsonFile(eq("medicalrecords"), any(TypeReference.class))).thenReturn(medicalRecords);
         when(ageCalculationService.calculateAge("01/01/2015")).thenReturn(8);
@@ -88,6 +92,9 @@ class ChildAlertServiceTest {
         assertEquals(2, children.get(0).otherMembers().size(), "John doit avoir 2 autres membres dans son foyer");
     }
 
+    /**
+     * Vérifie qu'une liste vide est renvoyée lorsqu'il n'y a pas d'enfants.
+     */
     @Test
     void testGetChildrenByAddress_NoChildren() throws IOException {
         when(dataLoad.readJsonFile(eq("persons"), any(TypeReference.class))).thenReturn(persons);
@@ -102,6 +109,9 @@ class ChildAlertServiceTest {
         assertEquals(0, children.size(), "Il ne doit pas y avoir d'enfants dans la liste");
     }
 
+    /**
+     * Vérifie qu'aucun enfant n'est trouvé pour une adresse invalide.
+     */
     @Test
     void testGetChildrenByAddress_InvalidAddress() throws IOException {
         when(dataLoad.readJsonFile(eq("persons"), any(TypeReference.class))).thenReturn(persons);

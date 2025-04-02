@@ -19,6 +19,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
+/**
+ * Tests pour le service MedicalRecord.
+ */
 @ExtendWith(MockitoExtension.class)
 public class MedicalRecordServiceTest {
 
@@ -28,6 +31,11 @@ public class MedicalRecordServiceTest {
     @InjectMocks
     private MedicalRecordService medicalRecordService;
 
+    /**
+     * Teste l'ajout d'un nouveau dossier médical à la liste existante.
+     *
+     * @throws IOException en cas d'erreur de lecture/écriture des fichiers JSON.
+     */
     @Test
     void addMedicalRecord() throws IOException {
         List<MedicalRecord> newRecords = List.of(
@@ -46,6 +54,12 @@ public class MedicalRecordServiceTest {
         assertThat(result).isEqualTo(newRecords);
     }
 
+    /**
+     * Teste l'ajout d'un dossier médical déjà existant.
+     * Le dossier médical existant doit être ignoré pour éviter les doublons.
+     *
+     * @throws IOException en cas d'erreur de lecture/écriture des fichiers JSON.
+     */
     @Test
     void skipExistingMedicalRecord() throws IOException {
         MedicalRecord existingRecord = new MedicalRecord("John", "Doe", "01/01/1980", List.of(), List.of());
@@ -65,6 +79,13 @@ public class MedicalRecordServiceTest {
         assertThat(result).isEqualTo(newRecords);
     }
 
+    /**
+     * Teste la mise à jour d'un dossier médical existant.
+     * Les informations du dossier doivent être modifiées selon les données
+     * fournies.
+     *
+     * @throws IOException en cas d'erreur de lecture/écriture des fichiers JSON.
+     */
     @Test
     void updateMedicalRecord() throws IOException {
         MedicalRecord existingRecord = new MedicalRecord("Jane", "Doe", "02/02/1990", List.of(), List.of());
@@ -86,6 +107,12 @@ public class MedicalRecordServiceTest {
         assertThat(result).isEqualTo(existingRecords);
     }
 
+    /**
+     * Teste la suppression d'un dossier médical existant.
+     * Le dossier médical supprimé ne doit plus être présent dans la liste finale.
+     *
+     * @throws IOException en cas d'erreur de lecture/écriture des fichiers JSON.
+     */
     @Test
     void deleteMedicalRecord() throws IOException {
         MedicalRecord recordToDelete = new MedicalRecord("Jack", "Smith", "03/03/2000", List.of(), List.of());

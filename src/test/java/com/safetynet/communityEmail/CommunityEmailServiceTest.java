@@ -6,11 +6,11 @@ import com.safetynet.model.Person;
 import com.safetynet.service.CommunityEmailService;
 import com.safetynet.service.dataService.DataLoad;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.IOException;
 import java.util.List;
@@ -19,6 +19,10 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
+/**
+ * Tests pour le service CommunityEmail.
+ */
+@ExtendWith(MockitoExtension.class)
 class CommunityEmailServiceTest {
 
     @Mock
@@ -27,19 +31,16 @@ class CommunityEmailServiceTest {
     @InjectMocks
     private CommunityEmailService communityEmailService;
 
-    private List<Person> persons;
+    private final List<Person> persons = List.of(
+            new Person("John", "Doe", "123 Main St", "City1", "12345", "123-456-7890", "john.doe@email.com"),
+            new Person("Jane", "Doe", "456 Oak St", "City1", "12345", "987-654-3210", "jane.doe@email.com"),
+            new Person("Bob", "Smith", "789 Pine St", "City2", "54321", "456-789-0123", "bob.smith@email.com"));
 
-    @BeforeEach
-    @SuppressWarnings(value = { "unused" })
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-
-        persons = List.of(
-                new Person("John", "Doe", "123 Main St", "City1", "12345", "123-456-7890", "john.doe@email.com"),
-                new Person("Jane", "Doe", "456 Oak St", "City1", "12345", "987-654-3210", "jane.doe@email.com"),
-                new Person("Bob", "Smith", "789 Pine St", "City2", "54321", "456-789-0123", "bob.smith@email.com"));
-    }
-
+    /**
+     * Teste la récupération des emails pour une ville valide.
+     *
+     * @throws IOException si une erreur se produit lors de la lecture des données.
+     */
     @Test
     void testGetCommunityEmail_ValidCity() throws IOException {
         when(dataLoad.readJsonFile(eq("persons"), any(TypeReference.class))).thenReturn(persons);
@@ -55,6 +56,11 @@ class CommunityEmailServiceTest {
         verify(dataLoad).readJsonFile(eq("persons"), any(TypeReference.class));
     }
 
+    /**
+     * Teste la récupération des emails pour une ville invalide.
+     *
+     * @throws IOException si une erreur se produit lors de la lecture des données.
+     */
     @Test
     void testGetCommunityEmail_InvalidCity() throws IOException {
         when(dataLoad.readJsonFile(eq("persons"), any(TypeReference.class))).thenReturn(persons);
@@ -66,6 +72,11 @@ class CommunityEmailServiceTest {
         verify(dataLoad).readJsonFile(eq("persons"), any(TypeReference.class));
     }
 
+    /**
+     * Teste la récupération des emails pour une ville avec un nom vide.
+     *
+     * @throws IOException si une erreur se produit lors de la lecture des données.
+     */
     @Test
     void testGetCommunityEmail_EmptyCity() throws IOException {
         when(dataLoad.readJsonFile(eq("persons"), any(TypeReference.class))).thenReturn(persons);
@@ -77,6 +88,11 @@ class CommunityEmailServiceTest {
         verify(dataLoad).readJsonFile(eq("persons"), any(TypeReference.class));
     }
 
+    /**
+     * Teste la récupération des emails pour une ville nulle.
+     *
+     * @throws IOException si une erreur se produit lors de la lecture des données.
+     */
     @Test
     void testGetCommunityEmail_NullCity() throws IOException {
         when(dataLoad.readJsonFile(eq("persons"), any(TypeReference.class))).thenReturn(persons);

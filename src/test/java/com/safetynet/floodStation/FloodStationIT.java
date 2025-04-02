@@ -19,6 +19,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+/**
+ * Tests d'intégration pour l'endpoint FloodStation.
+ */
 @SpringBootTest
 @AutoConfigureMockMvc
 @DirtiesContext
@@ -33,8 +36,14 @@ public class FloodStationIT {
     @Autowired
     private FloodStationService floodStationService;
 
+    /**
+     * Teste la récupération des foyers pour une liste valide de casernes avec
+     * des résidents.
+     *
+     * @throws Exception gère l'erreur lors de l'exécution du test.
+     */
     @Test
-    void testRetourFoyersValides() throws Exception {
+    void testReturnValidHome() throws Exception {
         ResultActions response = mockMvc.perform(get("/flood/stations")
                 .param("stations", "1", "2")
                 .contentType(MediaType.APPLICATION_JSON));
@@ -49,16 +58,28 @@ public class FloodStationIT {
         assertThat(floodStations.values().stream().findFirst().orElse(List.of())).isNotEmpty();
     }
 
+    /**
+     * Teste la récupération des foyers pour une liste valide de casernes sans
+     * résidents.
+     *
+     * @throws Exception gère l'erreur lors de l'exécution du test.
+     */
     @Test
-    void testAucunFoyer() throws Exception {
+    void testReturnNoHome() throws Exception {
         mockMvc.perform(get("/flood/stations")
                 .param("stations", "999")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
     }
 
+    /**
+     * Teste le comportement avec des paramètres invalides pour les casernes.
+     * Vérifie qu'une réponse de type "Bad Request" est retournée.
+     *
+     * @throws Exception gère l'erreur lors de l'exécution du test.
+     */
     @Test
-    void testParametreInvalide() throws Exception {
+    void testInvalidParameter() throws Exception {
         mockMvc.perform(get("/flood/stations")
                 .param("stations", "")
                 .contentType(MediaType.APPLICATION_JSON))
@@ -70,8 +91,14 @@ public class FloodStationIT {
                 .andExpect(status().isBadRequest());
     }
 
+    /**
+     * Teste la récupération des foyers pour une liste valide de casernes.
+     * Vérifie que les foyers et leurs informations sont correctement retournés.
+     *
+     * @throws Exception gère l'erreur lors de l'exécution du test.
+     */
     @Test
-    void testParametreValide() throws Exception {
+    void testValidParameter() throws Exception {
         List<Integer> stationNumbers = List.of(1);
 
         Map<String, List<FloodStation>> floodStations = floodStationService.getFloodStation(stationNumbers);

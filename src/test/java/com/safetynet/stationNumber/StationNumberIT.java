@@ -19,6 +19,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @DirtiesContext
+
+/**
+ * Tests d'intégration pour l'endpoint StationNumber.
+ */
 public class StationNumberIT {
 
     @Autowired
@@ -30,8 +34,16 @@ public class StationNumberIT {
     @Autowired
     private StationNumberService stationNumberService;
 
+    /**
+     * Teste la récupération des informations des personnes pour un numéro de
+     * caserne valide.
+     * Vérifie que le statut HTTP est 200 et que les informations retournées
+     * sont correctes.
+     *
+     * @throws Exception s'il y a une erreur lors de l'exécution de la requête.
+     */
     @Test
-    void testRetourPersonnesValides() throws Exception {
+    void testReturnValidsPersons() throws Exception {
         int stationNumber = 1;
 
         ResultActions response = mockMvc.perform(get("/firestation")
@@ -50,8 +62,15 @@ public class StationNumberIT {
         assertThat(firestationByPerson.numberOfChildren()).isGreaterThanOrEqualTo(0);
     }
 
+    /**
+     * Teste la récupération des informations pour un numéro de caserne valide
+     * mais sans données disponibles.
+     * Vérifie que le statut HTTP est 204.
+     *
+     * @throws Exception s'il y a une erreur lors de l'exécution de la requête.
+     */
     @Test
-    void testAucunePersonne() throws Exception {
+    void testNoPerson() throws Exception {
         int stationNumber = 999;
 
         mockMvc.perform(get("/firestation")
@@ -60,8 +79,14 @@ public class StationNumberIT {
                 .andExpect(status().isNoContent());
     }
 
+    /**
+     * Teste la récupération des informations avec un numéro de caserne invalide.
+     * Vérifie que le statut HTTP est 400.
+     *
+     * @throws Exception s'il y a une erreur lors de l'exécution de la requête.
+     */
     @Test
-    void testNumeroInvalide() throws Exception {
+    void testInvalidNumber() throws Exception {
         int invalidStationNumber = -1;
 
         mockMvc.perform(get("/firestation")
@@ -70,8 +95,15 @@ public class StationNumberIT {
                 .andExpect(status().isBadRequest());
     }
 
+    /**
+     * Teste la récupération des informations des personnes
+     * pour un numéro de caserne valide.
+     * Vérifie que les données retournées sont correctes.
+     *
+     * @throws Exception s'il y a une erreur lors de l'exécution de la requête.
+     */
     @Test
-    void testNumeroValide() throws Exception {
+    void testValidNumber() throws Exception {
         int stationNumber = 1;
 
         FirestationByPerson firestationByPerson = stationNumberService.getPersonByStation(stationNumber);

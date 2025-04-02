@@ -8,11 +8,11 @@ import com.safetynet.model.Person;
 import com.safetynet.service.AgeCalculationService;
 import com.safetynet.service.FireAddressService;
 import com.safetynet.service.dataService.DataLoad;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -22,6 +22,10 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
+/**
+ * Tests pour le service FireAddress.
+ */
+@ExtendWith(MockitoExtension.class)
 class FireAddressServiceTest {
 
     @Mock
@@ -33,41 +37,33 @@ class FireAddressServiceTest {
     @InjectMocks
     private FireAddressService fireAddressService;
 
-    private List<Person> persons;
-    private List<MedicalRecord> medicalRecords;
-    private List<Firestation> firestations;
+    private final List<Person> persons = List.of(
+            new Person("John", "Doe", "123 Main St", "City", "12345", "123-456-7890", "john.doe@email.com"),
+            new Person("Jane", "Doe", "123 Main St", "City", "12345", "123-456-7891", "jane.doe@email.com"));
 
-    @BeforeEach
-    @SuppressWarnings(value = { "unused" })
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
+    private final List<MedicalRecord> medicalRecords = List.of(
+            new MedicalRecord("John", "Doe", "01/01/1990", List.of("med1", "med2"), List.of("allergy1")),
+            new MedicalRecord("Jane", "Doe", "02/02/1995", List.of("med3"), List.of("allergy2")));
 
-        persons = List.of(
-                new Person("John", "Doe", "123 Main St", "City", "12345", "123-456-7890", "john.doe@email.com"),
-                new Person("Jane", "Doe", "123 Main St", "City", "12345", "123-456-7891", "jane.doe@email.com"));
+    private final List<Firestation> firestations = List.of(
+            new Firestation("123 Main St", 1),
+            new Firestation("456 Oak St", 2));
 
-        medicalRecords = List.of(
-                new MedicalRecord("John", "Doe", "01/01/1990", List.of("med1", "med2"), List.of("allergy1")),
-                new MedicalRecord("Jane", "Doe", "02/02/1995", List.of("med3"), List.of("allergy2")));
-
-        firestations = List.of(
-                new Firestation("123 Main St", 1),
-                new Firestation("456 Oak St", 2));
-    }
-
+    /**
+     * Teste la récupération des informations pour une adresse valide.
+     *
+     * @throws IOException si une erreur se produit lors de la lecture des données.
+     */
     @Test
     void testGetFireAddress_ValidAddress() throws IOException {
-        // Configure les mocks
         when(dataLoad.readJsonFile(eq("persons"), any(TypeReference.class))).thenReturn(persons);
         when(dataLoad.readJsonFile(eq("medicalrecords"), any(TypeReference.class))).thenReturn(medicalRecords);
         when(dataLoad.readJsonFile(eq("firestations"), any(TypeReference.class))).thenReturn(firestations);
         when(ageCalculationService.calculateAge("01/01/1990")).thenReturn(33);
         when(ageCalculationService.calculateAge("02/02/1995")).thenReturn(28);
 
-        // Appelle la méthode
         List<FireAddress> fireAddresses = fireAddressService.getFireAddress("123 Main St");
 
-        // Vérifications
         assertNotNull(fireAddresses, "La liste des adresses de secours ne doit pas être null");
         assertEquals(2, fireAddresses.size(), "La liste doit contenir 2 personnes");
 
@@ -79,25 +75,34 @@ class FireAddressServiceTest {
         assertTrue(firstPerson.allergies().contains("allergy1"));
     }
 
+    /**
+     * Teste la récupération des informations pour une adresse invalide.
+     *
+     * @throws IOException si une erreur se produit lors de la lecture des données.
+     */
     @Test
     void testGetFireAddress_InvalidAddress() throws IOException {
         when(dataLoad.readJsonFile(eq("persons"), any(TypeReference.class))).thenReturn(persons);
         when(dataLoad.readJsonFile(eq("medicalrecords"), any(TypeReference.class))).thenReturn(medicalRecords);
         when(dataLoad.readJsonFile(eq("firestations"), any(TypeReference.class))).thenReturn(firestations);
 
-        // Appelle la méthode avec une adresse invalide
         List<FireAddress> fireAddresses = fireAddressService.getFireAddress("Nonexistent Address");
 
         assertNotNull(fireAddresses, "La liste des adresses de secours ne doit pas être null");
         assertTrue(fireAddresses.isEmpty(), "La liste doit être vide pour une adresse inexistante");
     }
 
+    /**
+     * Teste la récupération des informations lorsqu'il n'y a pas de dossiers
+     * médicaux.
+     *
+     * @throws IOException si une erreur se produit lors de la lecture des données.
+     */
     @Test
     void testGetFireAddress_NoMedicalRecord() throws IOException {
-        // Supprime les dossiers médicaux pour simuler une absence de données
-        medicalRecords = Collections.emptyList();
+        List<MedicalRecord> emptyMedicalRecords = Collections.emptyList();
         when(dataLoad.readJsonFile(eq("persons"), any(TypeReference.class))).thenReturn(persons);
-        when(dataLoad.readJsonFile(eq("medicalrecords"), any(TypeReference.class))).thenReturn(medicalRecords);
+        when(dataLoad.readJsonFile(eq("medicalrecords"), any(TypeReference.class))).thenReturn(emptyMedicalRecords);
         when(dataLoad.readJsonFile(eq("firestations"), any(TypeReference.class))).thenReturn(firestations);
 
         List<FireAddress> fireAddresses = fireAddressService.getFireAddress("123 Main St");
@@ -109,13 +114,17 @@ class FireAddressServiceTest {
         assertTrue(fireAddresses.get(0).allergies().isEmpty(), "La liste des allergies doit être vide");
     }
 
+    /**
+     * Teste la récupération des informations lorsqu'il n'y a pas de casernes.
+     *
+     * @throws IOException si une erreur se produit lors de la lecture des données.
+     */
     @Test
     void testGetFireAddress_NoFirestation() throws IOException {
-        // Supprime les données de casernes pour simuler une absence
-        firestations = Collections.emptyList();
+        List<Firestation> emptyFirestations = Collections.emptyList();
         when(dataLoad.readJsonFile(eq("persons"), any(TypeReference.class))).thenReturn(persons);
         when(dataLoad.readJsonFile(eq("medicalrecords"), any(TypeReference.class))).thenReturn(medicalRecords);
-        when(dataLoad.readJsonFile(eq("firestations"), any(TypeReference.class))).thenReturn(firestations);
+        when(dataLoad.readJsonFile(eq("firestations"), any(TypeReference.class))).thenReturn(emptyFirestations);
         when(ageCalculationService.calculateAge("01/01/1990")).thenReturn(33);
 
         List<FireAddress> fireAddresses = fireAddressService.getFireAddress("123 Main St");

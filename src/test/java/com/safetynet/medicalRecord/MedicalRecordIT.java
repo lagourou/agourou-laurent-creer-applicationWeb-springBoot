@@ -13,10 +13,12 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.safetynet.model.MedicalRecord;
 
+/**
+ * Tests d'intégration pour l'endpoint MedicalRecord.
+ */
 @SpringBootTest
 @AutoConfigureMockMvc
 public class MedicalRecordIT {
@@ -27,8 +29,13 @@ public class MedicalRecordIT {
         @Autowired
         private ObjectMapper objectMapper;
 
+        /**
+         * Teste l'ajout d'un nouveau dossier médical.
+         *
+         * @throws Exception gère l'erreur lors de l'exécution du test.
+         */
         @Test
-        public void testAjoutMedicalRecords() throws Exception {
+        public void testAddMedicalRecords() throws Exception {
                 MedicalRecord medicalRecord = new MedicalRecord("Jack", "Will", "01/01/1990",
                                 Arrays.asList("aspirin", "ibuprofen"), Arrays.asList());
 
@@ -38,8 +45,13 @@ public class MedicalRecordIT {
                                 .andExpect(status().isCreated());
         }
 
+        /**
+         * Teste la mise à jour d'un dossier médical existant.
+         *
+         * @throws Exception gère l'erreurs lors de l'exécution du test.
+         */
         @Test
-        public void testMiseAJourMedicalRecords() throws Exception {
+        public void testUpdateMedicalRecords() throws Exception {
                 MedicalRecord medicalRecordExisting = new MedicalRecord("Jack", "Will", "01/01/1990",
                                 Arrays.asList("aspirin", "ibuprofen"), Arrays.asList());
                 mockMvc.perform(post("/medicalRecord")
@@ -55,8 +67,13 @@ public class MedicalRecordIT {
                                 .andExpect(status().isOk());
         }
 
+        /**
+         * Teste la suppression d'un dossier médical existant.
+         *
+         * @throws Exception gère l'erreur lors de l'exécution du test.
+         */
         @Test
-        public void testSuppressionMedicalRecords() throws Exception {
+        public void testDeleteMedicalRecords() throws Exception {
                 MedicalRecord medicalRecord = new MedicalRecord("Jack", "Will", "01/01/1990",
                                 Arrays.asList("aspirin", "ibuprofen"), Arrays.asList());
                 mockMvc.perform(post("/medicalRecord")

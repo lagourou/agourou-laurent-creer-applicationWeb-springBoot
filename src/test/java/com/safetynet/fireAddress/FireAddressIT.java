@@ -11,13 +11,14 @@ import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-
 import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+/**
+ * Tests d'intégration pour l'endpoint FireAddress.
+ */
 @SpringBootTest
 @AutoConfigureMockMvc
 @DirtiesContext
@@ -32,8 +33,13 @@ public class FireAddressIT {
     @Autowired
     private FireAddressService fireAddressService;
 
+    /**
+     * Teste que les résidents sont renvoyés pour une adresse valide.
+     *
+     * @throws Exception gère l'erreur lors de l'exécution du test.
+     */
     @Test
-    void testRetourHabitantsValides() throws Exception {
+    void testValidResidents() throws Exception {
         String address = "1509 Culver St";
 
         ResultActions response = mockMvc.perform(get("/fire")
@@ -51,8 +57,13 @@ public class FireAddressIT {
         assertThat(fireAddresses.get(0).phone()).isNotEmpty();
     }
 
+    /**
+     * Teste que aucun résident n'est renvoyé pour une adresse invalide.
+     *
+     * @throws Exception gère l'erreur lors de l'exécution du test.
+     */
     @Test
-    void testAucunHabitant() throws Exception {
+    void testNoResidents() throws Exception {
         String address = "unknown address";
 
         mockMvc.perform(get("/fire")
@@ -61,8 +72,13 @@ public class FireAddressIT {
                 .andExpect(status().isNoContent());
     }
 
+    /**
+     * Teste qu'une requête invalide est renvoyée pour une adresse incorrecte.
+     *
+     * @throws Exception gère l'erreur lors de l'exécution du test.
+     */
     @Test
-    void testAdresseInvalide() throws Exception {
+    void testInvalidAddress() throws Exception {
         String invalidAddress = "";
 
         mockMvc.perform(get("/fire")
@@ -71,8 +87,13 @@ public class FireAddressIT {
                 .andExpect(status().isBadRequest());
     }
 
+    /**
+     * Teste que les résidents sont correctement renvoyés pour une adresse valide.
+     *
+     * @throws Exception gère l'erreur lors de l'exécution du test.
+     */
     @Test
-    void testAdresseValide() throws Exception {
+    void testValidAddress() throws Exception {
         String address = "1509 Culver St";
 
         List<FireAddress> fireAddresses = fireAddressService.getFireAddress(address);

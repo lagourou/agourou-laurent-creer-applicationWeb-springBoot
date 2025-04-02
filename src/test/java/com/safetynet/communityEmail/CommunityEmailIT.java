@@ -18,6 +18,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+/**
+ * Tests d'intégration pour l'endpoint CommunityEmail.
+ */
 @SpringBootTest
 @AutoConfigureMockMvc
 @DirtiesContext
@@ -32,8 +35,13 @@ public class CommunityEmailIT {
     @Autowired
     private CommunityEmailService communityEmailService;
 
+    /**
+     * Teste la récupération d'emails pour une ville valide avec des emails
+     *
+     * @throws Exception gère une erreur lors de l'exécution du test.
+     */
     @Test
-    void testEmailsValides() throws Exception {
+    void testValidEmails() throws Exception {
         String city = "Culver";
 
         ResultActions response = mockMvc.perform(get("/communityEmail")
@@ -50,8 +58,13 @@ public class CommunityEmailIT {
         assertThat(communityEmails.get(0).email()).isNotEmpty();
     }
 
+    /**
+     * Teste la récupération d'emails pour une ville valide sans emails.
+     *
+     * @throws Exception gère une erreur lors de l'exécution du test.
+     */
     @Test
-    void testAucunEmail() throws Exception {
+    void testNoEmail() throws Exception {
         String city = "UnknownCity";
 
         mockMvc.perform(get("/communityEmail")
@@ -60,8 +73,13 @@ public class CommunityEmailIT {
                 .andExpect(status().isNoContent());
     }
 
+    /**
+     * Teste la gestion d'un paramètre de ville invalide (Chaîne vide).
+     *
+     * @throws Exception gère une erreur lors de l'exécution du test.
+     */
     @Test
-    void testParametreInvalide() throws Exception {
+    void testInvalidParameter() throws Exception {
         String invalidCity = "";
 
         mockMvc.perform(get("/communityEmail")
@@ -70,8 +88,13 @@ public class CommunityEmailIT {
                 .andExpect(status().isBadRequest());
     }
 
+    /**
+     * Teste la récupération d'emails avec une ville valide.
+     *
+     * @throws Exception gère une erreur lors de l'exécution du test.
+     */
     @Test
-    void testParametrevalide() throws Exception {
+    void testValidParameter() throws Exception {
         String city = "Culver";
 
         List<CommunityEmail> communityEmails = communityEmailService.getCommunityEmail(city);

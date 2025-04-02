@@ -21,6 +21,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @DirtiesContext
+
+/**
+ * Tests d'intégration pour l'endpoint PersonInfolastName.
+ */
 public class PersonInfolastNameIT {
 
     @Autowired
@@ -32,8 +36,15 @@ public class PersonInfolastNameIT {
     @Autowired
     private PersonInfolastNameService personInfolastNameService;
 
+    /**
+     * Teste la recherche des informations d'une personne par un nom de famille
+     * valide.
+     * Vérifie que le statut HTTP de la réponse est 200.
+     *
+     * @throws Exception s'il y a une erreur lors de l'exécution de la requête.
+     */
     @Test
-    void testRetourPersonnesValides() throws Exception {
+    void testReturnValidPerson() throws Exception {
         String lastName = "Boyd";
 
         ResultActions response = mockMvc.perform(get("/personInfolastName")
@@ -50,8 +61,15 @@ public class PersonInfolastNameIT {
         assertThat(personInfolastNames.get(0).lastName()).isEqualTo(lastName);
     }
 
+    /**
+     * Teste la recherche des informations d'une personne par un nom de famille
+     * inconnu.
+     * Vérifie que le statut HTTP de la réponse est 204.
+     *
+     * @throws Exception s'il y a une erreur lors de l'exécution de la requête.
+     */
     @Test
-    void testAucunePersonne() throws Exception {
+    void testNoPerson() throws Exception {
         String lastName = "UnknownLastName";
 
         mockMvc.perform(get("/personInfolastName")
@@ -60,8 +78,15 @@ public class PersonInfolastNameIT {
                 .andExpect(status().isNoContent());
     }
 
+    /**
+     * Teste la recherche des informations d'une personne par un nom de famille
+     * invalide (chaîne vide).
+     * Vérifie que le statut HTTP de la réponse est 400.
+     *
+     * @throws Exception s'il y a une erreur lors de l'exécution de la requête.
+     */
     @Test
-    void testNomInvalide() throws Exception {
+    void testInvalidName() throws Exception {
         String invalidLastName = "";
 
         mockMvc.perform(get("/personInfolastName")
@@ -70,8 +95,15 @@ public class PersonInfolastNameIT {
                 .andExpect(status().isBadRequest());
     }
 
+    /**
+     * Teste la recherche des informations d'une personne par un nom de famille
+     * valide.
+     * Vérifie que les données retournées sont correctes.
+     *
+     * @throws Exception s'il y a une erreur lors de l'exécution de la requête.
+     */
     @Test
-    void testNomValide() throws Exception {
+    void testValidName() throws Exception {
         String lastName = "Boyd";
 
         List<PersonInfolastName> personInfolastNames = personInfolastNameService.getPersonInfolastName(lastName);

@@ -18,6 +18,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+/**
+ * Tests d'intégration pour l'endpoint PhoneAlert.
+ */
 @SpringBootTest
 @AutoConfigureMockMvc
 @DirtiesContext
@@ -32,8 +35,15 @@ public class PhoneAlertIT {
     @Autowired
     private PhoneAlertService phoneAlertService;
 
+    /**
+     * Teste la récupération des numéros de téléphone pour une caserne valide.
+     * Vérifie que le statut HTTP est 200 et que les numéros de téléphone sont
+     * retournés correctement.
+     *
+     * @throws Exception s'il y a une erreur lors de l'exécution de la requête.
+     */
     @Test
-    void testNumerosValides() throws Exception {
+    void testValidsNumbers() throws Exception {
         int firestationNumber = 1;
 
         ResultActions response = mockMvc.perform(get("/phoneAlert")
@@ -50,8 +60,15 @@ public class PhoneAlertIT {
         assertThat(phoneAlerts.get(0).phone()).isNotEmpty();
     }
 
+    /**
+     * Teste la récupération des numéros de téléphone pour une caserne valide mais
+     * sans résultats.
+     * Vérifie que le statut HTTP est 204.
+     *
+     * @throws Exception s'il y a une erreur lors de l'exécution de la requête.
+     */
     @Test
-    void testAucunNumero() throws Exception {
+    void testNoNumber() throws Exception {
         int firestationNumber = 999;
 
         mockMvc.perform(get("/phoneAlert")
@@ -60,8 +77,14 @@ public class PhoneAlertIT {
                 .andExpect(status().isNoContent());
     }
 
+    /**
+     * Teste la récupération des numéros de téléphone pour une caserne invalide.
+     * Vérifie que le statut HTTP est 400.
+     *
+     * @throws Exception s'il y a une erreur lors de l'exécution de la requête.
+     */
     @Test
-    void testCaserneInvalide() throws Exception {
+    void testInvalidFirestation() throws Exception {
         int invalidFirestationNumber = -1;
 
         mockMvc.perform(get("/phoneAlert")
@@ -70,8 +93,14 @@ public class PhoneAlertIT {
                 .andExpect(status().isBadRequest());
     }
 
+    /**
+     * Teste la récupération des numéros de téléphone pour une caserne valide.
+     * Vérifie que les numéros de téléphone retournés sont corrects.
+     *
+     * @throws Exception s'il y a une erreur lors de l'exécution de la requête.
+     */
     @Test
-    void testCaserneValide() throws Exception {
+    void testValidFirestation() throws Exception {
         int firestationNumber = 1;
 
         List<PhoneAlert> phoneAlerts = phoneAlertService.getPhoneAlert(firestationNumber);

@@ -3,11 +3,11 @@ package com.safetynet.floodStation;
 import com.safetynet.controller.FireAddressController;
 import com.safetynet.dto.FireAddress;
 import com.safetynet.service.FireAddressService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -18,6 +18,10 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+/**
+ * Tests pour le service FireAddress.
+ */
+@ExtendWith(MockitoExtension.class)
 class FireAddressServiceTest {
 
     @Mock
@@ -26,16 +30,15 @@ class FireAddressServiceTest {
     @InjectMocks
     private FireAddressController fireAddressController;
 
-    @BeforeEach
-    @SuppressWarnings(value = { "unused" })
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
-
+    /**
+     * Teste la récupération des informations des habitants pour une adresse valide
+     * avec des résidents.
+     *
+     * @throws IOException en cas d'erreur lors de l'exécution du test.
+     */
     @SuppressWarnings("null")
     @Test
     void testGetFireAddress_ValidAddress_WithResidents() throws IOException {
-        // Simule une réponse avec des habitants
         List<FireAddress> fireAddresses = List.of(
                 new FireAddress("John Doe", "123-456-7890", 30, List.of("med1"), List.of("allergy1"), 1),
                 new FireAddress("Jane Doe", "123-456-7891", 25, List.of("med2"), List.of("allergy2"), 1));
@@ -50,9 +53,14 @@ class FireAddressServiceTest {
         verify(fireAddressService).getFireAddress("123 Main St");
     }
 
+    /**
+     * Teste la récupération des informations des habitants pour une adresse valide
+     * sans résidents.
+     *
+     * @throws IOException en cas d'erreur lors de l'exécution du test.
+     */
     @Test
     void testGetFireAddress_ValidAddress_NoResidents() throws IOException {
-        // Simule une réponse vide (aucun habitant)
         when(fireAddressService.getFireAddress("123 Main St")).thenReturn(Collections.emptyList());
 
         ResponseEntity<List<FireAddress>> response = fireAddressController.getFireAddress("123 Main St");
@@ -63,9 +71,14 @@ class FireAddressServiceTest {
         verify(fireAddressService).getFireAddress("123 Main St");
     }
 
+    /**
+     * Teste la récupération des informations pour une adresse invalide.
+     * Vérifie qu'une erreur "Bad Request" est retournée.
+     *
+     * @throws IOException en cas d'erreur lors de l'exécution du test.
+     */
     @Test
     void testGetFireAddress_InvalidAddress() throws IOException {
-        // Appelle la méthode avec une adresse invalide
         ResponseEntity<List<FireAddress>> response = fireAddressController.getFireAddress("");
 
         assertNotNull(response, "La réponse ne doit pas être null");
@@ -74,9 +87,14 @@ class FireAddressServiceTest {
         verifyNoInteractions(fireAddressService);
     }
 
+    /**
+     * Teste la récupération des informations pour une adresse nulle.
+     * Vérifie qu'une erreur "Bad Request" est retournée.
+     *
+     * @throws IOException en cas d'erreur lors de l'exécution du test.
+     */
     @Test
     void testGetFireAddress_NullAddress() throws IOException {
-        // Appelle la méthode avec une adresse nulle
         ResponseEntity<List<FireAddress>> response = fireAddressController.getFireAddress(null);
 
         assertNotNull(response, "La réponse ne doit pas être null");

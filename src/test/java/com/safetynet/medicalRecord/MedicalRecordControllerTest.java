@@ -10,9 +10,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.safetynet.controller.MedicalRecordController;
-import com.safetynet.exceptions.GlobalExceptions;
 import com.safetynet.model.MedicalRecord;
 import com.safetynet.service.MedicalRecordService;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,11 +22,14 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
 import java.util.List;
 
+/**
+ * Tests pour le contrôleur MedicalRecord.
+ */
 @ExtendWith(MockitoExtension.class)
 public class MedicalRecordControllerTest {
+        private MockMvc mockMvc;
 
         @Mock
         private MedicalRecordService medicalRecordService;
@@ -34,22 +37,23 @@ public class MedicalRecordControllerTest {
         @InjectMocks
         private MedicalRecordController medicalRecordController;
 
-        private MockMvc mockMvc;
         private ObjectMapper objectMapper;
 
         @BeforeEach
-        @SuppressWarnings(value = { "unused" })
+        @SuppressWarnings("unused")
         void setUp() {
-                mockMvc = MockMvcBuilders
-                                .standaloneSetup(medicalRecordController)
-                                .setControllerAdvice(
-                                                new GlobalExceptions())
-                                .build();
+                // Initialise MockMvc avec le contrôleur et les mocks
+                mockMvc = MockMvcBuilders.standaloneSetup(medicalRecordController).build();
                 objectMapper = new ObjectMapper();
         }
 
+        /**
+         * Teste la création de dossiers médicaux avec succès.
+         *
+         * @throws Exception gère l'erreur lors de l'exécution du test.
+         */
         @Test
-        void testCreerMedicalRecords_Success() throws Exception {
+        void testCreateMedicalRecords_Success() throws Exception {
                 List<MedicalRecord> records = List.of(
                                 new MedicalRecord("John", "Doe", "01/01/1980", List.of("med1", "med2"),
                                                 List.of("allergy1")));
@@ -65,8 +69,13 @@ public class MedicalRecordControllerTest {
                 verify(medicalRecordService).add(records);
         }
 
+        /**
+         * Teste la mise à jour des dossiers médicaux avec succès.
+         *
+         * @throws Exception gère l'erreur lors de l'exécution du test.
+         */
         @Test
-        void testMettreAJourMedicalRecords_Success() throws Exception {
+        void testUpdateMedicalRecords_Success() throws Exception {
                 // Données simulées pour la mise à jour
                 List<MedicalRecord> records = List.of(
                                 new MedicalRecord("Jane", "Doe", "02/02/1990", List.of("med-updated"),
@@ -85,8 +94,13 @@ public class MedicalRecordControllerTest {
                 verify(medicalRecordService).update(records);
         }
 
+        /**
+         * Teste la suppression de dossiers médicaux avec succès.
+         *
+         * @throws Exception gère l'erreur lors de l'exécution du test.
+         */
         @Test
-        void testSupprimerMedicalRecords_Success() throws Exception {
+        void testDeleteMedicalRecords_Success() throws Exception {
                 // Données simulées pour la suppression
                 List<MedicalRecord> records = List.of(
                                 new MedicalRecord("Jack", "Smith", "03/03/2000", List.of(), List.of()));
@@ -104,8 +118,13 @@ public class MedicalRecordControllerTest {
                 verify(medicalRecordService).delete(records);
         }
 
+        /**
+         * Teste la création de dossiers médicaux avec une liste vide.
+         *
+         * @throws Exception gère l'erreur lors de l'exécution du test.
+         */
         @Test
-        void testCreerMedicalRecords_InvalidRequest() throws Exception {
+        void testCreateMedicalRecords_InvalidRequest() throws Exception {
                 // Données invalides : liste vide
                 List<MedicalRecord> emptyRecords = List.of();
 
@@ -115,23 +134,29 @@ public class MedicalRecordControllerTest {
                 assertEquals("La liste des dossiers médicales ne peut pas être vide.", exception.getMessage());
         }
 
+        /**
+         * Teste la mise à jour de dossiers médicaux avec une liste vide.
+         *
+         * @throws Exception gère l'erreur lors de l'exécution du test.
+         */
         @Test
-        void testMettreAJourMedicalRecords_InvalidRequest() throws Exception {
-                // Données invalides : liste vide
+        void testUpdateMedicalRecords_InvalidRequest() throws Exception {
                 List<MedicalRecord> emptyRecords = List.of();
 
-                // Vérifier que l'exception est levée lorsque la liste est vide
                 Exception exception = assertThrows(IllegalArgumentException.class,
                                 () -> medicalRecordController.mettreAJour(emptyRecords));
                 assertEquals("La liste des dossiers médicales ne peut pas être vide.", exception.getMessage());
         }
 
+        /**
+         * Teste la suppression de dossiers médicaux avec une liste vide.
+         *
+         * @throws Exception gère l'erreur lors de l'exécution du test.
+         */
         @Test
-        void testSupprimerMedicalRecords_InvalidRequest() throws Exception {
-                // Données invalides : liste vide
+        void testDeleteMedicalRecords_InvalidRequest() throws Exception {
                 List<MedicalRecord> emptyRecords = List.of();
 
-                // Vérifier que l'exception est levée lorsque la liste est vide
                 Exception exception = assertThrows(IllegalArgumentException.class,
                                 () -> medicalRecordController.supprimer(emptyRecords));
                 assertEquals("La liste des dossiers médicales ne peut pas être vide.", exception.getMessage());

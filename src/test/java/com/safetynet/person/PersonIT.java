@@ -17,6 +17,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.safetynet.model.Person;
 
+/**
+ * Tests d'intégration pour l'endpoint Person.
+ */
 @SpringBootTest
 @AutoConfigureMockMvc
 public class PersonIT {
@@ -27,8 +30,14 @@ public class PersonIT {
         @Autowired
         private ObjectMapper objectMapper;
 
+        /**
+         * Teste l'ajout d'une personne via une requête HTTP POST.
+         * Vérifie que le statut de la réponse est HTTP 201 (Created).
+         *
+         * @throws Exception si une erreur survient lors de l'exécution de la requête.
+         */
         @Test
-        public void testAjoutPersonnes() throws Exception {
+        public void testAddPersons() throws Exception {
                 Person person = new Person("Jack", "Will", "1252 Roses St", "Burbank", "95051", "841-874-7589",
                                 "jack.will@email.com");
 
@@ -39,8 +48,15 @@ public class PersonIT {
 
         }
 
+        /**
+         * Teste la mise à jour des informations d'une personne via une requête HTTP
+         * PUT.
+         * Vérifie que le statut de la réponse est HTTP 200 (OK) après la mise à jour.
+         *
+         * @throws Exception si une erreur survient lors de l'exécution de la requête.
+         */
         @Test
-        public void testMiseAJourPersonnes() throws Exception {
+        public void testUpdatePersons() throws Exception {
                 Person personExisting = new Person("Jack", "Will", "1252 Roses St", "Burbank", "95051", "841-874-7589",
                                 "jack.will@email.com");
 
@@ -58,8 +74,14 @@ public class PersonIT {
 
         }
 
+        /**
+         * Teste la suppression d'une personne via une requête HTTP DELETE.
+         * Vérifie que le statut de la réponse est HTTP 200 (OK) après la suppression.
+         *
+         * @throws Exception si une erreur survient lors de l'exécution de la requête.
+         */
         @Test
-        public void testSuppressionPersonnes() throws Exception {
+        public void testDeletePersons() throws Exception {
                 Person person = new Person("Jack", "Will", "1252 Roses St", "Burbank", "95051", "841-874-7589",
                                 "jack.will@email.com");
 

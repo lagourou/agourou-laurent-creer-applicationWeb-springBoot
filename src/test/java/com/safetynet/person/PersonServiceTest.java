@@ -3,10 +3,8 @@ package com.safetynet.person;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -17,38 +15,35 @@ import org.mockito.Mock;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.safetynet.model.Person;
 import com.safetynet.service.PersonService;
 import com.safetynet.service.dataService.DataLoad;
 
+/**
+ * Tests pour le service Person.
+ */
+@ExtendWith(MockitoExtension.class)
 class PersonServiceTest {
         @Mock
         private DataLoad dataLoad;
 
         @InjectMocks
         private PersonService personService;
-        private List<Person> existingPersons;
 
-        @BeforeEach
-        @SuppressWarnings(value = { "unused" })
-        void setUp() throws IOException {
-                MockitoAnnotations.openMocks(this);
-                existingPersons = new ArrayList<>();
-                existingPersons.add(
-                                new Person("John", "Boyd", "1509 Culver St", "Culver", "97451", "841-874-6512",
-                                                "jaboyd@email.com"));
-                existingPersons.add(
-                                new Person("Eric", "Cadigan", "951 LoneTree Rd", "Culver", "97451", "841-874-7458",
-                                                "gramps@email.com"));
-                TypeReference<Map<String, List<Person>>> typeReference = new TypeReference<Map<String, List<Person>>>() {
-                };
-                when(dataLoad.readJsonFile(eq("persons"), eq(typeReference)))
-                                .thenReturn(existingPersons);
-        }
+        private final List<Person> existingPersons = List.of(
+                        new Person("John", "Boyd", "1509 Culver St", "Culver", "97451", "841-874-6512",
+                                        "jaboyd@email.com"),
+                        new Person("Eric", "Cadigan", "951 LoneTree Rd", "Culver", "97451", "841-874-7458",
+                                        "gramps@email.com"));
 
+        /**
+         * Teste l'ajout de nouvelles personnes qui n'existent pas dans la liste.
+         * Vérifie que seules les nouvelles personnes sont ajoutées.
+         *
+         * @throws IOException s'il y a une erreur lors de l'appel au service.
+         */
         @Test
         void addPersonNotExist() throws IOException {
                 List<Person> newPersons = List.of(
@@ -81,15 +76,17 @@ class PersonServiceTest {
                                 "Le résultat doit contenir les personnes déjà existantes.");
         }
 
+        /**
+         * Teste l'ajout des personnes qui existent déjà dans la liste.
+         * Vérifie que la liste finale est identique à la liste qui existe déjà.
+         *
+         * @throws IOException s'il y a une erreur lors de l'appel au service.
+         */
         @Test
         void addPersonExist() throws IOException {
-                List<Person> existingPersonsInRequest = List.of(
-                                new Person("John", "Boyd", "1509 Culver St", "Culver", "97451", "841-874-6512",
-                                                "jaboyd@email.com"),
-                                new Person("Eric", "Cadigan", "951 LoneTree Rd", "Culver", "97451", "841-874-7458",
-                                                "gramps@email.com"));
 
-                List<Person> result = personService.add(existingPersonsInRequest);
+                List<Person> result = personService.add(existingPersons);
+
                 ArgumentCaptor<List<Person>> argumentCaptor = ArgumentCaptor.forClass(List.class);
                 verify(dataLoad).writeJsonFile(eq("persons"), argumentCaptor.capture());
 
@@ -106,23 +103,27 @@ class PersonServiceTest {
                                 "Eric Cadigan doit être présent dans la liste.");
                 assertNotNull(result, "Le résultat ne doit pas être null.");
                 assertEquals(2, result.size(), "Le résultat doit contenir exactement 2 personnes.");
-                assertTrue(result.containsAll(existingPersonsInRequest),
+                assertTrue(result.containsAll(existingPersons),
                                 "Le résultat doit contenir toutes les personnes passées en paramètre.");
         }
 
+        /**
+         * Teste la mise à jour des personnes qui existent déjà dans la liste.
+         * Vérifie que les informations de la personne existante sont bien modifiées.
+         *
+         * @throws IOException s'il y a une erreur lors de l'appel au service.
+         */
         @Test
         void updateExistingPerson() throws IOException {
-                List<Person> mockedExistingPersons = List.of(
-                                new Person("John", "Boyd", "1509 Culver St", "Culver", "97451", "841-874-6512",
-                                                "jaboyd@email.com"),
-                                new Person("Eric", "Cadigan", "951 LoneTree Rd", "Culver", "97451", "841-874-7458",
-                                                "gramps@email.com"));
-                when(dataLoad.readJsonFile(eq("persons"), any())).thenReturn(new ArrayList<>(mockedExistingPersons));
+                when(dataLoad.readJsonFile(eq("persons"), any())).thenReturn(new ArrayList<>(existingPersons));
+
                 List<Person> personsToUpdate = List.of(
-                                new Person("John", "Boyd", "Updated Address", "Updated City", "Updated Zip",
-                                                "Updated Phone", "updated.email@email.com"));
+                                new Person("John", "Boyd", "7875 Wall St", "New-York", "58614",
+                                                "871-804-6519", "Bjohn.email@email.com"));
+
                 @SuppressWarnings("unused")
                 List<Person> updatedResult = personService.update(personsToUpdate);
+
                 ArgumentCaptor<List<Person>> argumentCaptor = ArgumentCaptor.forClass(List.class);
                 verify(dataLoad).writeJsonFile(eq("persons"), argumentCaptor.capture());
 
@@ -135,17 +136,24 @@ class PersonServiceTest {
                                 .orElseThrow(() -> new AssertionError(
                                                 "John Boyd doit être présent dans la liste mise à jour."));
 
-                assertEquals("Updated Address", updatedJohn.getAddress(),
+                assertEquals("7875 Wall St", updatedJohn.getAddress(),
                                 "L'adresse de John Boyd doit être mise à jour.");
-                assertEquals("Updated City", updatedJohn.getCity(), "La ville de John Boyd doit être mise à jour.");
-                assertEquals("Updated Zip", updatedJohn.getZip(), "Le code postal de John Boyd doit être mis à jour.");
-                assertEquals("Updated Phone", updatedJohn.getPhone(),
+                assertEquals("New-York", updatedJohn.getCity(), "La ville de John Boyd doit être mise à jour.");
+                assertEquals("58614", updatedJohn.getZip(), "Le code postal de John Boyd doit être mis à jour.");
+                assertEquals("871-804-6519", updatedJohn.getPhone(),
                                 "Le numéro de téléphone de John Boyd doit être mis à jour.");
-                assertEquals("updated.email@email.com", updatedJohn.getEmail(),
+                assertEquals("Bjohn.email@email.com", updatedJohn.getEmail(),
                                 "L'email de John Boyd doit être mis à jour.");
+
                 assertEquals(2, savedPersons.size(), "La liste sauvegardée doit contenir exactement 2 personnes.");
         }
 
+        /**
+         * Teste la mise à jour des personnes qui n'existent pas dans la liste.
+         * Vérifie que les informations de la personne ne sont pas modifiées.
+         *
+         * @throws IOException s'il y a une erreur lors de l'appel au service.
+         */
         @Test
         void updateNonExistingPerson() throws IOException {
                 List<Person> mockedExistingPersons = List.of(
@@ -174,18 +182,19 @@ class PersonServiceTest {
                                 "Le résultat doit contenir toutes les personnes existantes.");
         }
 
+        /**
+         * Teste la suppression des personnes qui existent déjà dans la liste.
+         * Vérifie que les informations de la personne existante sont bien supprimées.
+         *
+         * @throws IOException s'il y a une erreur lors de l'appel au service.
+         */
         @Test
         void deleteExistingPerson() throws IOException {
-                List<Person> mockedExistingPersons = List.of(
-                                new Person("John", "Boyd", "1509 Culver St", "Culver", "97451", "841-874-6512",
-                                                "jaboyd@email.com"),
-                                new Person("Eric", "Cadigan", "951 LoneTree Rd", "Culver", "97451", "841-874-7458",
-                                                "gramps@email.com"));
-
-                when(dataLoad.readJsonFile(eq("persons"), any())).thenReturn(new ArrayList<>(mockedExistingPersons));
+                when(dataLoad.readJsonFile(eq("persons"), any())).thenReturn(new ArrayList<>(existingPersons));
 
                 List<Person> personsToDelete = List.of(
-                                new Person("John", "Boyd", "", "", "", "", ""));
+                                new Person("John", "Boyd", "1509 Culver St", "Culver", "97451", "841-874-6512",
+                                                "jaboyd@email.com"));
 
                 List<Person> deletedPersons = personService.delete(personsToDelete);
 
@@ -208,18 +217,19 @@ class PersonServiceTest {
                                 "John Boyd doit être dans la liste des personnes supprimées.");
         }
 
+        /**
+         * Teste la suppression des personnes qui n'existent pas dans la liste.
+         * Vérifie que les informations de la personne ne sont pas supprimées.
+         *
+         * @throws IOException s'il y a une erreur lors de l'appel au service.
+         */
         @Test
-        void deleteNonExistingPerson() throws IOException {
-                List<Person> mockedExistingPersons = List.of(
-                                new Person("John", "Boyd", "1509 Culver St", "Culver", "97451", "841-874-6512",
-                                                "jaboyd@email.com"),
-                                new Person("Eric", "Cadigan", "951 LoneTree Rd", "Culver", "97451", "841-874-7458",
-                                                "gramps@email.com"));
-
-                when(dataLoad.readJsonFile(eq("persons"), any())).thenReturn(new ArrayList<>(mockedExistingPersons));
+        void deleteNoExistingPerson() throws IOException {
+                when(dataLoad.readJsonFile(eq("persons"), any())).thenReturn(new ArrayList<>(existingPersons));
 
                 List<Person> personsToDelete = List.of(
-                                new Person("Nonexistent", "Person", "", "", "", "", ""));
+                                new Person("Fiona", "Lake", "789 Green St", "Beverly", "27851", "041-774-6712",
+                                                "fLake@email.com"));
 
                 List<Person> deletedPersons = personService.delete(personsToDelete);
 
@@ -229,7 +239,7 @@ class PersonServiceTest {
                 List<Person> updatedPersons = argumentCaptor.getValue();
 
                 assertEquals(2, updatedPersons.size(), "La liste mise à jour doit contenir exactement 2 personnes.");
-                assertTrue(updatedPersons.containsAll(mockedExistingPersons),
+                assertTrue(updatedPersons.containsAll(existingPersons),
                                 "Toutes les personnes existantes doivent rester inchangées.");
 
                 assertNotNull(deletedPersons, "Le résultat ne doit pas être null.");

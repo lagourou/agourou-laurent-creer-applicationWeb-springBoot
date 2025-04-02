@@ -17,6 +17,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.safetynet.model.Firestation;
 
+/**
+ * Tests d'intégration pour l'endpoint Firestation.
+ */
 @SpringBootTest
 @AutoConfigureMockMvc
 public class FirestationIT {
@@ -27,19 +30,28 @@ public class FirestationIT {
         @Autowired
         private ObjectMapper objectMapper;
 
+        /**
+         * Teste l'ajout d'une nouvelle caserne.
+         *
+         * @throws Exception gère l'erreur lors de l'exécution du test.
+         */
         @Test
-        public void testAjoutFirestation() throws Exception {
+        public void testAddFirestation() throws Exception {
                 Firestation firestation = new Firestation("1252 Roses St", 5);
 
                 mockMvc.perform(post("/firestation")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(objectMapper.writeValueAsString(Arrays.asList(firestation))))
                                 .andExpect(status().isCreated());
-
         }
 
+        /**
+         * Teste la mise à jour d'une caserne qui existe.
+         *
+         * @throws Exception gère l'erreur lors de l'exécution du test.
+         */
         @Test
-        public void testMiseAJourFirestation() throws Exception {
+        public void testUpdateFirestation() throws Exception {
                 Firestation firestationExisting = new Firestation("1252 Roses St", 5);
                 mockMvc.perform(post("/firestation")
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -53,8 +65,13 @@ public class FirestationIT {
                                 .andExpect(status().isOk());
         }
 
+        /**
+         * Teste la suppression d'une caserne qui existe.
+         *
+         * @throws Exception gère l'erreur lors de l'exécution du test.
+         */
         @Test
-        public void testSuppressionFirestation() throws Exception {
+        public void testDeleteFirestation() throws Exception {
                 Firestation firestation = new Firestation("1252 Roses St", 3);
                 mockMvc.perform(post("/firestation")
                                 .contentType(MediaType.APPLICATION_JSON)
