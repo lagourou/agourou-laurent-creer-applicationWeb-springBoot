@@ -44,7 +44,9 @@ public class PersonIT {
                 mockMvc.perform(post("/person")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(objectMapper.writeValueAsString(Arrays.asList(person))))
-                                .andExpect(status().isCreated());
+                                .andExpect(status().isCreated())
+                                .andExpect(jsonPath("$[0].firstName").value("Jack"))
+                                .andExpect(jsonPath("$[0].lastName").value("Will"));
 
         }
 

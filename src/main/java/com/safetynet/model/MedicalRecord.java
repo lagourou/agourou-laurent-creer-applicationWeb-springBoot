@@ -4,16 +4,25 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class MedicalRecord {
+
+    @NotBlank
     private String firstName;
+
+    @NotBlank
     private String lastName;
+
+    @NotBlank
     private String birthdate;
-    private List<String> medications;
-    private List<String> allergies;
+
+    private List<@NotBlank String> medications;
+
+    private List<@NotBlank String> allergies;
 
     public MedicalRecord() {
     }
@@ -26,5 +35,4 @@ public class MedicalRecord {
         this.medications = medications;
         this.allergies = allergies;
     }
-
 }
