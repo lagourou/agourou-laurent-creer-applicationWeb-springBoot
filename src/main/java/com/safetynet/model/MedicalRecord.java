@@ -21,9 +21,9 @@ public class MedicalRecord {
     @Pattern(regexp = "^\\d{2}/\\d{2}/\\d{4}$")
     private String birthdate;
 
-    private List<@NotBlank String> medications;
+    private List<String> medications;
 
-    private List<@NotBlank String> allergies;
+    private List<String> allergies;
 
     public MedicalRecord() {
     }
