@@ -22,7 +22,7 @@ import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * Contrôleur gérer les personnes.
+ * Contrôleur pour gérer les alertes liées aux personnes.
  * Endpoint pour ajouter, mettre à jour et supprimer des personnes.
  */
 @Slf4j
@@ -35,7 +35,8 @@ public class PersonController {
     /**
      * Constructeur de la classe PersonController
      *
-     * @param personService Service permettant de gérer les personnes.
+     * @param personService Service permettant de gérer les alertes liées aux
+     *                      personnes.
      *
      */
     public PersonController(PersonService personService) {
@@ -46,10 +47,12 @@ public class PersonController {
      * Valide que la liste des personnes n'est pas vide.
      *
      * @param persons Liste des personnes à valider.
+     * @throws IllegalArgumentException Si la liste est vide ou nulle.
+     *
      */
     private void validPersons(List<Person> persons) {
-        if (persons.isEmpty()) {
-            log.info("La liste des personnes est vide !");
+        if (persons == null || persons.isEmpty()) {
+            log.error("La liste des personnes est vide !");
             throw new IllegalArgumentException("La liste des personnes ne peut pas être vide.");
         }
     }
@@ -69,8 +72,12 @@ public class PersonController {
     public List<Person> creer(@Valid @RequestBody List<Person> persons) throws IOException {
 
         validPersons(persons);
+        log.debug("Appel au service 'personService.add' avec la liste des personnes : {}", persons);
+        List<Person> result = personService.add(persons);
+
+        log.debug("Résultat du service d'ajout : {}", result);
         log.info("Personnes ajoutées avec succès.");
-        return personService.add(persons);
+        return result;
     }
 
     /**
@@ -88,8 +95,12 @@ public class PersonController {
     public List<Person> mettreAJour(@Valid @RequestBody List<Person> persons) throws IOException {
 
         validPersons(persons);
+        log.debug("Appel au service 'personService.update' avec la liste des personnes : {}", persons);
+        List<Person> result = personService.update(persons);
+
+        log.debug("Résultat du service mise à jour : {}", result);
         log.info("Personnes mise à jour avec succès.");
-        return personService.update(persons);
+        return result;
     }
 
     /**
@@ -107,8 +118,12 @@ public class PersonController {
     public List<Person> supprimer(@Valid @RequestBody List<Person> persons) throws IOException {
 
         validPersons(persons);
+        log.debug("Appel au service 'personService.delete' avec la liste des personnes : {}", persons);
+        List<Person> result = personService.delete(persons);
+
+        log.debug("Résultat du service suppression : {}", result);
         log.info("Personnes supprimées avec succès.");
-        return personService.delete(persons);
+        return result;
     }
 
 }

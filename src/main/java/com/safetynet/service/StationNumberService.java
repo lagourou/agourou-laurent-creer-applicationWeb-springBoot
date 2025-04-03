@@ -60,40 +60,60 @@ public class StationNumberService {
         public FirestationByPerson getPersonByStation(int stationNumber) throws IOException {
                 log.info("Requête reçue pour getPersonByStation avec le numéro de la caserne: {}", stationNumber);
 
-                List<Person> persons = dataLoad.readJsonFile("persons", new TypeReference<Map<String, List<Person>>>() {
-                });
-                List<Firestation> firestations = dataLoad.readJsonFile("firestations",
-                                new TypeReference<Map<String, List<Firestation>>>() {
-                                });
-                List<MedicalRecord> medicalRecords = dataLoad.readJsonFile("medicalrecords",
-                                new TypeReference<Map<String, List<MedicalRecord>>>() {
-                                });
+                List<Person> persons;
+                List<Firestation> firestations;
+                List<MedicalRecord> medicalRecords;
+
+                try {
+                        persons = dataLoad.readJsonFile("persons", new TypeReference<Map<String, List<Person>>>() {
+                        });
+                        firestations = dataLoad.readJsonFile("firestations",
+                                        new TypeReference<Map<String, List<Firestation>>>() {
+                                        });
+                        medicalRecords = dataLoad.readJsonFile("medicalrecords",
+                                        new TypeReference<Map<String, List<MedicalRecord>>>() {
+                                        });
+                        log.debug("Données des personnes chargées : {}", persons);
+                        log.debug("Données des casernes chargées : {}", firestations);
+                        log.debug("Données des dossiers médicaux chargées : {}", medicalRecords);
+                } catch (IOException e) {
+                        log.error("Erreur lors de la lecture des fichiers JSON pour le numéro de caserne {} : {}",
+                                        stationNumber, e.getMessage(), e);
+                        throw e;
+                }
 
                 List<String> address = firestations.stream()
                                 .filter(firestation -> firestation.getStation() == stationNumber)
                                 .map(Firestation::getAddress).toList();
+                log.debug("Adresses associées à la caserne {} : {}", stationNumber, address);
+
                 List<PersonByStation> filterPersonByStations = persons.stream()
                                 .filter(person -> address.contains(person.getAddress()))
                                 .map(person -> new PersonByStation(person.getFirstName(), person.getLastName(),
-                                                person.getAddress(),
-                                                person.getPhone()))
+                                                person.getAddress(), person.getPhone()))
                                 .toList();
+                log.debug("Liste des personnes filtrées pour la caserne {} : {}", stationNumber,
+                                filterPersonByStations);
 
-                int numberOfAdults = (int) persons.stream().filter(person -> address.contains(person.getAddress())
-                                && medicalRecords.stream()
-                                                .filter(record -> record.getFirstName().equals(person.getFirstName())
-                                                                && record.getLastName().equals(person.getLastName()))
-                                                .findFirst()
-                                                .map(record -> ageCalculationService
-                                                                .calculateAge(record.getBirthdate()) > 18)
-                                                .orElse(false))
+                int numberOfAdults = (int) persons.stream()
+                                .filter(person -> address.contains(person.getAddress())
+                                                && medicalRecords.stream()
+                                                                .filter(record -> record.getFirstName()
+                                                                                .equals(person.getFirstName())
+                                                                                && record.getLastName().equals(
+                                                                                                person.getLastName()))
+                                                                .findFirst()
+                                                                .map(record -> ageCalculationService.calculateAge(
+                                                                                record.getBirthdate()) > 18)
+                                                                .orElse(false))
                                 .count();
-
                 int numberOfChildren = filterPersonByStations.size() - numberOfAdults;
 
-                log.info("Réponse retournée pour le numéro de caserne {} : {} adultes et {} enfants",
-                                stationNumber, numberOfAdults, numberOfChildren);
-                return new FirestationByPerson(filterPersonByStations, numberOfAdults, numberOfChildren);
+                log.debug("Nombre d'adultes : {}, Nombre d'enfants : {}", numberOfAdults, numberOfChildren);
+                log.info("Réponse retournée pour le numéro de caserne {} : {} adultes, {} enfants, total : {} personnes",
+                                stationNumber, numberOfAdults, numberOfChildren, filterPersonByStations.size());
 
+                return new FirestationByPerson(filterPersonByStations, numberOfAdults, numberOfChildren);
         }
+
 }

@@ -42,7 +42,7 @@ public class FireAddressController {
     }
 
     /**
-     * 
+     *
      * @param fireAddress L'adresse utilisée pour rechercher les informations des
      *                    habitants.
      * @return Une ResponseEntity contenant la liste des habitants pour l'adresse
@@ -69,7 +69,10 @@ public class FireAddressController {
             return ResponseEntity.badRequest().build();
         }
 
+        log.debug("Appel au service 'fireAddressService.getFireAddress' avec l'adresse : {}", fireAddress);
         List<FireAddress> result = fireAddressService.getFireAddress(fireAddress);
+
+        log.debug("Résultat du service pour l'adresse {}: {}", fireAddress, result);
         if (result.isEmpty()) {
             log.info("Aucune donnée trouvée pour l'adresse: {}", fireAddress);
             return ResponseEntity.noContent().build();

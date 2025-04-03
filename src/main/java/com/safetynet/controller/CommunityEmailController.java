@@ -69,6 +69,8 @@ public class CommunityEmailController {
             return ResponseEntity.badRequest().build();
         }
 
+        log.debug("Appel au service 'communityEmailService.getCommunityEmail' avec la ville : {}", city);
+
         List<CommunityEmail> result = communityEmailService.getCommunityEmail(city);
         if (result.isEmpty()) {
 

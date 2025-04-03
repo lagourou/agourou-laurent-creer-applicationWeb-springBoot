@@ -22,7 +22,7 @@ import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * Contrôleur pour gérer les dossiers médicaux.
+ * Contrôleur pour gérer les alertes concernant les dossiers médicaux.
  * Endpoint pour ajouter, mettre à jour et supprimer
  * des dossiers médicaux.
  */
@@ -36,20 +36,23 @@ public class MedicalRecordController {
     /**
      * Constructeur de la classe MedicalRecordController.
      *
-     * @param medicalRecordService Service pour gérer les dossiers médicaux.
+     * @param medicalRecordService Service pour gérer les alertes concernant les
+     *                             dossiers médicaux.
      */
     public MedicalRecordController(MedicalRecordService medicalRecordService) {
         this.medicalRecordService = medicalRecordService;
     }
 
     /**
-     * Vérifie que la liste des dossiers médicaux est valide.
+     * Vérifie que la liste des dossiers médicaux n'est pas vide.
      *
      * @param medicalRecords Liste des dossiers médicaux à valider.
+     * @throws IllegalArgumentException Si la liste est vide ou nulle.
+     *
      */
     private void validMedicalRecords(List<MedicalRecord> medicalRecords) {
-        if (medicalRecords.isEmpty()) {
-            log.info("La liste des dossiers médicales est vide ou nulle !");
+        if (medicalRecords == null || medicalRecords.isEmpty()) {
+            log.error("La liste des dossiers médicales est vide ou nulle !");
             throw new IllegalArgumentException("La liste des dossiers médicales ne peut pas être vide.");
         }
     }
@@ -69,8 +72,13 @@ public class MedicalRecordController {
     public List<MedicalRecord> creer(@Valid @RequestBody List<MedicalRecord> medicalRecords) throws IOException {
 
         validMedicalRecords(medicalRecords);
+
+        log.debug("Appel au service 'medicalRecordService.add' avec les dossiers : {}", medicalRecords);
+        List<MedicalRecord> result = medicalRecordService.add(medicalRecords);
+
+        log.debug("Résultat du service d'ajout : {}", result);
         log.info("Dossiers médiacales ajoutés avec succès.");
-        return medicalRecordService.add(medicalRecords);
+        return result;
     }
 
     /**
@@ -88,8 +96,13 @@ public class MedicalRecordController {
     public List<MedicalRecord> mettreAJour(@Valid @RequestBody List<MedicalRecord> medicalRecords) throws IOException {
 
         validMedicalRecords(medicalRecords);
+
+        log.debug("Appel au service 'medicalRecordService.update' avec les dossiers : {}", medicalRecords);
+        List<MedicalRecord> result = medicalRecordService.update(medicalRecords);
+
+        log.debug("Résultat du service de mise à jour : {}", result);
         log.info("Dossiers médiacales mis à jour avec succès.");
-        return medicalRecordService.update(medicalRecords);
+        return result;
     }
 
     /**
@@ -107,7 +120,11 @@ public class MedicalRecordController {
     public List<MedicalRecord> supprimer(@Valid @RequestBody List<MedicalRecord> medicalRecords) throws IOException {
 
         validMedicalRecords(medicalRecords);
+        log.debug("Appel au service 'medicalRecordService.delete' avec les dossiers : {}", medicalRecords);
+        List<MedicalRecord> result = medicalRecordService.delete(medicalRecords);
+
+        log.debug("Résultat du service de suppression : {}", result);
         log.info("Dossiers médiacales supprimés avec succès.");
-        return medicalRecordService.delete(medicalRecords);
+        return result;
     }
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
 @Data
@@ -17,7 +18,7 @@ public class MedicalRecord {
     @NotBlank
     private String lastName;
 
-    @NotBlank
+    @Pattern(regexp = "^\\d{2}/\\d{2}/\\d{4}$")
     private String birthdate;
 
     private List<@NotBlank String> medications;

@@ -59,13 +59,16 @@ public class FloodStationController {
 
         log.info("Requête reçue la liste des numéros de casernes: {}", stationNumbers);
 
-        // Vérification des paramètres invalides
         if (stationNumbers == null || stationNumbers.isEmpty()) {
-            log.warn("Paramètre stations invalide: {}", stationNumbers);
-            return ResponseEntity.badRequest().build(); // Retourne 400 Bad Request
+            log.error("Paramètre stations invalide: {}", stationNumbers);
+            return ResponseEntity.badRequest().build();
         }
 
+        log.debug("Appel au service 'floodStationService.getFloodStation' avec les numéros de casernes : {}",
+                stationNumbers);
         Map<String, List<FloodStation>> result = floodStationService.getFloodStation(stationNumbers);
+
+        log.debug("Résultat du service pour les casernes {}: {}", stationNumbers, result);
         if (result.isEmpty()) {
             log.info("Aucune caserne(s) trouvée(s): {}", stationNumbers);
             return ResponseEntity.noContent().build();

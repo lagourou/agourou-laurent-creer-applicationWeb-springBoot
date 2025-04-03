@@ -54,43 +54,47 @@ public class ChildAlertService {
 
         /**
          * Récupère la liste des enfants vivant à une adresse donnée.
-         * 
+         *
          * @param address L'adresse pour rechercher les enfants.
          * @return Une liste des enfants et des autres membres du foyer.
          * @throws IOException En cas d'erreur lors de la lecture des fichiers JSON.
          */
         public List<ChildrenByAddress> getChildrenByAddress(String address) throws IOException {
                 String childAddress = address.trim();
+                log.debug("Début de la récupération des enfants pour l'adresse : {}", childAddress);
+
                 List<Person> persons = dataLoad.readJsonFile("persons", new TypeReference<Map<String, List<Person>>>() {
                 });
                 List<MedicalRecord> medicalRecords = dataLoad.readJsonFile("medicalrecords",
                                 new TypeReference<Map<String, List<MedicalRecord>>>() {
                                 });
 
-                List<ChildrenByAddress> filterChildrenByAddress = persons.stream()
+                if (persons == null || medicalRecords == null) {
+                        log.error("Les données des personnes ou des dossiers médicaux sont nulles. Vérifiez les fichiers JSON.");
+                        throw new IOException("Données JSON invalides ou introuvables.");
+                }
+
+                log.debug("Données des personnes : {}", persons);
+                log.debug("Données des dossiers médicaux : {}", medicalRecords);
+
+                List<ChildrenByAddress> childrenAtAddress = persons.stream()
                                 .filter(person -> childAddress.equalsIgnoreCase(person.getAddress()))
                                 .filter(person -> {
-                                        MedicalRecord record = medicalRecords.stream()
-                                                        .filter(medical -> medical.getFirstName()
-                                                                        .equals(person.getFirstName())
-                                                                        && medical.getLastName()
-                                                                                        .equals(person.getLastName()))
-                                                        .findFirst()
-                                                        .orElse(null);
-
+                                        MedicalRecord record = findMedicalRecordForPerson(person, medicalRecords);
                                         if (record != null) {
                                                 int age = getAge(record.getBirthdate());
                                                 log.info("Dossier médical trouvé pour : {} {}", person.getFirstName(),
                                                                 person.getLastName());
+                                                log.debug("Âge calculé pour {} {} : {}", person.getFirstName(),
+                                                                person.getLastName(), age);
                                                 return age <= 18;
                                         } else {
-                                                log.info("Dossier médical introuvable pour : {} {}",
+                                                log.warn("Dossier médical introuvable pour : {} {}",
                                                                 person.getFirstName(), person.getLastName());
                                                 return false;
                                         }
                                 })
                                 .map(person -> {
-                                        // Trouver les autres membres du foyer
                                         List<Map<String, String>> otherMembers = persons.stream()
                                                         .filter(member -> childAddress
                                                                         .equalsIgnoreCase(member.getAddress()))
@@ -102,24 +106,24 @@ public class ChildAlertService {
                                                                         "lastName", member.getLastName()))
                                                         .toList();
 
-                                        MedicalRecord record = medicalRecords.stream()
-                                                        .filter(medical -> medical.getFirstName()
-                                                                        .equals(person.getFirstName())
-                                                                        && medical.getLastName()
-                                                                                        .equals(person.getLastName()))
-                                                        .findFirst()
-                                                        .orElse(null);
-
-                                        int age = 0;
-                                        if (record != null) {
-                                                age = getAge(record.getBirthdate());
-                                        }
+                                        MedicalRecord record = findMedicalRecordForPerson(person, medicalRecords);
+                                        int age = record != null ? getAge(record.getBirthdate()) : 0;
 
                                         return new ChildrenByAddress(person.getFirstName(), person.getLastName(), age,
                                                         otherMembers);
                                 })
                                 .toList();
 
-                return filterChildrenByAddress;
+                log.debug("Liste des enfants par adresse ({}): {}", address, childrenAtAddress);
+                return childrenAtAddress;
         }
+
+        private MedicalRecord findMedicalRecordForPerson(Person person, List<MedicalRecord> medicalRecords) {
+                return medicalRecords.stream()
+                                .filter(medical -> medical.getFirstName().equals(person.getFirstName())
+                                                && medical.getLastName().equals(person.getLastName()))
+                                .findFirst()
+                                .orElse(null);
+        }
+
 }

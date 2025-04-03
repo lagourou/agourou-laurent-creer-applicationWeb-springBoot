@@ -34,6 +34,8 @@ class FireAddressServiceTest {
      * Teste la récupération des informations des habitants pour une adresse valide
      * avec des résidents.
      *
+     * S'assure que le statut HTTP retourné est 200.
+     *
      * @throws IOException en cas d'erreur lors de l'exécution du test.
      */
     @SuppressWarnings("null")
@@ -57,6 +59,8 @@ class FireAddressServiceTest {
      * Teste la récupération des informations des habitants pour une adresse valide
      * sans résidents.
      *
+     * S'assure que le statut HTTP retourné est 204.
+     *
      * @throws IOException en cas d'erreur lors de l'exécution du test.
      */
     @Test
@@ -73,7 +77,10 @@ class FireAddressServiceTest {
 
     /**
      * Teste la récupération des informations pour une adresse invalide.
-     * Vérifie qu'une erreur "Bad Request" est retournée.
+     *
+     * Vérifie qu'une requête avec une adresse invalide (chaîne vide) retourne un
+     * statut HTTP 400 et un corps de réponse null.
+     * S'assure que le service FireAddressService n'est pas appelé.
      *
      * @throws IOException en cas d'erreur lors de l'exécution du test.
      */
@@ -89,7 +96,9 @@ class FireAddressServiceTest {
 
     /**
      * Teste la récupération des informations pour une adresse nulle.
-     * Vérifie qu'une erreur "Bad Request" est retournée.
+     *
+     * Vérifie qu'une requête avec une adresse nulle retourne un statut HTTP 400
+     * et un corps de réponse null.
      *
      * @throws IOException en cas d'erreur lors de l'exécution du test.
      */

@@ -15,16 +15,12 @@ public class Person {
     @NotBlank
     private String lastName;
 
-    @NotBlank
     private String address;
 
-    @NotBlank
     private String city;
 
-    @NotBlank
     private String zip;
 
-    @NotBlank
     private String phone;
 
     @Email

@@ -72,8 +72,13 @@ public class StationNumberController {
             return ResponseEntity.badRequest().build();
         }
 
+        log.debug("Appel au service 'stationNumberService.getPersonByStation' avec le numéro de caserne : {}",
+                stationNumber);
         FirestationByPerson result = stationNumberService.getPersonByStation(stationNumber);
+
+        log.debug("Résultat du service pour la caserne {} : {}", stationNumber, result);
         if (result.persons().isEmpty()) {
+
             log.info("Aucune personne trouvée pour la caserne numéro: {}", stationNumber);
             return ResponseEntity.noContent().build();
         }

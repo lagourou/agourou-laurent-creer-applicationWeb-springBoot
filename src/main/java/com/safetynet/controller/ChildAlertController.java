@@ -68,9 +68,11 @@ public class ChildAlertController {
         log.info("Requête reçue avec l'adresse : {}", address);
 
         if (address == null || address.isBlank()) {
-            log.error("Le paramètre 'address' est manquant ou invalide.");
+            log.error("Le paramètre 'address' est nulle ou vide.");
             return ResponseEntity.badRequest().build();
         }
+
+        log.debug("Appel au service 'childAlertService.getChildrenByAddress' avec l'adresse : {}", address);
 
         List<ChildrenByAddress> childrenByAddresses = childAlertService.getChildrenByAddress(address);
         if (childrenByAddresses.isEmpty()) {

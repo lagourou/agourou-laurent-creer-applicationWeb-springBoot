@@ -67,7 +67,11 @@ public class PhoneAlertController {
             return ResponseEntity.badRequest().build();
         }
 
+        log.debug("Appel au service 'phoneAlertService.getPhoneAlert' avec le numéro de caserne : {}",
+                firestationNumber);
         List<PhoneAlert> result = phoneAlertService.getPhoneAlert(firestationNumber);
+
+        log.debug("Résultat du service pour la caserne {} : {}", firestationNumber, result);
         if (result.isEmpty()) {
             log.info("Aucun numéro de téléphone trouvé pour la caserne {}", firestationNumber);
             return ResponseEntity.noContent().build();

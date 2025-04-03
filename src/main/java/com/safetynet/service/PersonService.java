@@ -38,23 +38,39 @@ public class PersonService {
      *                     des données.
      */
     public List<Person> add(List<Person> persons) throws IOException {
-        log.info("Ajout de personnes au fichier Json.");
-        List<Person> existingPersons = dataLoad.readJsonFile("persons", new TypeReference<Map<String, List<Person>>>() {
-        });
+        log.info("Début de l'ajout de personnes au fichier JSON.");
+
+        List<Person> existingPersons;
+
+        try {
+            existingPersons = dataLoad.readJsonFile("persons", new TypeReference<Map<String, List<Person>>>() {
+            });
+            log.debug("Données des personnes existantes avant ajout : {}", existingPersons);
+        } catch (IOException e) {
+            log.error("Erreur lors de la lecture des personnes dans le fichier JSON : {}", e.getMessage(), e);
+            throw e;
+        }
 
         for (Person newPerson : persons) {
             if (existingPersons.stream()
                     .anyMatch(existing -> existing.getFirstName().equalsIgnoreCase(newPerson.getFirstName())
                             && existing.getLastName().equalsIgnoreCase(newPerson.getLastName()))) {
-
-                log.info("La personne existe déjà: {}", newPerson.getFirstName(), newPerson.getLastName());
+                log.info("La personne existe déjà : {} {}", newPerson.getFirstName(), newPerson.getLastName());
                 continue;
             }
             existingPersons.add(newPerson);
-
         }
-        dataLoad.writeJsonFile("persons", existingPersons);
-        log.info("Ajout de personnes fait");
+
+        try {
+            dataLoad.writeJsonFile("persons", existingPersons);
+        } catch (IOException e) {
+            log.error("Erreur lors de l'écriture des personnes dans le fichier JSON : {}", e.getMessage(), e);
+            throw e;
+        }
+
+        log.info("Ajout de personnes terminé.");
+        log.debug("Données des personnes après ajout : {}", existingPersons);
+
         return persons;
     }
 
@@ -67,10 +83,18 @@ public class PersonService {
      *                     des données.
      */
     public List<Person> update(List<Person> persons) throws IOException {
-        log.info("Mise à jour des personnes.");
+        log.info("Début de la mise à jour des personnes.");
 
-        List<Person> existingPersons = dataLoad.readJsonFile("persons", new TypeReference<Map<String, List<Person>>>() {
-        });
+        List<Person> existingPersons;
+
+        try {
+            existingPersons = dataLoad.readJsonFile("persons", new TypeReference<Map<String, List<Person>>>() {
+            });
+            log.debug("Données des personnes existantes avant mise à jour : {}", existingPersons);
+        } catch (IOException e) {
+            log.error("Erreur lors de la lecture des personnes dans le fichier JSON : {}", e.getMessage(), e);
+            throw e;
+        }
 
         for (Person person : persons) {
             for (Person existing : existingPersons) {
@@ -86,7 +110,17 @@ public class PersonService {
                 }
             }
         }
-        dataLoad.writeJsonFile("persons", existingPersons);
+
+        try {
+            dataLoad.writeJsonFile("persons", existingPersons);
+        } catch (IOException e) {
+            log.error("Erreur lors de l'écriture des personnes dans le fichier JSON : {}", e.getMessage(), e);
+            throw e;
+        }
+
+        log.info("Mise à jour des personnes terminée.");
+        log.debug("Données des personnes après mise à jour : {}", existingPersons);
+
         return existingPersons;
     }
 
@@ -99,18 +133,33 @@ public class PersonService {
      *                     des données.
      */
     public List<Person> delete(List<Person> persons) throws IOException {
-        log.info("Suppression de personnes.");
+        log.info("Début de la suppression des personnes.");
 
-        List<Person> existingPersons = dataLoad.readJsonFile("persons", new TypeReference<Map<String, List<Person>>>() {
-        });
+        List<Person> existingPersons;
+
+        try {
+            existingPersons = dataLoad.readJsonFile("persons", new TypeReference<Map<String, List<Person>>>() {
+            });
+            log.debug("Données des personnes existantes avant suppression : {}", existingPersons);
+        } catch (IOException e) {
+            log.error("Erreur lors de la lecture des personnes dans le fichier JSON : {}", e.getMessage(), e);
+            throw e;
+        }
 
         existingPersons.removeIf(
                 p -> persons.stream().anyMatch(person -> p.getFirstName().equalsIgnoreCase(person.getFirstName())
                         && p.getLastName().equalsIgnoreCase(person.getLastName())));
 
-        dataLoad.writeJsonFile("persons", existingPersons);
+        try {
+            dataLoad.writeJsonFile("persons", existingPersons);
+        } catch (IOException e) {
+            log.error("Erreur lors de l'écriture des personnes dans le fichier JSON : {}", e.getMessage(), e);
+            throw e;
+        }
 
-        log.info("Personne supprimeé: {}", existingPersons);
+        log.info("Suppression des personnes terminée.");
+        log.debug("Données des personnes après suppression : {}", existingPersons);
+
         return persons;
     }
 

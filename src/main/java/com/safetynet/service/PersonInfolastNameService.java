@@ -55,11 +55,23 @@ public class PersonInfolastNameService {
      * @throws IOException En cas d'erreur lors de la lecture des fichiers JSON.
      */
     public List<PersonInfolastName> getPersonInfolastName(String lastNames) throws IOException {
-        List<Person> persons = dataLoad.readJsonFile("persons", new TypeReference<Map<String, List<Person>>>() {
-        });
-        List<MedicalRecord> medicalRecords = dataLoad.readJsonFile("medicalrecords",
-                new TypeReference<Map<String, List<MedicalRecord>>>() {
-                });
+        log.info("Début de la récupération des informations pour le nom de famille : {}", lastNames);
+
+        List<Person> persons;
+        List<MedicalRecord> medicalRecords;
+
+        try {
+            persons = dataLoad.readJsonFile("persons", new TypeReference<Map<String, List<Person>>>() {
+            });
+            medicalRecords = dataLoad.readJsonFile("medicalrecords",
+                    new TypeReference<Map<String, List<MedicalRecord>>>() {
+                    });
+            log.debug("Données des habitants chargées : {}", persons);
+            log.debug("Données des dossiers médicaux chargées : {}", medicalRecords);
+        } catch (IOException e) {
+            log.error("Erreur lors de la lecture des fichiers JSON : {}", e.getMessage(), e);
+            throw e;
+        }
 
         List<PersonInfolastName> personInfolastNames = persons.stream()
                 .filter(person -> person.getLastName().trim().equalsIgnoreCase(lastNames))
@@ -79,14 +91,17 @@ public class PersonInfolastNameService {
                         medications = record.getMedications();
                         allergies = record.getAllergies();
                     } else {
-                        log.info("Dossier médical introuvable pour : {} {}", person.getFirstName(),
+                        log.warn("Dossier médical introuvable pour : {} {}", person.getFirstName(),
                                 person.getLastName());
                     }
 
-                    return new PersonInfolastName(person.getLastName(), person.getAddress(), age, email,
-                            medications, allergies);
+                    return new PersonInfolastName(person.getLastName(), person.getAddress(), age, email, medications,
+                            allergies);
                 }).toList();
 
+        log.debug("Liste des habitants correspondant au nom de famille '{}': {}", lastNames, personInfolastNames);
+        log.info("Nombre total d'habitants correspondant au nom de famille '{}': {}", lastNames,
+                personInfolastNames.size());
         return personInfolastNames;
     }
 

@@ -63,8 +63,13 @@ public class PersonInfolastNameController {
             return ResponseEntity.badRequest().build();
         }
 
+        log.debug("Appel au service 'personInfolastNameService.getPersonInfolastName' avec le nom de famille : {}",
+                lastNames);
         List<PersonInfolastName> result = personInfolastNameService.getPersonInfolastName(lastNames);
+
+        log.debug("Résultat du service pour le nom de famille {}: {}", lastNames, result);
         if (result.isEmpty()) {
+
             log.info("Aucune personne trouvée portant le nom de famille: {}", lastNames);
             return ResponseEntity.noContent().build();
         }

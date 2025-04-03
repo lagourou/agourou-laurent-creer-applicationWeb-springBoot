@@ -50,7 +50,7 @@ public class FireAddressService {
 
     /**
      * Récupère les informations des habitants associés à une adresse donnée.
-     * 
+     *
      * @param fireAddress Adresse utilisée pour récupérer les données des habitants.
      * @return Une liste contenant les informations des habitants et le numéro de la
      *         caserne.
@@ -59,22 +59,35 @@ public class FireAddressService {
     public List<FireAddress> getFireAddress(String fireAddress) throws IOException {
 
         String fireAddresse = fireAddress.trim();
-        List<Person> persons = dataLoad.readJsonFile("persons", new TypeReference<Map<String, List<Person>>>() {
-        });
-        List<MedicalRecord> medicalRecords = dataLoad.readJsonFile("medicalrecords",
-                new TypeReference<Map<String, List<MedicalRecord>>>() {
-                });
-        List<Firestation> firestations = dataLoad.readJsonFile("firestations",
-                new TypeReference<Map<String, List<Firestation>>>() {
-                });
+        log.debug("Début de la récupération des habitants pour l'adresse : {}", fireAddresse);
+
+        List<Person> persons;
+        List<MedicalRecord> medicalRecords;
+        List<Firestation> firestations;
+
+        try {
+            persons = dataLoad.readJsonFile("persons", new TypeReference<Map<String, List<Person>>>() {
+            });
+            medicalRecords = dataLoad.readJsonFile("medicalrecords",
+                    new TypeReference<Map<String, List<MedicalRecord>>>() {
+                    });
+            firestations = dataLoad.readJsonFile("firestations",
+                    new TypeReference<Map<String, List<Firestation>>>() {
+                    });
+        } catch (IOException e) {
+            log.error("Erreur lors de la lecture des fichiers JSON pour l'adresse {}: {}", fireAddress, e.getMessage());
+            throw e;
+        }
+
+        log.debug("Données des personnes : {}", persons);
+        log.debug("Données des dossiers médicaux : {}", medicalRecords);
+        log.debug("Données des casernes : {}", firestations);
+
         List<FireAddress> fireAddresses = persons.stream()
                 .filter(person -> fireAddresse.equals(person.getAddress().trim()))
                 .map(person -> {
                     String name = person.getFirstName() + " " + person.getLastName();
-                    MedicalRecord record = medicalRecords.stream()
-                            .filter(medical -> medical.getFirstName().equals(person.getFirstName())
-                                    && medical.getLastName().equals(person.getLastName()))
-                            .findFirst().orElse(null);
+                    MedicalRecord record = findMedicalRecordForPerson(person, medicalRecords);
 
                     int age = 0;
                     List<String> medications = List.of();
@@ -82,36 +95,45 @@ public class FireAddressService {
 
                     if (record != null) {
                         log.info("Dossier médical trouvé pour : {} {}", person.getFirstName(), person.getLastName());
-
                         age = getAge(record.getBirthdate());
                         medications = record.getMedications();
                         allergies = record.getAllergies();
                     } else {
-                        log.info("Dossier médical introuvable pour : {} {}", person.getFirstName(),
+                        log.warn("Dossier médical introuvable pour : {} {}", person.getFirstName(),
                                 person.getLastName());
                     }
 
-                    Firestation station = firestations.stream()
-                            .filter(fire -> fireAddresse.equalsIgnoreCase(fire.getAddress().trim()))
-                            .findFirst().orElse(null);
+                    Firestation station = findFirestationForAddress(fireAddresse, firestations);
 
-                    int stationNumber = 0;
+                    int stationNumber = station != null ? station.getStation() : 0;
                     if (station != null) {
                         log.info("Caserne trouvée pour l'adresse : {} (Numéro : {})", fireAddresse,
                                 station.getStation());
-
-                        stationNumber = station.getStation();
                     } else {
-                        log.info("Caserne introuvable pour l'adresse : {}", fireAddresse);
+                        log.warn("Caserne introuvable pour l'adresse : {}", fireAddresse);
                     }
 
-                    return new FireAddress(name, person.getPhone(), age,
-                            medications, allergies, stationNumber);
-
+                    return new FireAddress(name, person.getPhone(), age, medications, allergies, stationNumber);
                 }).toList();
 
+        log.debug("Données des habitants pour l'adresse {} : {}", fireAddress, fireAddresses);
         log.info("Nombre de personne(s) trouvé(s) pour l'adresse {} : {}", fireAddress, fireAddresses.size());
         return fireAddresses;
-
     }
+
+    private MedicalRecord findMedicalRecordForPerson(Person person, List<MedicalRecord> medicalRecords) {
+        return medicalRecords.stream()
+                .filter(medical -> medical.getFirstName().equals(person.getFirstName())
+                        && medical.getLastName().equals(person.getLastName()))
+                .findFirst()
+                .orElse(null);
+    }
+
+    private Firestation findFirestationForAddress(String address, List<Firestation> firestations) {
+        return firestations.stream()
+                .filter(fire -> address.equalsIgnoreCase(fire.getAddress().trim()))
+                .findFirst()
+                .orElse(null);
+    }
+
 }

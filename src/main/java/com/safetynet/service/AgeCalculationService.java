@@ -25,13 +25,17 @@ public class AgeCalculationService {
      *         invalide.
      */
     public int calculateAge(String birthdate) {
+        log.debug("Début du calcul de l'âge à partir de la date de naissance: {}", birthdate);
+
         if (birthdate == null || birthdate.isEmpty()) {
             log.info("Date de naissance manquante ou vide !");
             return 0;
         }
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+
         LocalDate birthDate = LocalDate.parse(birthdate, formatter);
+
         int age = Period.between(birthDate, LocalDate.now()).getYears();
 
         return age;

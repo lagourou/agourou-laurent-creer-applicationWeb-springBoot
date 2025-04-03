@@ -47,15 +47,15 @@ public class FirestationController {
     }
 
     /**
-     * Valide que la liste des casernes n'est ni vide, ni nulle.
+     * Valide que la liste des casernes n'est pas vide.
      *
      * @param firestations Liste des casernes à valider.
      * @throws IllegalArgumentException Si la liste est vide ou nulle.
      */
 
     private void validFirestations(List<Firestation> firestations) {
-        if (firestations.isEmpty()) {
-            log.info("La liste des casernes est vide ou nulle !");
+        if (firestations == null || firestations.isEmpty()) {
+            log.error("La liste des casernes est vide ou nulle !");
             throw new IllegalArgumentException("La liste des casernes ne peut pas être vide.");
         }
     }
@@ -76,8 +76,13 @@ public class FirestationController {
     public List<Firestation> creer(@Valid @RequestBody List<Firestation> firestations) throws IOException {
 
         validFirestations(firestations);
+
+        log.debug("Appel au service 'firestationService.add' avec les casernes : {}", firestations);
+        List<Firestation> result = firestationService.add(firestations);
+
+        log.debug("Résultat du service d'ajout : {}", result);
         log.info("Casernes ajoutées avec succès");
-        return firestationService.add(firestations);
+        return result;
     }
 
     /**
@@ -95,8 +100,13 @@ public class FirestationController {
     public List<Firestation> mettreAJour(@Valid @RequestBody List<Firestation> firestations) throws IOException {
 
         validFirestations(firestations);
+
+        log.debug("Appel au service 'firestationService.update' avec les casernes : {}", firestations);
+        List<Firestation> result = firestationService.update(firestations);
+
+        log.debug("Résultat du service de mise à jour : {}", result);
         log.info("Casernes mis à jour avec succès");
-        return firestationService.update(firestations);
+        return result;
     }
 
     /**
@@ -114,8 +124,13 @@ public class FirestationController {
     public List<Firestation> supprimer(@Valid @RequestBody List<Firestation> firestations) throws IOException {
 
         validFirestations(firestations);
+
+        log.debug("Appel au service 'firestationService.delete' avec les casernes : {}", firestations);
+        List<Firestation> result = firestationService.delete(firestations);
+
+        log.debug("Résultat du service de suppression : {}", result);
         log.info("Casernes suppprimées avec succès");
-        return firestationService.delete(firestations);
+        return result;
     }
 
 }

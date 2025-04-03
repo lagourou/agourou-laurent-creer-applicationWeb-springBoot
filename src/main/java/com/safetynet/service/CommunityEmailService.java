@@ -40,12 +40,21 @@ public class CommunityEmailService {
      * @throws IOException En cas d'erreur lors de la lecture des fichiers JSON.
      */
     public List<CommunityEmail> getCommunityEmail(String city) throws IOException {
-        List<Person> persons = dataLoad.readJsonFile("persons", new TypeReference<Map<String, List<Person>>>() {
-        });
+        log.debug("Début de la récupération des emails pour la ville : {}", city);
+        List<Person> persons;
+        try {
+            persons = dataLoad.readJsonFile("persons", new TypeReference<Map<String, List<Person>>>() {
+            });
+            log.debug("Données des personnes chargées depuis le fichier JSON : {}", persons);
+        } catch (IOException e) {
+            log.error("Erreur lors de la lecture du fichier JSON pour la ville {}: {}", city, e.getMessage());
+            throw e;
+        }
 
         List<CommunityEmail> emails = persons.stream().filter(person -> person.getCity().trim().equalsIgnoreCase(city))
                 .map(person -> new CommunityEmail(person.getEmail())).toList();
 
+        log.debug("Emails filtrés pour la ville {}: {}", city, emails);
         log.info("{} Emails trouvés pour la ville {}", emails.size(), city);
         return emails;
     }

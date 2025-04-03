@@ -57,14 +57,29 @@ public class FloodStationService {
          * @throws IOException En cas d'erreur lors de la lecture des fichiers JSON.
          */
         public Map<String, List<FloodStation>> getFloodStation(List<Integer> stationNumbers) throws IOException {
-                List<Person> persons = dataLoad.readJsonFile("persons", new TypeReference<Map<String, List<Person>>>() {
-                });
-                List<Firestation> firestations = dataLoad.readJsonFile("firestations",
-                                new TypeReference<Map<String, List<Firestation>>>() {
-                                });
-                List<MedicalRecord> medicalRecords = dataLoad.readJsonFile("medicalrecords",
-                                new TypeReference<Map<String, List<MedicalRecord>>>() {
-                                });
+                log.info("Début de la récupération des foyers pour les casernes : {}", stationNumbers);
+
+                List<Person> persons;
+                List<Firestation> firestations;
+                List<MedicalRecord> medicalRecords;
+
+                try {
+                        persons = dataLoad.readJsonFile("persons", new TypeReference<Map<String, List<Person>>>() {
+                        });
+                        firestations = dataLoad.readJsonFile("firestations",
+                                        new TypeReference<Map<String, List<Firestation>>>() {
+                                        });
+                        medicalRecords = dataLoad.readJsonFile("medicalrecords",
+                                        new TypeReference<Map<String, List<MedicalRecord>>>() {
+                                        });
+                } catch (IOException e) {
+                        log.error("Erreur lors de la lecture des fichiers JSON : {}", e.getMessage());
+                        throw e;
+                }
+
+                log.debug("Données des personnes chargées : {}", persons);
+                log.debug("Données des casernes chargées : {}", firestations);
+                log.debug("Données des dossiers médicaux chargées : {}", medicalRecords);
 
                 List<FloodStation> floodStations = persons.stream()
                                 .filter(person -> {
@@ -93,20 +108,25 @@ public class FloodStationService {
                                         if (record != null) {
                                                 log.info("Dossier médical trouvé pour : {} {}", person.getFirstName(),
                                                                 person.getLastName());
-
                                                 age = getAge(record.getBirthdate());
                                                 medications = record.getMedications();
                                                 allergies = record.getAllergies();
                                         } else {
-                                                log.info("Dossier médical introuvable pour : {} {}",
+                                                log.warn("Dossier médical introuvable pour : {} {}",
                                                                 person.getFirstName(), person.getLastName());
                                         }
+
                                         return new FloodStation(name, person.getPhone(), age, medications, allergies,
                                                         person.getAddress());
-
                                 }).collect(Collectors.toList());
 
-                return floodStations.stream().collect(Collectors.groupingBy(FloodStation::address));
+                Map<String, List<FloodStation>> groupedFloodStations = floodStations.stream()
+                                .collect(Collectors.groupingBy(FloodStation::address));
+
+                log.debug("Foyers regroupés par adresse : {}", groupedFloodStations);
+                log.info("Nombre de foyers récupérés : {}", groupedFloodStations.size());
+
+                return groupedFloodStations;
         }
 
 }

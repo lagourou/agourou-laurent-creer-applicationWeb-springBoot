@@ -42,20 +42,37 @@ public class PhoneAlertService {
      * @throws IOException En cas d'erreur lors de la lecture des fichiers JSON.
      */
     public List<PhoneAlert> getPhoneAlert(int firestationNumber) throws IOException {
-        List<Person> persons = dataLoad.readJsonFile("persons", new TypeReference<Map<String, List<Person>>>() {
-        });
-        List<Firestation> firestations = dataLoad.readJsonFile("firestations",
-                new TypeReference<Map<String, List<Firestation>>>() {
-                });
+        log.info("Début de la récupération des numéros de téléphone pour la caserne : {}", firestationNumber);
+
+        List<Person> persons;
+        List<Firestation> firestations;
+
+        try {
+            persons = dataLoad.readJsonFile("persons", new TypeReference<Map<String, List<Person>>>() {
+            });
+            firestations = dataLoad.readJsonFile("firestations", new TypeReference<Map<String, List<Firestation>>>() {
+            });
+            log.debug("Données des casernes chargées : {}", firestations);
+            log.debug("Données des habitants chargées : {}", persons);
+        } catch (IOException e) {
+            log.error("Erreur lors de la lecture des fichiers JSON : {}", e.getMessage(), e);
+            throw e;
+        }
 
         List<Firestation> matchingStation = firestations.stream()
                 .filter(firestation -> firestation.getStation() == firestationNumber).toList();
 
-        List<PhoneAlert> filterPhoneAlert = persons.stream().filter(person -> matchingStation.stream()
-                .anyMatch(firestation -> firestation.getAddress().equals(person.getAddress())))
+        log.debug("Caserne(s) correspondante(s) au numéro {} : {}", firestationNumber, matchingStation);
+
+        List<PhoneAlert> filterPhoneAlert = persons.stream()
+                .filter(person -> matchingStation.stream()
+                        .anyMatch(firestation -> firestation.getAddress().equals(person.getAddress())))
                 .map(person -> new PhoneAlert(person.getPhone())).toList();
 
-        log.info("Numéro(s) de téléphone retourné(s)");
+        log.debug("Numéros de téléphone filtrés pour la caserne {} : {}", firestationNumber, filterPhoneAlert);
+        log.info("Nombre de numéro(s) de téléphone retourné(s) pour la caserne {} : {}", firestationNumber,
+                filterPhoneAlert.size());
+
         return filterPhoneAlert;
     }
 
