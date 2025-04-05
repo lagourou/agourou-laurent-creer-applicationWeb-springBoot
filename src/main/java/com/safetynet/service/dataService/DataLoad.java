@@ -49,9 +49,11 @@ public class DataLoad {
 
         try (InputStream inputStream = new FileInputStream(file)) {
             Map<String, List<T>> data = objectMapper.readValue(inputStream, typeReference);
+
             log.info("Fichier Json lu avec succès : {}", filePath);
             log.debug("Contenu des données pour la clé '{}' : {}", key, data.getOrDefault(key, List.of()));
             return data.getOrDefault(key, List.of());
+
         } catch (IOException e) {
             log.error("Erreur lors de la lecture du fichier JSON : {}", e.getMessage(), e);
             throw e;
@@ -76,6 +78,7 @@ public class DataLoad {
                 fullData = objectMapper.readValue(inputStream, new TypeReference<Map<String, Object>>() {
                 });
                 log.debug("Contenu actuel du fichier JSON avant mise à jour : {}", fullData);
+
             } catch (IOException e) {
                 log.error("Erreur lors de la lecture du fichier JSON avant écriture : {}", e.getMessage(), e);
                 throw e;
@@ -88,9 +91,12 @@ public class DataLoad {
         log.debug("Données mises à jour pour la clé '{}' : {}", key, objects);
 
         try (OutputStream outputStream = new FileOutputStream(file)) {
+
             objectMapper.writeValue(outputStream, fullData);
+
             log.info("Fichier Json mis à jour avec succès : {}", filePath);
         } catch (IOException e) {
+
             log.error("Erreur lors de l'écriture dans le fichier JSON : {}", e.getMessage(), e);
             throw e;
         }

@@ -11,6 +11,8 @@ import com.safetynet.dto.PersonInfolastName;
 import com.safetynet.model.MedicalRecord;
 import com.safetynet.model.Person;
 import com.safetynet.service.dataService.DataLoad;
+import com.safetynet.util.AgeCalculatorUtil;
+
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -22,7 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class PersonInfolastNameService {
     private final DataLoad dataLoad;
-    private final AgeCalculationService ageCalculationService;
+    private final AgeCalculatorUtil ageCalculatorUtil;
 
     /**
      * Calcule l'âge à partir de la date de naissance.
@@ -31,20 +33,20 @@ public class PersonInfolastNameService {
      * @return L'âge en années.
      */
     public int getAge(String birthdate) {
-        return ageCalculationService.calculateAge(birthdate);
+        return ageCalculatorUtil.calculateAge(birthdate);
     }
 
     /**
      * Constructeur de la classe PersonInfolastNameService.
      *
-     * @param dataLoad              Service pour charger les données du
-     *                              fichier JSON.
-     * @param ageCalculationService Service pour calculer l'âge à partir de la date
-     *                              de naissance.
+     * @param dataLoad          Service pour charger les données du
+     *                          fichier JSON.
+     * @param AgeCalculatorUtil Service pour calculer l'âge à partir de la date
+     *                          de naissance.
      */
-    public PersonInfolastNameService(DataLoad dataLoad, AgeCalculationService ageCalculationService) {
+    public PersonInfolastNameService(DataLoad dataLoad, AgeCalculatorUtil ageCalculatorUtil) {
         this.dataLoad = dataLoad;
-        this.ageCalculationService = ageCalculationService;
+        this.ageCalculatorUtil = ageCalculatorUtil;
     }
 
     /**

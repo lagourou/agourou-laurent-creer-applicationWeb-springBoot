@@ -34,7 +34,7 @@ public class ChildAlertController {
 
     /**
      * Constructeur de la classe ChildAlertController.
-     * 
+     *
      * @param childAlertService    Service permettant de gérer les alertes pour les
      *                             enfants.
      * @param personService        Service pour gérer les personnes.

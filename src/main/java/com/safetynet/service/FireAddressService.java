@@ -12,6 +12,7 @@ import com.safetynet.model.Firestation;
 import com.safetynet.model.MedicalRecord;
 import com.safetynet.model.Person;
 import com.safetynet.service.dataService.DataLoad;
+import com.safetynet.util.AgeCalculatorUtil;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,7 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class FireAddressService {
     private final DataLoad dataLoad;
-    private final AgeCalculationService ageCalculationService;
+    private final AgeCalculatorUtil ageCalculatorUtil;
 
     /**
      * Calcul de l'âge à partir de la date de naissance.
@@ -33,19 +34,19 @@ public class FireAddressService {
      * @return L'âge.
      */
     public int getAge(String birthdate) {
-        return ageCalculationService.calculateAge(birthdate);
+        return ageCalculatorUtil.calculateAge(birthdate);
     }
 
     /**
      * Constructeur de la classe FireAddressService.
      *
-     * @param dataLoad              Service pour charger les données depuis un
-     *                              fichier JSON.
-     * @param ageCalculationService Service pour calculer l'âge des habitants.
+     * @param dataLoad          Service pour charger les données depuis un
+     *                          fichier JSON.
+     * @param AgeCalculatorUtil Service pour calculer l'âge des habitants.
      */
-    public FireAddressService(DataLoad dataLoad, AgeCalculationService ageCalculationService) {
+    public FireAddressService(DataLoad dataLoad, AgeCalculatorUtil ageCalculatorUtil) {
         this.dataLoad = dataLoad;
-        this.ageCalculationService = ageCalculationService;
+        this.ageCalculatorUtil = ageCalculatorUtil;
     }
 
     /**

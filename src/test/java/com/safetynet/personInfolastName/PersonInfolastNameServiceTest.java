@@ -4,9 +4,9 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.safetynet.dto.PersonInfolastName;
 import com.safetynet.model.MedicalRecord;
 import com.safetynet.model.Person;
-import com.safetynet.service.AgeCalculationService;
 import com.safetynet.service.PersonInfolastNameService;
 import com.safetynet.service.dataService.DataLoad;
+import com.safetynet.util.AgeCalculatorUtil;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,7 +32,7 @@ class PersonInfolastNameServiceTest {
     private DataLoad dataLoad;
 
     @Mock
-    private AgeCalculationService ageCalculationService;
+    private AgeCalculatorUtil ageCalculatorUtil;
 
     @InjectMocks
     private PersonInfolastNameService personInfolastNameService;
@@ -59,8 +59,8 @@ class PersonInfolastNameServiceTest {
 
         when(dataLoad.readJsonFile(eq("persons"), any(TypeReference.class))).thenReturn(persons);
         when(dataLoad.readJsonFile(eq("medicalrecords"), any(TypeReference.class))).thenReturn(medicalRecords);
-        when(ageCalculationService.calculateAge("01/01/1990")).thenReturn(33);
-        when(ageCalculationService.calculateAge("02/02/1995")).thenReturn(28);
+        when(ageCalculatorUtil.calculateAge("01/01/1990")).thenReturn(33);
+        when(ageCalculatorUtil.calculateAge("02/02/1995")).thenReturn(28);
 
         List<PersonInfolastName> result = personInfolastNameService.getPersonInfolastName("Doe");
 

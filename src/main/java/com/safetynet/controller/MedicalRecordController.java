@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -66,19 +67,27 @@ public class MedicalRecordController {
     @ResponseStatus(value = HttpStatus.CREATED)
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "The medical records have been successfully added."),
+            @ApiResponse(responseCode = "404", description = "One or more people associated with the file do not exist."),
             @ApiResponse(responseCode = "400", description = "Invalid query: missing or incorrect medical record details.")
     })
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public List<MedicalRecord> creer(@Valid @RequestBody List<MedicalRecord> medicalRecords) throws IOException {
+    public ResponseEntity<List<MedicalRecord>> creer(@Valid @RequestBody List<MedicalRecord> medicalRecords)
+            throws IOException {
 
         validMedicalRecords(medicalRecords);
 
+        for (MedicalRecord record : medicalRecords) {
+            if (!medicalRecordService.personAssociate(record)) {
+                throw new IllegalArgumentException(
+                        "Aucune personne associée au dossier médical : " + record.getFirstName() + " "
+                                + record.getLastName());
+            }
+        }
         log.debug("Appel au service 'medicalRecordService.add' avec les dossiers : {}", medicalRecords);
         List<MedicalRecord> result = medicalRecordService.add(medicalRecords);
 
-        log.debug("Résultat du service d'ajout : {}", result);
-        log.info("Dossiers médiacales ajoutés avec succès.");
-        return result;
+        log.info("Dossiers médicaux ajoutés avec succès : {}", result);
+        return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 
     /**

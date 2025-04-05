@@ -1,4 +1,4 @@
-package com.safetynet.service;
+package com.safetynet.util;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -14,7 +14,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @Service
-public class AgeCalculationService {
+public class AgeCalculatorUtil {
 
     /**
      * Calcule l'âge en années à partir de la date de naissance.

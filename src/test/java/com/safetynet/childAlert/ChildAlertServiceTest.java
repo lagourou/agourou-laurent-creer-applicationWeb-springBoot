@@ -19,9 +19,9 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.safetynet.dto.ChildrenByAddress;
 import com.safetynet.model.MedicalRecord;
 import com.safetynet.model.Person;
-import com.safetynet.service.AgeCalculationService;
 import com.safetynet.service.ChildAlertService;
 import com.safetynet.service.dataService.DataLoad;
+import com.safetynet.util.AgeCalculatorUtil;
 
 /**
  * Test du service ChildAlert.
@@ -30,7 +30,7 @@ import com.safetynet.service.dataService.DataLoad;
 class ChildAlertServiceTest {
 
     @Mock
-    private AgeCalculationService ageCalculationService;
+    private AgeCalculatorUtil ageCalculatorUtil;
 
     @Mock
     private DataLoad dataLoad;
@@ -53,7 +53,7 @@ class ChildAlertServiceTest {
      */
     @Test
     void testGetAge_ValidDate() {
-        when(ageCalculationService.calculateAge("01/01/2015")).thenReturn(8);
+        when(ageCalculatorUtil.calculateAge("01/01/2015")).thenReturn(8);
 
         int age = childAlertService.getAge("01/01/2015");
 
@@ -65,7 +65,7 @@ class ChildAlertServiceTest {
      */
     @Test
     void testGetAge_NullDate() {
-        when(ageCalculationService.calculateAge(null)).thenReturn(0);
+        when(ageCalculatorUtil.calculateAge(null)).thenReturn(0);
 
         int age = childAlertService.getAge(null);
 
@@ -79,9 +79,9 @@ class ChildAlertServiceTest {
     void testGetChildrenByAddress_WithChildren() throws IOException {
         when(dataLoad.readJsonFile(eq("persons"), any(TypeReference.class))).thenReturn(persons);
         when(dataLoad.readJsonFile(eq("medicalrecords"), any(TypeReference.class))).thenReturn(medicalRecords);
-        when(ageCalculationService.calculateAge("01/01/2015")).thenReturn(8);
-        when(ageCalculationService.calculateAge("02/02/2010")).thenReturn(13);
-        when(ageCalculationService.calculateAge("03/03/1980")).thenReturn(43);
+        when(ageCalculatorUtil.calculateAge("01/01/2015")).thenReturn(8);
+        when(ageCalculatorUtil.calculateAge("02/02/2010")).thenReturn(13);
+        when(ageCalculatorUtil.calculateAge("03/03/1980")).thenReturn(43);
 
         List<ChildrenByAddress> children = childAlertService.getChildrenByAddress("123 Main St");
 
@@ -99,9 +99,9 @@ class ChildAlertServiceTest {
     void testGetChildrenByAddress_NoChildren() throws IOException {
         when(dataLoad.readJsonFile(eq("persons"), any(TypeReference.class))).thenReturn(persons);
         when(dataLoad.readJsonFile(eq("medicalrecords"), any(TypeReference.class))).thenReturn(medicalRecords);
-        when(ageCalculationService.calculateAge("01/01/2015")).thenReturn(20);
-        when(ageCalculationService.calculateAge("02/02/2010")).thenReturn(19);
-        when(ageCalculationService.calculateAge("03/03/1980")).thenReturn(43);
+        when(ageCalculatorUtil.calculateAge("01/01/2015")).thenReturn(20);
+        when(ageCalculatorUtil.calculateAge("02/02/2010")).thenReturn(19);
+        when(ageCalculatorUtil.calculateAge("03/03/1980")).thenReturn(43);
 
         List<ChildrenByAddress> children = childAlertService.getChildrenByAddress("123 Main St");
 

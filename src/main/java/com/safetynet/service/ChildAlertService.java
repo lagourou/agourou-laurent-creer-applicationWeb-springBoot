@@ -11,6 +11,7 @@ import com.safetynet.dto.ChildrenByAddress;
 import com.safetynet.model.MedicalRecord;
 import com.safetynet.model.Person;
 import com.safetynet.service.dataService.DataLoad;
+import com.safetynet.util.AgeCalculatorUtil;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -26,19 +27,19 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class ChildAlertService {
 
-        private final AgeCalculationService ageCalculationService;
+        private final AgeCalculatorUtil ageCalculatorUtil;
         private final DataLoad dataLoad;
 
         /**
          * Constructeur de la classe ChildAlertService.
          *
-         * @param ageCalculationService Service pour calculer l'âge à partir de la date
-         *                              de naissance.
-         * @param dataLoad              Service pour charger les données depuis un
-         *                              fichier JSON.
+         * @param AgeCalculatorUtil Service pour calculer l'âge à partir de la date
+         *                          de naissance.
+         * @param dataLoad          Service pour charger les données depuis un
+         *                          fichier JSON.
          */
-        public ChildAlertService(AgeCalculationService ageCalculationService, DataLoad dataLoad) {
-                this.ageCalculationService = ageCalculationService;
+        public ChildAlertService(AgeCalculatorUtil ageCalculatorUtil, DataLoad dataLoad) {
+                this.ageCalculatorUtil = ageCalculatorUtil;
                 this.dataLoad = dataLoad;
         }
 
@@ -49,7 +50,7 @@ public class ChildAlertService {
          * @return L'âge en années.
          */
         public int getAge(String birthdate) {
-                return ageCalculationService.calculateAge(birthdate);
+                return ageCalculatorUtil.calculateAge(birthdate);
         }
 
         /**

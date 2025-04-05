@@ -5,9 +5,9 @@ import com.safetynet.dto.FirestationByPerson;
 import com.safetynet.model.Firestation;
 import com.safetynet.model.MedicalRecord;
 import com.safetynet.model.Person;
-import com.safetynet.service.AgeCalculationService;
 import com.safetynet.service.StationNumberService;
 import com.safetynet.service.dataService.DataLoad;
+import com.safetynet.util.AgeCalculatorUtil;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -33,7 +33,7 @@ class StationNumberServiceTest {
     private DataLoad dataLoad;
 
     @Mock
-    private AgeCalculationService ageCalculationService;
+    private AgeCalculatorUtil ageCalculatorUtil;
 
     @InjectMocks
     private StationNumberService stationNumberService;
@@ -64,8 +64,8 @@ class StationNumberServiceTest {
         when(dataLoad.readJsonFile(eq("persons"), any(TypeReference.class))).thenReturn(persons);
         when(dataLoad.readJsonFile(eq("firestations"), any(TypeReference.class))).thenReturn(firestations);
         when(dataLoad.readJsonFile(eq("medicalrecords"), any(TypeReference.class))).thenReturn(medicalRecords);
-        when(ageCalculationService.calculateAge("01/01/1990")).thenReturn(33); // Adulte
-        when(ageCalculationService.calculateAge("02/02/1995")).thenReturn(28); // Adulte
+        when(ageCalculatorUtil.calculateAge("01/01/1990")).thenReturn(33); // Adulte
+        when(ageCalculatorUtil.calculateAge("02/02/1995")).thenReturn(28); // Adulte
 
         FirestationByPerson result = stationNumberService.getPersonByStation(1);
 
@@ -109,7 +109,7 @@ class StationNumberServiceTest {
         when(dataLoad.readJsonFile(eq("firestations"), any(TypeReference.class))).thenReturn(firestations);
         when(dataLoad.readJsonFile(eq("medicalrecords"), any(TypeReference.class))).thenReturn(medicalRecords);
 
-        verifyNoInteractions(ageCalculationService);
+        verifyNoInteractions(ageCalculatorUtil);
 
         FirestationByPerson result = stationNumberService.getPersonByStation(1);
 

@@ -13,6 +13,8 @@ import com.safetynet.model.Firestation;
 import com.safetynet.model.MedicalRecord;
 import com.safetynet.model.Person;
 import com.safetynet.service.dataService.DataLoad;
+import com.safetynet.util.AgeCalculatorUtil;
+
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -22,19 +24,19 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 public class StationNumberService {
-        private final AgeCalculationService ageCalculationService;
+        private final AgeCalculatorUtil ageCalculatorUtil;
         private final DataLoad dataLoad;
 
         /**
          * Constructeur de la classe StationNumberService.
          *
-         * @param ageCalculationService Service pour calculer l'âge à partir de la date
-         *                              de naissance.
-         * @param dataLoad              Service pour charger les données depuis un
-         *                              fichier JSON.
+         * @param ageCalculatorUtil Service pour calculer l'âge à partir de la date
+         *                          de naissance.
+         * @param dataLoad          Service pour charger les données depuis un
+         *                          fichier JSON.
          */
-        public StationNumberService(AgeCalculationService ageCalculationService, DataLoad dataLoad) {
-                this.ageCalculationService = ageCalculationService;
+        public StationNumberService(AgeCalculatorUtil ageCalculatorUtil, DataLoad dataLoad) {
+                this.ageCalculatorUtil = ageCalculatorUtil;
                 this.dataLoad = dataLoad;
         }
 
@@ -44,8 +46,9 @@ public class StationNumberService {
          * @param birthdate La date de naissance au format MM/dd/yyyy.
          * @return L'âge.
          */
+
         public int getAge(String birthdate) {
-                return ageCalculationService.calculateAge(birthdate);
+                return ageCalculatorUtil.calculateAge(birthdate);
         }
 
         /**
@@ -103,7 +106,7 @@ public class StationNumberService {
                                                                                 && record.getLastName().equals(
                                                                                                 person.getLastName()))
                                                                 .findFirst()
-                                                                .map(record -> ageCalculationService.calculateAge(
+                                                                .map(record -> ageCalculatorUtil.calculateAge(
                                                                                 record.getBirthdate()) > 18)
                                                                 .orElse(false))
                                 .count();

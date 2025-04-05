@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.safetynet.model.MedicalRecord;
+import com.safetynet.model.Person;
 import com.safetynet.service.dataService.DataLoad;
 
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +30,53 @@ public class MedicalRecordService {
      */
     public MedicalRecordService(DataLoad dataLoad) {
         this.dataLoad = dataLoad;
+    }
+
+    /**
+     * Vérifie si un dossier médical est associé à une personne existante dans le
+     * fichier "persons".
+     *
+     * <p>
+     * Cette méthode lit les données des personnes enregistrées depuis le fichier
+     * JSON "persons"
+     * et vérifie si les informations du dossier médical donné (prénom et nom de
+     * famille)
+     * correspondent à une personne existante.
+     * </p>
+     *
+     * @param medicalRecord Le dossier médical contenant les informations du prénom
+     *                      et du nom à vérifier.
+     * @return {@code true} si une correspondance est trouvée entre le prénom et le
+     *         nom dans "persons",
+     *         {@code false} sinon.
+     * @throws IOException Si une erreur survient lors de la lecture du fichier
+     *                     JSON.
+     */
+
+    /**
+     * Vérifie si un dossier médical est associé à une personne existante
+     *
+     * @param medicalRecord Le dossier médical contenant les informations de la
+     *                      personne
+     * @return true si une correspondance est trouvée, false sinon.
+     * @throws IOException Si une erreur survient lors de la lecture du fichier
+     *                     JSON.
+     */
+
+    public boolean personAssociate(MedicalRecord medicalRecord) throws IOException {
+        List<Person> existingPersons;
+        try {
+            existingPersons = dataLoad.readJsonFile("persons",
+                    new TypeReference<Map<String, List<Person>>>() {
+                    });
+        } catch (IOException e) {
+            log.error("Erreur lors de la lecture du fichier JSON : {}", e.getMessage());
+            throw e;
+        }
+
+        return existingPersons.stream()
+                .anyMatch(person -> person.getFirstName().equalsIgnoreCase(medicalRecord.getFirstName()) &&
+                        person.getLastName().equalsIgnoreCase(medicalRecord.getLastName()));
     }
 
     /**
@@ -59,9 +107,9 @@ public class MedicalRecordService {
                     .anyMatch(existing -> existing.getFirstName().equalsIgnoreCase(newMedicalRecord.getFirstName())
                             && existing.getLastName().equalsIgnoreCase(newMedicalRecord.getLastName())
                             && existing.getBirthdate().equalsIgnoreCase(newMedicalRecord.getBirthdate()))) {
-                log.info("Le dossier médical existe déjà: {} {} {}", newMedicalRecord.getFirstName(),
-                        newMedicalRecord.getLastName(), newMedicalRecord.getBirthdate());
-                continue;
+
+                throw new IllegalArgumentException("Le dossier médical existe déjà :" + " " +
+                        newMedicalRecord.getFirstName() + " " + newMedicalRecord.getLastName());
             }
             existingMedicalRecords.add(newMedicalRecord);
         }
