@@ -67,7 +67,6 @@ public class MedicalRecordController {
     @ResponseStatus(value = HttpStatus.CREATED)
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "The medical records have been successfully added."),
-            @ApiResponse(responseCode = "404", description = "One or more people associated with the file do not exist."),
             @ApiResponse(responseCode = "400", description = "Invalid query: missing or incorrect medical record details.")
     })
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
