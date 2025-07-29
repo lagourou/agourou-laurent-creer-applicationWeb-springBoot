@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+
+    <!-- Enregistrement des logs dans un fichier -->
+    <Appenders>
+        <File name="FileLogger"
+            fileName="C:/Users/AGOUROU GUSTAVE/Downloads/Open Classroom/P5/safetynet-alerts/logs/app.log">
+            <PatternLayout>
+                <Pattern>%d{yyyy-MM-dd HH:mm:ss} [%t] %-5level %logger{36} - %msg%n</Pattern>
+            </PatternLayout>
+        </File>
+
+        <!-- Affichage des logs dans la console -->
+        <Console name="ConsoleLogger" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %-5level %logger{36} - %msg%n" />
+        </Console>
+    </Appenders>
+
+    <!-- Niveau de log -->
+    <Loggers>
+        <Root level="info">
+            <AppenderRef ref="FileLogger" />
+            <AppenderRef ref="ConsoleLogger" />
+        </Root>
+    </Loggers>
+
+</Configuration>

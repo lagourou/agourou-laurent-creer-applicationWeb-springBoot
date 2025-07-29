@@ -1,0 +1,8 @@
+com.safetynet
+com.safetynet.controller
+com.safetynet.dto
+com.safetynet.exceptions
+com.safetynet.model
+com.safetynet.service
+com.safetynet.service.dataService
+com.safetynet.util

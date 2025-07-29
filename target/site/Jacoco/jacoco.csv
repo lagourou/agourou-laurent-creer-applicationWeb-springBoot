@@ -1,0 +1,63 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+safetynet-alerts,com.safetynet.util,AgeCalculatorUtil,5,30,2,2,2,8,2,3,0,3
+safetynet-alerts,com.safetynet.controller,MedicalRecordController,19,93,3,5,5,26,3,7,0,6
+safetynet-alerts,com.safetynet.controller,PersonInfolastNameController,0,59,0,6,0,16,0,6,0,3
+safetynet-alerts,com.safetynet.controller,PersonController,0,87,1,3,0,26,1,7,0,6
+safetynet-alerts,com.safetynet.controller,FloodStationController,0,60,0,6,0,16,0,6,0,3
+safetynet-alerts,com.safetynet.controller,StationNumberController,0,83,0,4,0,21,0,5,0,3
+safetynet-alerts,com.safetynet.controller,ChildAlertController,0,54,0,6,0,15,0,6,0,3
+safetynet-alerts,com.safetynet.controller,FireAddressController,0,59,0,6,0,16,0,6,0,3
+safetynet-alerts,com.safetynet.controller,PhoneAlertController,0,61,0,4,0,17,0,5,0,3
+safetynet-alerts,com.safetynet.controller,CommunityEmailController,0,47,0,6,0,14,0,6,0,3
+safetynet-alerts,com.safetynet.controller,FirestationController,0,87,1,3,0,26,1,7,0,6
+safetynet-alerts,com.safetynet.model,Firestation,0,12,0,0,0,6,0,2,0,2
+safetynet-alerts,com.safetynet.model,MedicalRecord,0,21,0,0,0,9,0,2,0,2
+safetynet-alerts,com.safetynet.model,Person,0,27,0,0,0,11,0,2,0,2
+safetynet-alerts,com.safetynet,SafetynetApplication,5,3,0,0,2,1,1,1,1,1
+safetynet-alerts,com.safetynet.dto,FireAddress,0,21,0,0,0,1,0,1,0,1
+safetynet-alerts,com.safetynet.dto,ChildrenByAddress,0,15,0,0,0,1,0,1,0,1
+safetynet-alerts,com.safetynet.dto,CommunityEmail,0,6,0,0,0,1,0,1,0,1
+safetynet-alerts,com.safetynet.dto,FirestationByPerson,0,12,0,0,0,1,0,1,0,1
+safetynet-alerts,com.safetynet.dto,FloodStation,0,21,0,0,0,1,0,1,0,1
+safetynet-alerts,com.safetynet.dto,PhoneAlert,0,6,0,0,0,1,0,1,0,1
+safetynet-alerts,com.safetynet.dto,PersonByStation,0,15,0,0,0,1,0,1,0,1
+safetynet-alerts,com.safetynet.dto,PersonInfolastName,0,21,0,0,0,1,0,1,0,1
+safetynet-alerts,com.safetynet.service.dataService,DataLoad.new TypeReference() {...},0,6,0,0,0,1,0,1,0,1
+safetynet-alerts,com.safetynet.service.dataService,DataLoad,31,120,1,3,10,25,1,5,0,4
+safetynet-alerts,com.safetynet.service,StationNumberService.new TypeReference() {...},0,6,0,0,0,1,0,1,0,1
+safetynet-alerts,com.safetynet.service,StationNumberService,27,220,1,11,5,40,2,14,1,9
+safetynet-alerts,com.safetynet.service,CommunityEmailService,9,63,0,0,3,13,0,5,0,5
+safetynet-alerts,com.safetynet.service,StationNumberService.new TypeReference() {...},0,6,0,0,0,1,0,1,0,1
+safetynet-alerts,com.safetynet.service,StationNumberService.new TypeReference() {...},0,6,0,0,0,1,0,1,0,1
+safetynet-alerts,com.safetynet.service,FireAddressService,9,222,1,9,3,50,1,14,0,10
+safetynet-alerts,com.safetynet.service,PhoneAlertService.new TypeReference() {...},0,6,0,0,0,1,0,1,0,1
+safetynet-alerts,com.safetynet.service,PhoneAlertService.new TypeReference() {...},0,6,0,0,0,1,0,1,0,1
+safetynet-alerts,com.safetynet.service,FloodStationService.new TypeReference() {...},0,6,0,0,0,1,0,1,0,1
+safetynet-alerts,com.safetynet.service,FloodStationService.new TypeReference() {...},0,6,0,0,0,1,0,1,0,1
+safetynet-alerts,com.safetynet.service,FloodStationService.new TypeReference() {...},0,6,0,0,0,1,0,1,0,1
+safetynet-alerts,com.safetynet.service,PhoneAlertService,9,106,0,2,3,21,0,8,0,7
+safetynet-alerts,com.safetynet.service,FireAddressService.new TypeReference() {...},0,6,0,0,0,1,0,1,0,1
+safetynet-alerts,com.safetynet.service,FireAddressService.new TypeReference() {...},0,6,0,0,0,1,0,1,0,1
+safetynet-alerts,com.safetynet.service,FireAddressService.new TypeReference() {...},0,6,0,0,0,1,0,1,0,1
+safetynet-alerts,com.safetynet.service,FirestationService.new TypeReference() {...},0,6,0,0,0,1,0,1,0,1
+safetynet-alerts,com.safetynet.service,FirestationService.new TypeReference() {...},0,6,0,0,0,1,0,1,0,1
+safetynet-alerts,com.safetynet.service,FirestationService.new TypeReference() {...},0,6,0,0,0,1,0,1,0,1
+safetynet-alerts,com.safetynet.service,PersonService.new TypeReference() {...},0,6,0,0,0,1,0,1,0,1
+safetynet-alerts,com.safetynet.service,PersonService.new TypeReference() {...},0,6,0,0,0,1,0,1,0,1
+safetynet-alerts,com.safetynet.service,PersonService.new TypeReference() {...},0,6,0,0,0,1,0,1,0,1
+safetynet-alerts,com.safetynet.service,FirestationService,45,203,3,15,17,48,3,14,0,8
+safetynet-alerts,com.safetynet.service,PersonInfolastNameService,9,159,1,5,3,37,1,9,0,7
+safetynet-alerts,com.safetynet.service,MedicalRecordService.new TypeReference() {...},0,6,0,0,0,1,0,1,0,1
+safetynet-alerts,com.safetynet.service,MedicalRecordService.new TypeReference() {...},0,6,0,0,0,1,0,1,0,1
+safetynet-alerts,com.safetynet.service,ChildAlertService.new TypeReference() {...},0,6,0,0,0,1,0,1,0,1
+safetynet-alerts,com.safetynet.service,MedicalRecordService.new TypeReference() {...},0,6,0,0,0,1,0,1,0,1
+safetynet-alerts,com.safetynet.service,ChildAlertService.new TypeReference() {...},0,6,0,0,0,1,0,1,0,1
+safetynet-alerts,com.safetynet.service,MedicalRecordService.new TypeReference() {...},0,6,0,0,0,1,0,1,0,1
+safetynet-alerts,com.safetynet.service,PersonService,54,236,3,17,18,54,3,15,0,8
+safetynet-alerts,com.safetynet.service,MedicalRecordService,71,314,9,25,21,73,8,21,0,12
+safetynet-alerts,com.safetynet.service,PersonInfolastNameService.new TypeReference() {...},0,6,0,0,0,1,0,1,0,1
+safetynet-alerts,com.safetynet.service,PersonInfolastNameService.new TypeReference() {...},0,6,0,0,0,1,0,1,0,1
+safetynet-alerts,com.safetynet.service,ChildAlertService,18,220,6,12,5,46,6,15,0,12
+safetynet-alerts,com.safetynet.service,CommunityEmailService.new TypeReference() {...},0,6,0,0,0,1,0,1,0,1
+safetynet-alerts,com.safetynet.service,FloodStationService,15,198,2,4,5,48,2,9,0,8
+safetynet-alerts,com.safetynet.exceptions,GlobalExceptions,14,10,0,0,4,3,2,2,2,2
