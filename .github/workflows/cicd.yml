@@ -18,8 +18,10 @@ jobs:
           java-version: "17"
           distribution: "temurin"
 
-      - name: Build project and generate reports
-        run: mvn clean verify javadoc:javadoc
+      - name: Build project and generate reports (avec Lombok)
+        run: >
+          mvn clean verify javadoc:javadoc
+          -Dmaven.compiler.annotationProcessorPaths=org.projectlombok:lombok:1.18.30
 
       - name: Deploy `target` folder to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
