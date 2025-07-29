@@ -89,8 +89,6 @@ Cette commande peut aussi génerer les Rapports de tests Jacoco et Surefire mais
 
 ## Documentation
 
-- [**JavaDoc**](https://lagourou.github.io/agourou-laurent-creer-applicationWeb-springBoot/target/site/apidocs/index.html) — Documentation du code Java
-
-- [**Rapport JaCoCo**](https://lagourou.github.io/agourou-laurent-creer-applicationWeb-springBoot/target/site/jacoco/index.html) — Couverture du code
-
-- [**Rapport Surefire**](https://lagourou.github.io/agourou-laurent-creer-applicationWeb-springBoot/target/site/surefire-report.html) — Résultats des tests
+- [**JavaDoc**](https://lagourou.github.io/agourou-laurent-creer-applicationWeb-springBoot/site/apidocs/index.html) — Documentation du code Java
+- [**Rapport JaCoCo**](https://lagourou.github.io/agourou-laurent-creer-applicationWeb-springBoot/site/jacoco/index.html) — Couverture du code
+- [**Rapport Surefire**](https://lagourou.github.io/agourou-laurent-creer-applicationWeb-springBoot/site/surefire-report.html) — Résultats des tests
