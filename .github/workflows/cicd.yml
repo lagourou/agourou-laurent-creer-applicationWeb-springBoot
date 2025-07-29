@@ -25,7 +25,7 @@ jobs:
 
       - name: Create simple index.html to link all docs
         run: |
-          echo "<!DOCTYPE html><html><head><meta charset='utf-8'><title>Documentation</title></head><body><h1>📚 Documentation du projet</h1><ul><li><a href='site/apidocs/index.html'>🧪 JavaDoc</a></li><li><a href='site/Jacoco/index.html'>📊 JaCoCo</a></li><li><a href='site/surefire-report.html'>✅ Surefire Report</a></li></ul></body></html>" > target/index.html
+          echo "<!DOCTYPE html><html><head><meta charset='utf-8'><title>Documentation</title></head><body><h1>📚 Documentation du projet</h1><ul><li><a href='apidocs/index.html'>🧪 JavaDoc</a></li><li><a href='jacoco/index.html'>📊 JaCoCo</a></li><li><a href='surefire-report.html'>✅ Surefire Report</a></li></ul></body></html>" > target/index.html
 
       - name: Deploy full site to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
