@@ -23,10 +23,18 @@ jobs:
           mvn clean verify javadoc:javadoc \
           -Dmaven.compiler.annotationProcessorPaths=org.projectlombok:lombok:1.18.30 || true
 
-      - name: Deploy `target` folder to GitHub Pages
+      - name: Prepare unified documentation folder
+        run: |
+          mkdir -p docs
+          cp -r target/site/apidocs docs/javadoc || true
+          cp -r target/site/jacoco docs/jacoco || true
+          cp -r target/site/surefire-report.html docs/ || true
+          echo "<!DOCTYPE html><html><head><title>Docs</title></head><body><h1>Documentation</h1><ul><li><a href='javadoc/index.html'>JavaDoc</a></li><li><a href='jacoco/index.html'>JaCoCo</a></li><li><a href='surefire-report.html'>Surefire</a></li></ul></body></html>" > docs/index.html
+
+      - name: Deploy all documentation to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./target
+          publish_dir: ./docs
           publish_branch: gh-pages
           force_orphan: true
