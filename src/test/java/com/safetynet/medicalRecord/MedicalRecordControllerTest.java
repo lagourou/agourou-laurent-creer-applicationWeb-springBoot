@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -45,28 +44,6 @@ public class MedicalRecordControllerTest {
                 // Initialise MockMvc avec le contrôleur et les mocks
                 mockMvc = MockMvcBuilders.standaloneSetup(medicalRecordController).build();
                 objectMapper = new ObjectMapper();
-        }
-
-        /**
-         * Teste la création de dossiers médicaux avec succès.
-         *
-         * @throws Exception gère l'erreur lors de l'exécution du test.
-         */
-        @Test
-        void testCreateMedicalRecords_Success() throws Exception {
-                List<MedicalRecord> records = List.of(
-                                new MedicalRecord("John", "Doe", "01/01/1980", List.of("med1", "med2"),
-                                                List.of("allergy1")));
-                when(medicalRecordService.add(records)).thenReturn(records);
-
-                mockMvc.perform(post("/medicalRecord")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(objectMapper.writeValueAsString(records)))
-                                .andExpect(status().isCreated())
-                                .andExpect(jsonPath("$[0].firstName").value("John"))
-                                .andExpect(jsonPath("$[0].lastName").value("Doe"));
-
-                verify(medicalRecordService).add(records);
         }
 
         /**

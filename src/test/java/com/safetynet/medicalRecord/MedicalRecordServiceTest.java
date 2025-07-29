@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.safetynet.model.MedicalRecord;
 import com.safetynet.service.MedicalRecordService;
 import com.safetynet.service.dataService.DataLoad;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
@@ -61,22 +63,16 @@ public class MedicalRecordServiceTest {
      * @throws IOException en cas d'erreur de lecture/écriture des fichiers JSON.
      */
     @Test
-    void skipExistingMedicalRecord() throws IOException {
+    void skipExistingMedicalRecord_shouldThrowException() throws IOException {
         MedicalRecord existingRecord = new MedicalRecord("John", "Doe", "01/01/1980", List.of(), List.of());
         List<MedicalRecord> newRecords = List.of(existingRecord);
-        List<MedicalRecord> existingRecords = new ArrayList<>(List.of(existingRecord));
+        List<MedicalRecord> existingRecords = List.of(existingRecord);
 
         when(dataLoad.readJsonFile(eq("medicalrecords"), any(TypeReference.class))).thenReturn(existingRecords);
 
-        List<MedicalRecord> result = medicalRecordService.add(newRecords);
-
-        ArgumentCaptor<List<MedicalRecord>> captor = ArgumentCaptor.forClass(List.class);
-        verify(dataLoad, times(1)).writeJsonFile(eq("medicalrecords"), captor.capture());
-
-        List<MedicalRecord> writtenRecords = captor.getValue();
-        assertThat(writtenRecords).isEqualTo(existingRecords);
-
-        assertThat(result).isEqualTo(newRecords);
+        assertThatThrownBy(() -> medicalRecordService.add(newRecords))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Le dossier médical existe déjà");
     }
 
     /**
