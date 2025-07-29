@@ -23,7 +23,13 @@ jobs:
           mvn clean verify javadoc:javadoc \
           -Dmaven.compiler.annotationProcessorPaths=org.projectlombok:lombok:1.18.30 || true
 
-      - name: Create simple index.html to link all docs
+      - name: Move reports to target root
+        run: |
+          mv target/site/apidocs target/apidocs || echo "JavaDoc manquant"
+          mv target/site/jacoco target/jacoco || echo "JaCoCo manquant"
+          mv target/site/surefire-report.html target/surefire-report.html || echo "Surefire manquant"
+
+      - name: Create index.html with correct links
         run: |
           echo "<!DOCTYPE html><html><head><meta charset='utf-8'><title>Documentation</title></head><body><h1>📚 Documentation du projet</h1><ul><li><a href='apidocs/index.html'>🧪 JavaDoc</a></li><li><a href='jacoco/index.html'>📊 JaCoCo</a></li><li><a href='surefire-report.html'>✅ Surefire Report</a></li></ul></body></html>" > target/index.html
 
