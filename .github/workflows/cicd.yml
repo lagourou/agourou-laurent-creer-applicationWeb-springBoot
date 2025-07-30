@@ -18,26 +18,20 @@ jobs:
           java-version: "17"
           distribution: "temurin"
 
-      - name: Build project and generate reports (avec Lombok, erreurs ignorées)
+      - name: Build project and generate reports (avec Lombok)
         run: |
           mvn clean verify javadoc:javadoc \
-          -Dmaven.compiler.annotationProcessorPaths=org.projectlombok:lombok:1.18.30 || true
+          -Dmaven.compiler.annotationProcessorPaths=org.projectlombok:lombok:1.18.30
 
-      - name: Move reports to target root
+      - name: Create custom index.html
         run: |
-          mv target/site/apidocs target/apidocs || echo "JavaDoc manquant"
-          mv target/site/jacoco target/jacoco || echo "JaCoCo manquant"
-          mv target/site/surefire-report.html target/surefire-report.html || echo "Surefire manquant"
+          echo "<!DOCTYPE html><html><head><meta charset='utf-8'><title>Documentation</title></head><body><h1>📚 Documentation du projet</h1><ul><li><a href='apidocs/index.html'>🧪 JavaDoc</a></li><li><a href='jacoco/index.html'>📊 JaCoCo</a></li><li><a href='surefire-report.html'>✅ Surefire Report</a></li></ul></body></html>" > target/site/index.html
 
-      - name: Create index.html with correct links
-        run: |
-          echo "<!DOCTYPE html><html><head><meta charset='utf-8'><title>Documentation</title></head><body><h1>📚 Documentation du projet</h1><ul><li><a href='apidocs/index.html'>🧪 JavaDoc</a></li><li><a href='jacoco/index.html'>📊 JaCoCo</a></li><li><a href='surefire-report.html'>✅ Surefire Report</a></li></ul></body></html>" > target/index.html
-
-      - name: Deploy full site to GitHub Pages
+      - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./target
+          publish_dir: ./target/site
           publish_branch: gh-pages
           force_orphan: true
           enable_jekyll: false
