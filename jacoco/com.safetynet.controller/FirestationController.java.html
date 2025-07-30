@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FirestationController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">safetynet-alerts</a> &gt; <a href="index.source.html" class="el_package">com.safetynet.controller</a> &gt; <span class="el_source">FirestationController.java</span></div><h1>FirestationController.java</h1><pre class="source lang-java linenums">package com.safetynet.controller;
+
+import java.io.IOException;
+import java.util.List;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.safetynet.model.Firestation;
+import com.safetynet.service.FirestationService;
+
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
+
+/**
+ * Contrôleur pour gérer les alertes liées aux casernes de
+ * pompiers.
+ * Endpoint pour ajouter, mettre à jour et supprimer
+ * des casernes.
+ */
+<span class="fc" id="L30">@Slf4j</span>
+@RestController
+@RequestMapping(&quot;/firestation&quot;)
+public class FirestationController {
+
+    private final FirestationService firestationService;
+
+    /**
+     * Constructeur de la classe FirestationController.
+     *
+     * @param firestationService Service permettant de gérer les alertes liées
+     *                           aux
+     *                           casernes de pompiers.
+     */
+
+<span class="fc" id="L45">    public FirestationController(FirestationService firestationService) {</span>
+<span class="fc" id="L46">        this.firestationService = firestationService;</span>
+<span class="fc" id="L47">    }</span>
+
+    /**
+     * Valide que la liste des casernes n'est pas vide.
+     *
+     * @param firestations Liste des casernes à valider.
+     * @throws IllegalArgumentException Si la liste est vide ou nulle.
+     */
+
+    private void validFirestations(List&lt;Firestation&gt; firestations) {
+<span class="pc bpc" id="L57" title="1 of 4 branches missed.">        if (firestations == null || firestations.isEmpty()) {</span>
+<span class="fc" id="L58">            log.error(&quot;La liste des casernes est vide ou nulle !&quot;);</span>
+<span class="fc" id="L59">            throw new IllegalArgumentException(&quot;La liste des casernes ne peut pas être vide.&quot;);</span>
+        }
+<span class="fc" id="L61">    }</span>
+
+    /**
+     * Ajoute des casernes de pompiers.
+     *
+     * @param firestations Liste des casernes à ajouter.
+     * @return Les casernes ajoutées.
+     */
+
+    @ResponseStatus(value = HttpStatus.CREATED)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = &quot;201&quot;, description = &quot;The firestations have been successfully added.&quot;),
+            @ApiResponse(responseCode = &quot;400&quot;, description = &quot;Invalid query: missing or incorrect firestation details.&quot;)
+    })
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public List&lt;Firestation&gt; creer(@Valid @RequestBody List&lt;Firestation&gt; firestations) throws IOException {
+
+<span class="fc" id="L78">        validFirestations(firestations);</span>
+
+<span class="fc" id="L80">        log.debug(&quot;Appel au service 'firestationService.add' avec les casernes : {}&quot;, firestations);</span>
+<span class="fc" id="L81">        List&lt;Firestation&gt; result = firestationService.add(firestations);</span>
+
+<span class="fc" id="L83">        log.debug(&quot;Résultat du service d'ajout : {}&quot;, result);</span>
+<span class="fc" id="L84">        log.info(&quot;Casernes ajoutées avec succès&quot;);</span>
+<span class="fc" id="L85">        return result;</span>
+    }
+
+    /**
+     * Met à jour des casernes qui existes.
+     *
+     * @param firestations Liste des casernes à mettre à jour.
+     * @return Les casernes mises à jour.
+     */
+    @ResponseStatus(value = HttpStatus.OK)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = &quot;200&quot;, description = &quot;The firestations have been successfully updated.&quot;),
+            @ApiResponse(responseCode = &quot;400&quot;, description = &quot;Invalid query: missing or incorrect firestation details.&quot;)
+    })
+    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public List&lt;Firestation&gt; mettreAJour(@Valid @RequestBody List&lt;Firestation&gt; firestations) throws IOException {
+
+<span class="fc" id="L102">        validFirestations(firestations);</span>
+
+<span class="fc" id="L104">        log.debug(&quot;Appel au service 'firestationService.update' avec les casernes : {}&quot;, firestations);</span>
+<span class="fc" id="L105">        List&lt;Firestation&gt; result = firestationService.update(firestations);</span>
+
+<span class="fc" id="L107">        log.debug(&quot;Résultat du service de mise à jour : {}&quot;, result);</span>
+<span class="fc" id="L108">        log.info(&quot;Casernes mis à jour avec succès&quot;);</span>
+<span class="fc" id="L109">        return result;</span>
+    }
+
+    /**
+     * Supprime des casernes de pompiers.
+     *
+     * @param firestations Liste des casernes à supprimer.
+     * @return Les casernes supprimées.
+     */
+    @ResponseStatus(value = HttpStatus.OK)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = &quot;200&quot;, description = &quot;The firestations have been successfully deleted.&quot;),
+            @ApiResponse(responseCode = &quot;400&quot;, description = &quot;Invalid query: missing or incorrect firestation details.&quot;)
+    })
+    @DeleteMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public List&lt;Firestation&gt; supprimer(@Valid @RequestBody List&lt;Firestation&gt; firestations) throws IOException {
+
+<span class="fc" id="L126">        validFirestations(firestations);</span>
+
+<span class="fc" id="L128">        log.debug(&quot;Appel au service 'firestationService.delete' avec les casernes : {}&quot;, firestations);</span>
+<span class="fc" id="L129">        List&lt;Firestation&gt; result = firestationService.delete(firestations);</span>
+
+<span class="fc" id="L131">        log.debug(&quot;Résultat du service de suppression : {}&quot;, result);</span>
+<span class="fc" id="L132">        log.info(&quot;Casernes suppprimées avec succès&quot;);</span>
+<span class="fc" id="L133">        return result;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

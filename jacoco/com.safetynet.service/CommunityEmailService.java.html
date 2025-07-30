@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CommunityEmailService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">safetynet-alerts</a> &gt; <a href="index.source.html" class="el_package">com.safetynet.service</a> &gt; <span class="el_source">CommunityEmailService.java</span></div><h1>CommunityEmailService.java</h1><pre class="source lang-java linenums">package com.safetynet.service;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.stereotype.Service;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.safetynet.dto.CommunityEmail;
+import com.safetynet.model.Person;
+import com.safetynet.service.dataService.DataLoad;
+
+import lombok.extern.slf4j.Slf4j;
+
+/**
+ * Service permettant de récupérer les adresses email des résidents d'une ville
+ * donnée.
+ */
+<span class="fc" id="L20">@Slf4j</span>
+@Service
+public class CommunityEmailService {
+    private final DataLoad dataLoad;
+
+    /**
+     * Constructeur de la classe CommunityEmailService.
+     *
+     * @param dataLoad Service pour charger les données depuis un fichier JSON.
+     */
+
+<span class="fc" id="L31">    public CommunityEmailService(DataLoad dataLoad) {</span>
+<span class="fc" id="L32">        this.dataLoad = dataLoad;</span>
+<span class="fc" id="L33">    }</span>
+
+    /**
+     * Récupère les adresses email des résidents d'une ville donnée.
+     *
+     * @param city Ville regroupant ses habitants et ses adresses e-mails..
+     * @return Une liste d'adresses email des résidents.
+     * @throws IOException En cas d'erreur lors de la lecture des fichiers JSON.
+     */
+    public List&lt;CommunityEmail&gt; getCommunityEmail(String city) throws IOException {
+<span class="fc" id="L43">        log.debug(&quot;Début de la récupération des emails pour la ville : {}&quot;, city);</span>
+        List&lt;Person&gt; persons;
+        try {
+<span class="fc" id="L46">            persons = dataLoad.readJsonFile(&quot;persons&quot;, new TypeReference&lt;Map&lt;String, List&lt;Person&gt;&gt;&gt;() {</span>
+            });
+<span class="fc" id="L48">            log.debug(&quot;Données des personnes chargées depuis le fichier JSON : {}&quot;, persons);</span>
+<span class="nc" id="L49">        } catch (IOException e) {</span>
+<span class="nc" id="L50">            log.error(&quot;Erreur lors de la lecture du fichier JSON pour la ville {}: {}&quot;, city, e.getMessage());</span>
+<span class="nc" id="L51">            throw e;</span>
+<span class="fc" id="L52">        }</span>
+
+<span class="fc" id="L54">        List&lt;CommunityEmail&gt; emails = persons.stream().filter(person -&gt; person.getCity().trim().equalsIgnoreCase(city))</span>
+<span class="fc" id="L55">                .map(person -&gt; new CommunityEmail(person.getEmail())).toList();</span>
+
+<span class="fc" id="L57">        log.debug(&quot;Emails filtrés pour la ville {}: {}&quot;, city, emails);</span>
+<span class="fc" id="L58">        log.info(&quot;{} Emails trouvés pour la ville {}&quot;, emails.size(), city);</span>
+<span class="fc" id="L59">        return emails;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

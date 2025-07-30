@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PersonInfolastNameController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">safetynet-alerts</a> &gt; <a href="index.source.html" class="el_package">com.safetynet.controller</a> &gt; <span class="el_source">PersonInfolastNameController.java</span></div><h1>PersonInfolastNameController.java</h1><pre class="source lang-java linenums">package com.safetynet.controller;
+
+import java.io.IOException;
+import java.util.List;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.safetynet.dto.PersonInfolastName;
+import com.safetynet.service.PersonInfolastNameService;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import lombok.extern.slf4j.Slf4j;
+
+/**
+ * Contrôleur pour gérer les informations des personnes par nom de famille.
+ * Endpoint pour récupérer les informations des habitants avec
+ * un nom de famille donné.
+ */
+<span class="fc" id="L25">@Slf4j</span>
+@RestController
+@RequestMapping(&quot;/personInfolastName&quot;)
+public class PersonInfolastNameController {
+    private final PersonInfolastNameService personInfolastNameService;
+
+    /**
+     * Constructeur de la classe PersonInfolastNameController
+     *
+     * @param personInfolastNameService Service pour gérer les informations des
+     *                                  habitants par nom de famille.
+     */
+<span class="fc" id="L37">    public PersonInfolastNameController(PersonInfolastNameService personInfolastNameService) {</span>
+<span class="fc" id="L38">        this.personInfolastNameService = personInfolastNameService;</span>
+<span class="fc" id="L39">    }</span>
+
+    /**
+     * Récupère les informations des personnes avec un nom de famille donné.
+     *
+     * @param lastNames Nom de famille pour rechercher les personnes.
+     * @return Les informations des personnes correspondantes ou un code HTTP
+     *         spécifique.
+     * @throws IOException En cas d'erreur lors de la récupération des données.
+     */
+    @ResponseStatus(value = HttpStatus.OK)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = &quot;200&quot;, description = &quot;Person information retrieved successfully.&quot;),
+            @ApiResponse(responseCode = &quot;400&quot;, description = &quot;Invalid or missing lastName parameter.&quot;),
+            @ApiResponse(responseCode = &quot;204&quot;, description = &quot;No persons found with the specified last name.&quot;)
+    })
+    @GetMapping
+    public ResponseEntity&lt;List&lt;PersonInfolastName&gt;&gt; getPersonInfolastName(@RequestParam(&quot;lastName&quot;) String lastNames)
+            throws IOException {
+
+<span class="fc" id="L59">        log.info(&quot;Requête reçue pour le nom de famille: {}&quot;, lastNames);</span>
+
+<span class="fc bfc" id="L61" title="All 4 branches covered.">        if (lastNames == null || lastNames.isBlank()) {</span>
+<span class="fc" id="L62">            log.error(&quot;Le paramètre 'lastName' est manquant ou invalide.&quot;);</span>
+<span class="fc" id="L63">            return ResponseEntity.badRequest().build();</span>
+        }
+
+<span class="fc" id="L66">        log.debug(&quot;Appel au service 'personInfolastNameService.getPersonInfolastName' avec le nom de famille : {}&quot;,</span>
+                lastNames);
+<span class="fc" id="L68">        List&lt;PersonInfolastName&gt; result = personInfolastNameService.getPersonInfolastName(lastNames);</span>
+
+<span class="fc" id="L70">        log.debug(&quot;Résultat du service pour le nom de famille {}: {}&quot;, lastNames, result);</span>
+<span class="fc bfc" id="L71" title="All 2 branches covered.">        if (result.isEmpty()) {</span>
+
+<span class="fc" id="L73">            log.info(&quot;Aucune personne trouvée portant le nom de famille: {}&quot;, lastNames);</span>
+<span class="fc" id="L74">            return ResponseEntity.noContent().build();</span>
+        }
+
+<span class="fc" id="L77">        log.info(&quot;{} Habitant(s) trouvé(s) portant le nom de famille {}&quot;, result.size(), lastNames);</span>
+<span class="fc" id="L78">        return ResponseEntity.ok(result);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

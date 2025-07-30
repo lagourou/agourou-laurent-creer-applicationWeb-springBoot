@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MedicalRecordService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">safetynet-alerts</a> &gt; <a href="index.source.html" class="el_package">com.safetynet.service</a> &gt; <span class="el_source">MedicalRecordService.java</span></div><h1>MedicalRecordService.java</h1><pre class="source lang-java linenums">package com.safetynet.service;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.stereotype.Service;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.safetynet.model.MedicalRecord;
+import com.safetynet.model.Person;
+import com.safetynet.service.dataService.DataLoad;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * Service permettant de gérer informations liées aux dossiers médicaux.
+ */
+@Service
+public class MedicalRecordService {
+
+    private final DataLoad dataLoad;
+<span class="fc" id="L23">    private static final Logger log = LoggerFactory.getLogger(MedicalRecordService.class);</span>
+
+    /**
+     * Constructeur de la classe MedicalRecordService.
+     *
+     * @param dataLoad Service pour charger et sauvegarder les données du fichier
+     *                 JSON.
+     */
+<span class="fc" id="L31">    public MedicalRecordService(DataLoad dataLoad) {</span>
+<span class="fc" id="L32">        this.dataLoad = dataLoad;</span>
+<span class="fc" id="L33">    }</span>
+
+    /**
+     * Vérifie si un dossier médical est associé à une personne existante dans le
+     * fichier &quot;persons&quot;.
+     *
+     * &lt;p&gt;
+     * Cette méthode lit les données des personnes enregistrées depuis le fichier
+     * JSON &quot;persons&quot;
+     * et vérifie si les informations du dossier médical donné (prénom et nom de
+     * famille)
+     * correspondent à une personne existante.
+     * &lt;/p&gt;
+     *
+     * @param medicalRecord Le dossier médical contenant les informations du prénom
+     *                      et du nom à vérifier.
+     * @return {@code true} si une correspondance est trouvée entre le prénom et le
+     *         nom dans &quot;persons&quot;,
+     *         {@code false} sinon.
+     * @throws IOException Si une erreur survient lors de la lecture du fichier
+     *                     JSON.
+     */
+
+    /**
+     * Vérifie si un dossier médical est associé à une personne existante
+     *
+     * @param medicalRecord Le dossier médical contenant les informations de la
+     *                      personne
+     * @return true si une correspondance est trouvée, false sinon.
+     * @throws IOException Si une erreur survient lors de la lecture du fichier
+     *                     JSON.
+     */
+
+    public boolean personAssociate(MedicalRecord medicalRecord) throws IOException {
+        List&lt;Person&gt; existingPersons;
+        try {
+<span class="fc" id="L69">            existingPersons = dataLoad.readJsonFile(&quot;persons&quot;,</span>
+<span class="fc" id="L70">                    new TypeReference&lt;Map&lt;String, List&lt;Person&gt;&gt;&gt;() {</span>
+                    });
+<span class="nc" id="L72">        } catch (IOException e) {</span>
+<span class="nc" id="L73">            log.error(&quot;Erreur lors de la lecture du fichier JSON : {}&quot;, e.getMessage());</span>
+<span class="nc" id="L74">            throw e;</span>
+<span class="fc" id="L75">        }</span>
+
+<span class="fc" id="L77">        return existingPersons.stream()</span>
+<span class="pc bpc" id="L78" title="1 of 2 branches missed.">                .anyMatch(person -&gt; person.getFirstName().equalsIgnoreCase(medicalRecord.getFirstName()) &amp;&amp;</span>
+<span class="pc bnc" id="L79" title="All 2 branches missed.">                        person.getLastName().equalsIgnoreCase(medicalRecord.getLastName()));</span>
+    }
+
+    /**
+     * Ajoute des dossiers médicaux.
+     *
+     * @param medicalRecords Liste des dossiers médicaux à ajouter.
+     * @return Les dossiers médicaux ajoutés.
+     * @throws IOException En cas d'erreur lors de la lecture ou de la sauvegarde
+     *                     des données.
+     */
+    public List&lt;MedicalRecord&gt; add(List&lt;MedicalRecord&gt; medicalRecords) throws IOException {
+<span class="fc" id="L91">        log.info(&quot;Ajout d'un dossier médical&quot;);</span>
+
+        List&lt;MedicalRecord&gt; existingMedicalRecords;
+
+        try {
+<span class="fc" id="L96">            existingMedicalRecords = dataLoad.readJsonFile(&quot;medicalrecords&quot;,</span>
+<span class="fc" id="L97">                    new TypeReference&lt;Map&lt;String, List&lt;MedicalRecord&gt;&gt;&gt;() {</span>
+                    });
+<span class="fc" id="L99">            log.debug(&quot;Dossiers médicaux existants avant ajout : {}&quot;, existingMedicalRecords);</span>
+<span class="nc" id="L100">        } catch (IOException e) {</span>
+<span class="nc" id="L101">            log.error(&quot;Erreur lors de la lecture des fichiers JSON pour les dossiers médicaux : {}&quot;, e.getMessage(), e);</span>
+<span class="nc" id="L102">            throw e;</span>
+<span class="fc" id="L103">        }</span>
+
+<span class="fc bfc" id="L105" title="All 2 branches covered.">        for (MedicalRecord newMedicalRecord : medicalRecords) {</span>
+<span class="fc" id="L106">            if (existingMedicalRecords.stream()</span>
+<span class="pc bpc" id="L107" title="1 of 4 branches missed.">                    .anyMatch(existing -&gt; existing.getFirstName().equalsIgnoreCase(newMedicalRecord.getFirstName())</span>
+<span class="pc bpc" id="L108" title="1 of 2 branches missed.">                            &amp;&amp; existing.getLastName().equalsIgnoreCase(newMedicalRecord.getLastName())</span>
+<span class="pc bpc" id="L109" title="1 of 2 branches missed.">                            &amp;&amp; existing.getBirthdate().equalsIgnoreCase(newMedicalRecord.getBirthdate()))) {</span>
+
+<span class="fc" id="L111">                throw new IllegalArgumentException(&quot;Le dossier médical existe déjà :&quot; + &quot; &quot; +</span>
+<span class="fc" id="L112">                        newMedicalRecord.getFirstName() + &quot; &quot; + newMedicalRecord.getLastName());</span>
+            }
+<span class="fc" id="L114">            existingMedicalRecords.add(newMedicalRecord);</span>
+<span class="fc" id="L115">        }</span>
+
+        try {
+<span class="fc" id="L118">            dataLoad.writeJsonFile(&quot;medicalrecords&quot;, existingMedicalRecords);</span>
+<span class="nc" id="L119">        } catch (IOException e) {</span>
+<span class="nc" id="L120">            log.error(&quot;Erreur lors de l'écriture dans le fichier JSON des dossiers médicaux : {}&quot;, e.getMessage(), e);</span>
+<span class="nc" id="L121">            throw e;</span>
+<span class="fc" id="L122">        }</span>
+
+<span class="fc" id="L124">        log.info(&quot;Ajout du dossier médical terminé&quot;);</span>
+<span class="fc" id="L125">        log.debug(&quot;Dossiers médicaux après ajout : {}&quot;, existingMedicalRecords);</span>
+
+<span class="fc" id="L127">        return medicalRecords;</span>
+    }
+
+    /**
+     * Met à jour les dossiers médicaux existants.
+     *
+     * @param medicalRecords Liste des dossiers médicaux à mettre à jour.
+     * @return Les dossiers médicaux mis à jour.
+     * @throws IOException En cas d'erreur lors de la lecture ou de la sauvegarde
+     *                     des données.
+     */
+    public List&lt;MedicalRecord&gt; update(List&lt;MedicalRecord&gt; medicalRecords) throws IOException {
+<span class="fc" id="L139">        log.info(&quot;Mise à jour des dossiers médicaux&quot;);</span>
+
+        List&lt;MedicalRecord&gt; existingMedicalRecords;
+
+        try {
+<span class="fc" id="L144">            existingMedicalRecords = dataLoad.readJsonFile(&quot;medicalrecords&quot;,</span>
+<span class="fc" id="L145">                    new TypeReference&lt;Map&lt;String, List&lt;MedicalRecord&gt;&gt;&gt;() {</span>
+                    });
+<span class="fc" id="L147">            log.debug(&quot;Dossiers médicaux existants avant mise à jour : {}&quot;, existingMedicalRecords);</span>
+<span class="nc" id="L148">        } catch (IOException e) {</span>
+<span class="nc" id="L149">            log.error(&quot;Erreur lors de la lecture des fichiers JSON pour les dossiers médicaux : {}&quot;, e.getMessage(), e);</span>
+<span class="nc" id="L150">            throw e;</span>
+<span class="fc" id="L151">        }</span>
+
+<span class="fc bfc" id="L153" title="All 2 branches covered.">        for (MedicalRecord medicalRecord : medicalRecords) {</span>
+<span class="fc" id="L154">            boolean updated = false;</span>
+<span class="fc bfc" id="L155" title="All 2 branches covered.">            for (MedicalRecord existing : existingMedicalRecords) {</span>
+<span class="fc bfc" id="L156" title="All 2 branches covered.">                if (existing.getFirstName().equalsIgnoreCase(medicalRecord.getFirstName())</span>
+<span class="pc bpc" id="L157" title="1 of 2 branches missed.">                        &amp;&amp; existing.getLastName().equalsIgnoreCase(medicalRecord.getLastName())) {</span>
+<span class="fc" id="L158">                    log.info(&quot;Mise à jour des informations pour : {} {}&quot;, existing.getFirstName(),</span>
+<span class="fc" id="L159">                            existing.getLastName());</span>
+<span class="fc" id="L160">                    existing.setMedications(medicalRecord.getMedications());</span>
+<span class="fc" id="L161">                    existing.setAllergies(medicalRecord.getAllergies());</span>
+<span class="fc" id="L162">                    updated = true;</span>
+<span class="fc" id="L163">                    log.info(&quot;Dossier médical mis à jour : {}&quot;, existing);</span>
+                }
+<span class="fc" id="L165">            }</span>
+<span class="fc bfc" id="L166" title="All 2 branches covered.">            if (!updated) {</span>
+<span class="fc" id="L167">                log.warn(&quot;Aucune correspondance trouvée pour le dossier médical : {} {}&quot;,</span>
+<span class="fc" id="L168">                        medicalRecord.getFirstName(), medicalRecord.getLastName());</span>
+            }
+<span class="fc" id="L170">        }</span>
+
+        try {
+<span class="fc" id="L173">            dataLoad.writeJsonFile(&quot;medicalrecords&quot;, existingMedicalRecords);</span>
+<span class="nc" id="L174">        } catch (IOException e) {</span>
+<span class="nc" id="L175">            log.error(&quot;Erreur lors de l'écriture dans le fichier JSON des dossiers médicaux : {}&quot;, e.getMessage(), e);</span>
+<span class="nc" id="L176">            throw e;</span>
+<span class="fc" id="L177">        }</span>
+
+<span class="fc" id="L179">        log.info(&quot;Mise à jour des dossiers médicaux terminée&quot;);</span>
+<span class="fc" id="L180">        log.debug(&quot;Dossiers médicaux après mise à jour : {}&quot;, existingMedicalRecords);</span>
+
+<span class="fc" id="L182">        return existingMedicalRecords;</span>
+    }
+
+    /**
+     * Supprime des dossiers médicaux.
+     *
+     * @param medicalRecords Liste des dossiers médicaux à supprimer.
+     * @return Les dossiers médicaux supprimés.
+     * @throws IOException En cas d'erreur lors de la lecture ou de la sauvegarde
+     *                     des données.
+     */
+    public List&lt;MedicalRecord&gt; delete(List&lt;MedicalRecord&gt; medicalRecords) throws IOException {
+<span class="fc" id="L194">        log.info(&quot;Suppression des dossiers médicaux&quot;);</span>
+
+        List&lt;MedicalRecord&gt; existingMedicalRecords;
+
+        try {
+<span class="fc" id="L199">            existingMedicalRecords = dataLoad.readJsonFile(&quot;medicalrecords&quot;,</span>
+<span class="fc" id="L200">                    new TypeReference&lt;Map&lt;String, List&lt;MedicalRecord&gt;&gt;&gt;() {</span>
+                    });
+<span class="fc" id="L202">            log.debug(&quot;Dossiers médicaux existants avant suppression : {}&quot;, existingMedicalRecords);</span>
+<span class="nc" id="L203">        } catch (IOException e) {</span>
+<span class="nc" id="L204">            log.error(&quot;Erreur lors de la lecture des fichiers JSON pour les dossiers médicaux : {}&quot;, e.getMessage(), e);</span>
+<span class="nc" id="L205">            throw e;</span>
+<span class="fc" id="L206">        }</span>
+
+<span class="fc" id="L208">        List&lt;MedicalRecord&gt; deletedRecords = existingMedicalRecords.stream()</span>
+<span class="fc" id="L209">                .filter(existing -&gt; medicalRecords.stream()</span>
+<span class="fc" id="L210">                        .anyMatch(</span>
+<span class="fc bfc" id="L211" title="All 2 branches covered.">                                medicalRecord -&gt; existing.getFirstName().equalsIgnoreCase(medicalRecord.getFirstName())</span>
+<span class="pc bpc" id="L212" title="1 of 2 branches missed.">                                        &amp;&amp; existing.getLastName().equalsIgnoreCase(medicalRecord.getLastName())))</span>
+<span class="fc" id="L213">                .toList();</span>
+
+<span class="fc" id="L215">        existingMedicalRecords.removeIf(existing -&gt; medicalRecords.stream()</span>
+<span class="fc bfc" id="L216" title="All 2 branches covered.">                .anyMatch(medicalRecord -&gt; existing.getFirstName().equalsIgnoreCase(medicalRecord.getFirstName())</span>
+<span class="pc bpc" id="L217" title="1 of 2 branches missed.">                        &amp;&amp; existing.getLastName().equalsIgnoreCase(medicalRecord.getLastName())));</span>
+
+<span class="fc bfc" id="L219" title="All 2 branches covered.">        if (!deletedRecords.isEmpty()) {</span>
+<span class="fc" id="L220">            log.info(&quot;Dossiers médicaux supprimés : {}&quot;, deletedRecords);</span>
+        } else {
+<span class="fc" id="L222">            log.warn(&quot;Aucun dossier médical trouvé pour suppression.&quot;);</span>
+        }
+
+        try {
+<span class="fc" id="L226">            dataLoad.writeJsonFile(&quot;medicalrecords&quot;, existingMedicalRecords);</span>
+<span class="nc" id="L227">        } catch (IOException e) {</span>
+<span class="nc" id="L228">            log.error(&quot;Erreur lors de l'écriture dans le fichier JSON des dossiers médicaux : {}&quot;, e.getMessage(), e);</span>
+<span class="nc" id="L229">            throw e;</span>
+<span class="fc" id="L230">        }</span>
+
+<span class="fc" id="L232">        log.info(&quot;Suppression des dossiers médicaux terminée&quot;);</span>
+<span class="fc" id="L233">        log.debug(&quot;Dossiers médicaux restants après suppression : {}&quot;, existingMedicalRecords);</span>
+
+<span class="fc" id="L235">        return medicalRecords;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
