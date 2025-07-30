@@ -1,38 +1,46 @@
-HELP.md
-**/target/
-!.mvn/wrapper/maven-wrapper.jar
+# Cibles de build Maven
+/target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
+# Wrapper Maven (garder le wrapper maven-wrapper.jar)
+!.mvn/wrapper/maven-wrapper.jar
 
-### IntelliJ IDEA ###
-.idea
+# Wrapper Maven (exclure mvnw et mvnw.cmd du gitignore pour qu'ils soient suivis)
+#mvnw et mvnw.cmd ne sont pas ignorés, donc pas listés ici
+
+# Cibles de build Gradle et NetBeans
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# STS (Spring Tool Suite)
+/.apt_generated
+/.classpath
+/.factorypath
+/.project
+/.settings
+/.springBeans
+/.sts4-cache
+
+# IntelliJ IDEA
+/.idea
 *.iws
 *.iml
 *.ipr
 
-### NetBeans ###
+# NetBeans
 /nbproject/private/
 /nbbuild/
 /dist/
 /nbdist/
 /.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
 
-### VS Code ###
-.vscode/
+# VS Code
+/.vscode/
 
-### Log ###
-.log
+# Logs (fichiers .log)
+/*.log
 
-.test-medicalrecords.json
+# Fichier spécifique à ignorer
+test-medicalrecords.json
