@@ -63,6 +63,16 @@ mvn spring-boot:run
 
 ---
 
+## Test de l'application (Postman)
+
+On utilise l'outil **Postman** afin d'envoyer les **requêttes HTTP** (POST, PUT et DELETE) afin de modifier le fichier Json.
+
+- Exemple de requête : Ajouter une Personne
+
+![Requête POST](./images/Postman.PNG)
+
+---
+
 ## Tests
 
 #### Tests unitiares
@@ -87,8 +97,38 @@ mvn verify
 
 Cette commande peut aussi génerer les Rapports de tests Jacoco et Surefire mais aussi la Javadoc.
 
+---
+
 ## Documentation
 
 - [**JavaDoc**](https://lagourou.github.io/agourou-laurent-creer-applicationWeb-springBoot/apidocs/index.html) — Documentation du code Java
 - [**Rapport JaCoCo**](https://lagourou.github.io/agourou-laurent-creer-applicationWeb-springBoot/jacoco/index.html) — Couverture du code
 - [**Rapport Surefire**](https://lagourou.github.io/agourou-laurent-creer-applicationWeb-springBoot/surefire-report.html) — Résultats des tests
+
+---
+
+## Sécurité et gestion des erreurs
+
+La classe GlobalExceptions centralise le traitement des erreurs dans l’application en interceptant plusieurs types d’exceptions pour retourner des réponses HTTP adaptées :
+
+- Pour une **IllegalArgumentException**, elle renvoie une réponse _400 Bad Request_ avec un message d’erreur clair.
+
+- Pour une erreur de type **MethodArgumentTypeMismatchException** (mauvais type de paramètre), elle renvoie aussi un 400 avec un message précisant le problème de type.
+
+- Pour toutes les autres exceptions non anticipées, elle renvoie une réponse _500 Internal Server Error_ avec un message indiquant qu’une erreur interne est survenue.
+
+---
+
+## Bonnes pratiques utilisées
+
+- Architecture MVC propre
+
+- Données bien validées (@NotBlank, @Email)
+
+- DTO pour éviter d’exposer les entités directement
+
+- Tests complets (unitaires + intégration)
+
+- Logs et messages d’erreur clairs pour l’utilisateur
+
+- Couverture de code mesurée avec JaCoCo
