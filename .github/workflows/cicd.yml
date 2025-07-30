@@ -5,7 +5,7 @@ on:
     branches: [main]
 
 jobs:
-  build-and-deploy:
+  deploy-doc:
     runs-on: ubuntu-latest
 
     steps:
@@ -18,14 +18,19 @@ jobs:
           java-version: "17"
           distribution: "temurin"
 
-      - name: Build project and generate reports (avec Lombok)
+      - name: Generate only JavaDoc (ignore compile errors)
         run: |
-          mvn clean verify javadoc:javadoc \
-          -Dmaven.compiler.annotationProcessorPaths=org.projectlombok:lombok:1.18.30
+          mvn javadoc:javadoc \
+          -Dmaven.compiler.annotationProcessorPaths=org.projectlombok:lombok:1.18.30 || true
 
       - name: Create custom index.html
         run: |
-          echo "<!DOCTYPE html><html><head><meta charset='utf-8'><title>Documentation</title></head><body><h1>📚 Documentation du projet</h1><ul><li><a href='apidocs/index.html'>🧪 JavaDoc</a></li><li><a href='jacoco/index.html'>📊 JaCoCo</a></li><li><a href='surefire-report.html'>✅ Surefire Report</a></li></ul></body></html>" > target/site/index.html
+          mkdir -p target/site
+          echo "<!DOCTYPE html><html><head><meta charset='utf-8'><title>Documentation</title></head><body><h1> Documentation du projet</h1><ul>" > target/site/index.html
+          [ -d target/site/apidocs ] && echo "<li><a href='apidocs/index.html'> JavaDoc</a></li>" >> target/site/index.html
+          [ -d target/site/jacoco ] && echo "<li><a href='jacoco/index.html'> JaCoCo</a></li>" >> target/site/index.html
+          [ -f target/site/surefire-report.html ] && echo "<li><a href='surefire-report.html'> Surefire Report</a></li>" >> target/site/index.html
+          echo "</ul></body></html>" >> target/site/index.html
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3

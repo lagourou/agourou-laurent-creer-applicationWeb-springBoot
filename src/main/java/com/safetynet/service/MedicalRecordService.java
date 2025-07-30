@@ -10,17 +10,17 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.safetynet.model.MedicalRecord;
 import com.safetynet.model.Person;
 import com.safetynet.service.dataService.DataLoad;
-
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Service permettant de gérer informations liées aux dossiers médicaux.
  */
-@Slf4j
 @Service
 public class MedicalRecordService {
 
     private final DataLoad dataLoad;
+    private static final Logger log = LoggerFactory.getLogger(MedicalRecordService.class);
 
     /**
      * Constructeur de la classe MedicalRecordService.

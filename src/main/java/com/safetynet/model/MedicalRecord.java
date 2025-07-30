@@ -6,9 +6,13 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class MedicalRecord {
 
@@ -24,16 +28,4 @@ public class MedicalRecord {
     private List<String> medications;
 
     private List<String> allergies;
-
-    public MedicalRecord() {
-    }
-
-    public MedicalRecord(String firstName, String lastName, String birthdate, List<String> medications,
-            List<String> allergies) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.birthdate = birthdate;
-        this.medications = medications;
-        this.allergies = allergies;
-    }
 }
