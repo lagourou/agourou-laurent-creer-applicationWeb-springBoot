@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.safetynet.childAlert.ChildAlertControllerTest
+-------------------------------------------------------------------------------
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 8.283 s - in com.safetynet.childAlert.ChildAlertControllerTest

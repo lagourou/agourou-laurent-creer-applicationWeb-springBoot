@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ChildAlertService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">safetynet-alerts</a> &gt; <a href="index.source.html" class="el_package">com.safetynet.service</a> &gt; <span class="el_source">ChildAlertService.java</span></div><h1>ChildAlertService.java</h1><pre class="source lang-java linenums">package com.safetynet.service;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.stereotype.Service;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.safetynet.dto.ChildrenByAddress;
+import com.safetynet.model.MedicalRecord;
+import com.safetynet.model.Person;
+import com.safetynet.service.dataService.DataLoad;
+import com.safetynet.util.AgeCalculatorUtil;
+
+import lombok.extern.slf4j.Slf4j;
+
+/**
+ * Service permettant de gérer les alertes liées aux enfants vivant à une
+ * adresse donnée.
+ *
+ * Service traitant les données des personnes et des dossiers médicaux
+ * pour identifier les enfants vivant à une adresse spécifique,
+ * ainsi que les autres membres de leur foyer.
+ */
+<span class="fc" id="L26">@Slf4j</span>
+@Service
+public class ChildAlertService {
+
+        private final AgeCalculatorUtil ageCalculatorUtil;
+        private final DataLoad dataLoad;
+
+        /**
+         * Constructeur de la classe ChildAlertService.
+         *
+         * @param AgeCalculatorUtil Service pour calculer l'âge à partir de la date
+         *                          de naissance.
+         * @param dataLoad          Service pour charger les données depuis un
+         *                          fichier JSON.
+         */
+<span class="fc" id="L41">        public ChildAlertService(AgeCalculatorUtil ageCalculatorUtil, DataLoad dataLoad) {</span>
+<span class="fc" id="L42">                this.ageCalculatorUtil = ageCalculatorUtil;</span>
+<span class="fc" id="L43">                this.dataLoad = dataLoad;</span>
+<span class="fc" id="L44">        }</span>
+
+        /**
+         * Calcule l'âge à partir de la date de naissance.
+         *
+         * @param birthdate La date de naissance au format MM/dd/yyyy.
+         * @return L'âge en années.
+         */
+        public int getAge(String birthdate) {
+<span class="fc" id="L53">                return ageCalculatorUtil.calculateAge(birthdate);</span>
+        }
+
+        /**
+         * Récupère la liste des enfants vivant à une adresse donnée.
+         *
+         * @param address L'adresse pour rechercher les enfants.
+         * @return Une liste des enfants et des autres membres du foyer.
+         * @throws IOException En cas d'erreur lors de la lecture des fichiers JSON.
+         */
+        public List&lt;ChildrenByAddress&gt; getChildrenByAddress(String address) throws IOException {
+<span class="fc" id="L64">                String childAddress = address.trim();</span>
+<span class="fc" id="L65">                log.debug(&quot;Début de la récupération des enfants pour l'adresse : {}&quot;, childAddress);</span>
+
+<span class="fc" id="L67">                List&lt;Person&gt; persons = dataLoad.readJsonFile(&quot;persons&quot;, new TypeReference&lt;Map&lt;String, List&lt;Person&gt;&gt;&gt;() {</span>
+                });
+<span class="fc" id="L69">                List&lt;MedicalRecord&gt; medicalRecords = dataLoad.readJsonFile(&quot;medicalrecords&quot;,</span>
+<span class="fc" id="L70">                                new TypeReference&lt;Map&lt;String, List&lt;MedicalRecord&gt;&gt;&gt;() {</span>
+                                });
+
+<span class="pc bpc" id="L73" title="2 of 4 branches missed.">                if (persons == null || medicalRecords == null) {</span>
+<span class="nc" id="L74">                        log.error(&quot;Les données des personnes ou des dossiers médicaux sont nulles. Vérifiez les fichiers JSON.&quot;);</span>
+<span class="nc" id="L75">                        throw new IOException(&quot;Données JSON invalides ou introuvables.&quot;);</span>
+                }
+
+<span class="fc" id="L78">                log.debug(&quot;Données des personnes : {}&quot;, persons);</span>
+<span class="fc" id="L79">                log.debug(&quot;Données des dossiers médicaux : {}&quot;, medicalRecords);</span>
+
+<span class="fc" id="L81">                List&lt;ChildrenByAddress&gt; childrenAtAddress = persons.stream()</span>
+<span class="fc" id="L82">                                .filter(person -&gt; childAddress.equalsIgnoreCase(person.getAddress()))</span>
+<span class="fc" id="L83">                                .filter(person -&gt; {</span>
+<span class="fc" id="L84">                                        MedicalRecord record = findMedicalRecordForPerson(person, medicalRecords);</span>
+<span class="pc bpc" id="L85" title="1 of 2 branches missed.">                                        if (record != null) {</span>
+<span class="fc" id="L86">                                                int age = getAge(record.getBirthdate());</span>
+<span class="fc" id="L87">                                                log.info(&quot;Dossier médical trouvé pour : {} {}&quot;, person.getFirstName(),</span>
+<span class="fc" id="L88">                                                                person.getLastName());</span>
+<span class="fc" id="L89">                                                log.debug(&quot;Âge calculé pour {} {} : {}&quot;, person.getFirstName(),</span>
+<span class="fc" id="L90">                                                                person.getLastName(), age);</span>
+<span class="fc bfc" id="L91" title="All 2 branches covered.">                                                return age &lt;= 18;</span>
+                                        } else {
+<span class="nc" id="L93">                                                log.warn(&quot;Dossier médical introuvable pour : {} {}&quot;,</span>
+<span class="nc" id="L94">                                                                person.getFirstName(), person.getLastName());</span>
+<span class="nc" id="L95">                                                return false;</span>
+                                        }
+                                })
+<span class="fc" id="L98">                                .map(person -&gt; {</span>
+<span class="fc" id="L99">                                        List&lt;Map&lt;String, String&gt;&gt; otherMembers = persons.stream()</span>
+<span class="fc" id="L100">                                                        .filter(member -&gt; childAddress</span>
+<span class="fc" id="L101">                                                                        .equalsIgnoreCase(member.getAddress()))</span>
+<span class="fc" id="L102">                                                        .filter(member -&gt; !(member.getFirstName()</span>
+<span class="fc bfc" id="L103" title="All 2 branches covered.">                                                                        .equals(person.getFirstName())</span>
+<span class="fc" id="L104">                                                                        &amp;&amp; member.getLastName()</span>
+<span class="pc bpc" id="L105" title="1 of 2 branches missed.">                                                                                        .equals(person.getLastName())))</span>
+<span class="fc" id="L106">                                                        .map(member -&gt; Map.of(&quot;firstName&quot;, member.getFirstName(),</span>
+<span class="fc" id="L107">                                                                        &quot;lastName&quot;, member.getLastName()))</span>
+<span class="fc" id="L108">                                                        .toList();</span>
+
+<span class="fc" id="L110">                                        MedicalRecord record = findMedicalRecordForPerson(person, medicalRecords);</span>
+<span class="pc bpc" id="L111" title="1 of 2 branches missed.">                                        int age = record != null ? getAge(record.getBirthdate()) : 0;</span>
+
+<span class="fc" id="L113">                                        return new ChildrenByAddress(person.getFirstName(), person.getLastName(), age,</span>
+                                                        otherMembers);
+                                })
+<span class="fc" id="L116">                                .toList();</span>
+
+<span class="fc" id="L118">                log.debug(&quot;Liste des enfants par adresse ({}): {}&quot;, address, childrenAtAddress);</span>
+<span class="fc" id="L119">                return childrenAtAddress;</span>
+        }
+
+        private MedicalRecord findMedicalRecordForPerson(Person person, List&lt;MedicalRecord&gt; medicalRecords) {
+<span class="fc" id="L123">                return medicalRecords.stream()</span>
+<span class="fc bfc" id="L124" title="All 2 branches covered.">                                .filter(medical -&gt; medical.getFirstName().equals(person.getFirstName())</span>
+<span class="pc bpc" id="L125" title="1 of 2 branches missed.">                                                &amp;&amp; medical.getLastName().equals(person.getLastName()))</span>
+<span class="fc" id="L126">                                .findFirst()</span>
+<span class="fc" id="L127">                                .orElse(null);</span>
+        }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
